@@ -1,0 +1,1704 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>COA Egypt | Financial Excellence & Odoo ERP Solutions</title>
+  <meta name="description" content="COA Egypt - شريك أودو الفضي والمستشار المالي الرائد. استشارات مالية، تحول رقمي، تدريب شركات، وحلول Odoo ERP متكاملة للشركات في مصر والسعودية.">
+  <link rel="icon" type="image/jpeg" href="assets/logo.jpg">
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+</head>
+<body class="dh-body">
+
+  <!-- ========================================================
+       DIGITAL HARBOR CINEMATIC 3D INTRO OVERLAY
+       ======================================================== -->
+  <div id="dh-intro" class="dh-intro">
+    <div id="dh-eco"><canvas id="introWaveCanvas"></canvas></div>
+    <div class="dh-intro-scrim"></div>
+    
+    <div class="dh-intro-mark">
+      <div class="dh-mark-inner">
+        <img src="assets/logo.jpg" alt="COA Egypt" class="dh-mark-logo">
+        <div class="dh-mark-info">
+          <span class="dh-mark-title">COA <span class="text-cyan">EGYPT</span></span>
+          <span class="dh-mark-tag" data-ar="استشارات مالية • شريك أودو الفضي" data-en="Financial Advisory • Odoo Silver Partner">استشارات مالية • شريك أودو الفضي</span>
+        </div>
+      </div>
+    </div>
+
+    <button type="button" id="dhSkipBtn" class="dh-skip-btn" aria-label="Skip Intro">
+      <span class="dh-skip-ar" data-ar="تخطي العرض ←" data-en="Skip intro →">تخطي العرض ←</span>
+    </button>
+
+    <div id="dh-stage" class="dh-stage">
+      <!-- Scene 0: Welcome -->
+      <div class="dh-scene active" data-scene="0">
+        <div class="dh-item dh-eyebrow" data-ar="// أهلاً بك في COA EGYPT" data-en="// WELCOME ABOARD">// أهلاً بك في COA EGYPT</div>
+        <h2 class="dh-item dh-scene-heading">
+          <span data-ar="أربع ركائز للريادة.<br>شريك موثوق <span class='text-cyan'>واحد.</span>" data-en="Four core disciplines.<br>One trusted <span class='text-cyan'>partner.</span>">
+            أربع ركائز للريادة.<br>شريك موثوق <span class="text-cyan">واحد.</span>
+          </span>
+        </h2>
+        <p class="dh-item dh-scene-sub" data-ar="شركة رائدة تُنسّق أرقى المعايير المحاسبية وأحدث حلول Odoo ERP في منظومة متكاملة لنمو الأعمال في مصر والخليج." data-en="A premier firm orchestrating world-class financial rigor and tailored Odoo ERP architecture into one seamless solution for Egypt & the GCC.">
+          شركة رائدة تُنسّق أرقى المعايير المحاسبية وأحدث حلول Odoo ERP في منظومة متكاملة لنمو الأعمال في مصر والخليج.
+        </p>
+      </div>
+
+      <!-- Scene 1: The Core Disciplines -->
+      <div class="dh-scene" data-scene="1">
+        <div class="dh-item dh-eyebrow" data-ar="// الركائز الأربع" data-en="// THE ALLIANCE">// الركائز الأربع</div>
+        <h2 class="dh-item dh-scene-heading">
+          <span data-ar="أربع اختصاصات. عقد موحد." data-en="Four disciplines. One contract.">
+            أربع اختصاصات. عقد موحد.
+          </span>
+        </h2>
+        <div class="dh-pcards">
+          <div class="dh-pcard">
+            <div class="dh-face">
+              <div class="dh-pname" data-ar="الاستشارات والضرائب" data-en="Financial & Tax">الاستشارات والضرائب</div>
+              <div class="dh-prole">CPA & Tax Rigor</div>
+            </div>
+          </div>
+          <div class="dh-pcard">
+            <div class="dh-face">
+              <div class="dh-pname" data-ar="تطبيق Odoo ERP" data-en="Odoo ERP Core">تطبيق Odoo ERP</div>
+              <div class="dh-prole">Silver Partner</div>
+            </div>
+          </div>
+          <div class="dh-pcard">
+            <div class="dh-face">
+              <div class="dh-pname" data-ar="التحول الرقمي والهيكلة" data-en="Transformation">التحول الرقمي والهيكلة</div>
+              <div class="dh-prole">BPR & Growth</div>
+            </div>
+          </div>
+          <div class="dh-pcard">
+            <div class="dh-face">
+              <div class="dh-pname" data-ar="تدريب الشركات" data-en="Corporate Training">تدريب الشركات</div>
+              <div class="dh-prole">COA Academy</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Scene 2: End-to-End Layers -->
+      <div class="dh-scene" data-scene="2">
+        <div class="dh-item dh-eyebrow" data-ar="// من الطرف إلى الطرف" data-en="// END TO END">// من الطرف إلى الطرف</div>
+        <h2 class="dh-item dh-scene-heading">
+          <span data-ar="كل طبقة في بنيتك التقنية والمالية." data-en="Every layer of your stack.">
+            كل طبقة في بنيتك التقنية والمالية.
+          </span>
+        </h2>
+        <div class="dh-layers-stack">
+          <div class="dh-item dh-layer-pill">
+            <span class="dh-dot"></span>
+            <span class="dh-ltxt" data-ar="التدقيق المحاسبي وشجرة الحسابات" data-en="Financial Audit & Chart of Accounts">التدقيق المحاسبي وشجرة الحسابات</span>
+            <span class="dh-lven">CPA / IFRS</span>
+          </div>
+          <div class="dh-item dh-layer-pill">
+            <span class="dh-dot"></span>
+            <span class="dh-ltxt" data-ar="تطبيقات Odoo الأساسية (مخازن، تصنيع، مبيعات)" data-en="Odoo ERP (Supply, MRP, POS, Sales)">تطبيقات Odoo الأساسية (مخازن، تصنيع، مبيعات)</span>
+            <span class="dh-lven">v17/v18 Enterprise</span>
+          </div>
+          <div class="dh-item dh-layer-pill">
+            <span class="dh-dot"></span>
+            <span class="dh-ltxt" data-ar="الامتثال والفاتورة الإلكترونية" data-en="E-Invoicing & Compliance">الامتثال والفاتورة الإلكترونية</span>
+            <span class="dh-lven">ETA & ZATCA Phase 2</span>
+          </div>
+          <div class="dh-item dh-layer-pill">
+            <span class="dh-dot"></span>
+            <span class="dh-ltxt" data-ar="إعادة هندسة الإجراءات وتصفير الهدر" data-en="Business Process Re-engineering">إعادة هندسة الإجراءات وتصفير الهدر</span>
+            <span class="dh-lven">Zero Bottlenecks</span>
+          </div>
+          <div class="dh-item dh-layer-pill">
+            <span class="dh-dot"></span>
+            <span class="dh-ltxt" data-ar="الرعاية والتشغيل والدعم الفني" data-en="Hypercare & Continuous SLA">الرعاية والتشغيل والدعم الفني</span>
+            <span class="dh-lven">24/7 Support</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Scene 3: Ready to Enter -->
+      <div class="dh-scene" data-scene="3">
+        <div class="dh-item dh-eyebrow" data-ar="// جاهزون متى كنت مستعداً" data-en="// READY WHEN YOU ARE">// جاهزون متى كنت مستعداً</div>
+        <h2 class="dh-item dh-scene-heading">
+          <span data-ar="مرحباً بك في<br><span class='text-cyan'>COA EGYPT.</span>" data-en="Welcome to<br><span class='text-cyan'>COA EGYPT.</span>">
+            مرحباً بك في<br><span class="text-cyan">COA EGYPT.</span>
+          </span>
+        </h2>
+        <div class="dh-item dh-badges-cluster">
+          <span class="dh-proof-badge">Odoo Silver Partner</span>
+          <span class="dh-proof-badge" data-ar="محاسبون قانونيون معتمدون" data-en="Certified CPAs">محاسبون قانونيون معتمدون</span>
+          <span class="dh-proof-badge" data-ar="+50 عميل في مصر والسعودية" data-en="50+ Enterprise Clients">+50 عميل في مصر والسعودية</span>
+          <span class="dh-proof-badge">100% Tax Clearance</span>
+        </div>
+        <button type="button" id="dhEnterBtn" class="dh-item dh-enter-btn">
+          <span data-ar="ادخل الموقع ←" data-en="Enter site →">ادخل الموقع ←</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Navigation Controls -->
+    <div class="dh-tour-nav">
+      <button type="button" id="dhPrevBtn" class="dh-nav-btn" aria-label="Previous">‹</button>
+      <div class="dh-dots-wrap">
+        <button type="button" class="dh-dot on" data-dot="0" aria-label="Slide 1"></button>
+        <button type="button" class="dh-dot" data-dot="1" aria-label="Slide 2"></button>
+        <button type="button" class="dh-dot" data-dot="2" aria-label="Slide 3"></button>
+        <button type="button" class="dh-dot" data-dot="3" aria-label="Slide 4"></button>
+      </div>
+      <button type="button" id="dhNextBtn" class="dh-nav-btn" aria-label="Next">›</button>
+    </div>
+    
+    <div class="dh-tour-footer-hint" data-ar="حرّك المؤشر للتفاعل · انقر للمتابعة أو التخطي في أي وقت" data-en="Move your cursor · click to advance">
+      حرّك المؤشر للتفاعل · انقر للمتابعة أو التخطي في أي وقت
+    </div>
+    
+    <div class="dh-tour-bar" id="dhTourBar"></div>
+  </div>
+
+  <!-- ========================================================
+       DIGITAL HARBOR FULL-PAGE MOTHERBOARD CANVAS (#dh-rain)
+       ======================================================== -->
+  <div id="dh-rain"><canvas id="rainCanvas"></canvas></div>
+
+  <!-- Top Real-time Dynamic Ticker -->
+  <div class="top-ticker" id="topTicker">
+    <div class="container ticker-container">
+      <div class="ticker-badge">
+        <span class="live-dot"></span>
+        <span class="t-text" data-ar="مباشر" data-en="LIVE">مباشر</span>
+      </div>
+      <div class="ticker-content" id="tickerItems">
+        <div class="ticker-item active" data-ar="⚡ جاري تكامل وتفعيل الفاتورة الإلكترونية والربط الضريبي (ZATCA & ETA) لـ 18 منشأة تجارية وصناعية" data-en="⚡ Active ZATCA Phase 2 & ETA E-Invoicing integrations currently underway across 18+ enterprises">
+          ⚡ جاري تكامل وتفعيل الفاتورة الإلكترونية والربط الضريبي (ZATCA & ETA) لـ 18 منشأة تجارية وصناعية
+        </div>
+      </div>
+      <div class="ticker-contact">
+        <a href="https://wa.me/201013907174" target="_blank" class="ticker-wa">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.007c.106.005.249-.04.39.298.144.347.491 1.2.534 1.287.043.087.072.188.014.304-.058.116-.087.188-.173.289l-.26.304c-.087.086-.177.18-.076.354.101.174.449.741.964 1.201.662.591 1.221.774 1.394.861.174.086.275.072.376-.044.101-.116.433-.506.549-.68.116-.173.231-.145.39-.086.159.058 1.011.477 1.184.564.173.087.289.13.332.203.043.072.043.419-.101.824z"/></svg>
+          <span>+20 101 390 7174</span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Navigation Bar -->
+  <header class="navbar" id="navbar">
+    <div class="container nav-container">
+      <a href="#hero" class="brand-logo" aria-label="COA Egypt Home">
+        <img src="assets/logo.jpg" alt="COA Egypt - Community of Accountants" class="logo-img" width="52" height="52">
+        <div class="brand-text">
+          <span class="brand-name">COA <span class="brand-accent">EGYPT</span></span>
+          <span class="brand-tagline" data-ar="استشارات مالية & Odoo Partner" data-en="Financial Consulting & Odoo Partner">استشارات مالية & Odoo Partner</span>
+        </div>
+      </a>
+
+      <!-- Desktop Nav Links -->
+      <nav class="nav-menu" id="navMenu">
+        <a href="#about" class="nav-link" data-ar="عن الشركة" data-en="About Us">عن الشركة</a>
+        <a href="#services" class="nav-link" data-ar="خدماتنا" data-en="Services">خدماتنا</a>
+        <a href="#why-coa" class="nav-link" data-ar="لماذا COA؟" data-en="Why COA?">لماذا COA؟</a>
+        <a href="#case-studies" class="nav-link" data-ar="سابقة الأعمال" data-en="Portfolio">سابقة الأعمال</a>
+        <a href="#methodology" class="nav-link" data-ar="منهجية العمل" data-en="Methodology">منهجية العمل</a>
+        <a href="#calculator" class="nav-link" data-ar="تقدير المشروع" data-en="Estimator">تقدير المشروع</a>
+        <a href="#contact" class="nav-link" data-ar="تواصل معنا" data-en="Contact">تواصل معنا</a>
+      </nav>
+
+      <!-- Nav Actions -->
+      <div class="nav-actions">
+        <!-- Language Switcher -->
+        <button type="button" class="lang-btn" id="langSwitch" aria-label="تغيير اللغة">
+          <span class="lang-text" id="langText">EN</span>
+        </button>
+
+        <!-- Theme Toggle -->
+        <button type="button" class="theme-btn" id="themeToggle" aria-label="تبديل الوضع الليلي">
+          <svg class="sun-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+          <svg class="moon-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+        </button>
+
+        <!-- Consultation Button -->
+        <a href="#contact" class="btn btn-primary nav-cta" data-ar="احجز استشارة مجانية" data-en="Book Consultation">احجز استشارة مجانية</a>
+
+        <!-- Mobile Menu Toggle -->
+        <button type="button" class="mobile-toggle" id="mobileToggle" aria-label="فتح القائمة">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Mobile Drawer Menu -->
+  <div class="mobile-drawer" id="mobileDrawer">
+    <div class="drawer-header">
+      <div class="brand-text">
+        <span class="brand-name">COA <span class="brand-accent">EGYPT</span></span>
+      </div>
+      <button class="drawer-close" id="drawerClose">&times;</button>
+    </div>
+    <div class="drawer-links">
+      <a href="#about" class="drawer-link" data-ar="عن الشركة" data-en="About Us">عن الشركة</a>
+      <a href="#services" class="drawer-link" data-ar="خدماتنا" data-en="Services">خدماتنا</a>
+      <a href="#why-coa" class="drawer-link" data-ar="لماذا COA؟" data-en="Why COA?">لماذا COA؟</a>
+      <a href="#case-studies" class="drawer-link" data-ar="سابقة الأعمال" data-en="Portfolio">سابقة الأعمال</a>
+      <a href="#methodology" class="drawer-link" data-ar="منهجية العمل" data-en="Methodology">منهجية العمل</a>
+      <a href="#calculator" class="drawer-link" data-ar="تقدير المشروع" data-en="Estimator">تقدير المشروع</a>
+      <a href="#contact" class="drawer-link" data-ar="تواصل معنا" data-en="Contact">تواصل معنا</a>
+    </div>
+    <div class="drawer-footer">
+      <a href="#contact" class="btn btn-primary w-100" data-ar="احجز استشارتك المجانية" data-en="Book Consultation">احجز استشارتك المجانية</a>
+    </div>
+  </div>
+
+  <main>
+    <!-- HERO SECTION WITH CYBER CANVAS & TECH HUB -->
+    <section class="hero-section" id="hero">
+      <!-- Interactive Cyber Circuit & Particle Canvas Background -->
+      <canvas id="cyberCanvas" class="cyber-canvas"></canvas>
+      <div class="cyber-glow-orb orb-1"></div>
+      <div class="cyber-glow-orb orb-2"></div>
+      <div class="cyber-grid-overlay"></div>
+
+      <div class="container hero-container">
+        <div class="hero-content">
+          <!-- Official Partner Badge -->
+          <div class="partner-badge-pill">
+            <span class="badge-dot pulse-glow"></span>
+            <span class="badge-code">// COA_KERNEL_v4.2</span>
+            <span class="badge-text" data-ar="Odoo Silver Partner معتمد • محاسبون قانونيون" data-en="Certified Odoo Silver Partner • CPAs & Advisors">Odoo Silver Partner معتمد • محاسبون قانونيون</span>
+          </div>
+
+          <h1 class="hero-title">
+            <span data-ar="دقة المحاسب القانوني.." data-en="Financial Precision.">دقة المحاسب القانوني..</span><br>
+            <span class="gradient-text tech-shimmer" data-ar="بقوة أودو الرقمية." data-en="Powered by Odoo ERP.">بقوة أودو الرقمية.</span>
+          </h1>
+
+          <p class="hero-desc" data-ar="نجمع بين الريادة المالية المحاسبية والتحول الرقمي المتقدم. من التخطيط المالي والضرائب إلى بناء وتشغيل أنظمة Odoo ERP المتكاملة، نضمن لمنشأتك دورة عمل رقمية خالية من الثغرات، مدعومة بخبرة +15 عاماً في مصر والخليج." data-en="We bridge financial advisory rigor with cutting-edge Odoo ERP transformation. From corporate tax compliance and bookkeeping to full ERP architecture, we build resilient, automated business platforms across Egypt & the GCC.">
+            نجمع بين الريادة المالية المحاسبية والتحول الرقمي المتقدم. من التخطيط المالي والضرائب إلى بناء وتشغيل أنظمة Odoo ERP المتكاملة، نضمن لمنشأتك دورة عمل رقمية خالية من الثغرات، مدعومة بخبرة +15 عاماً في مصر والخليج.
+          </p>
+
+          <!-- CTAs with Cyber Accents -->
+          <div class="hero-btns">
+            <a href="#contact" class="btn btn-primary btn-lg cyber-btn" data-ar="احجز استشارة استراتيجية مجانية ←" data-en="Book Free Strategy Session →">
+              <span class="btn-glow"></span>
+              <span class="btn-text" data-ar="احجز استشارة استراتيجية مجانية ←" data-en="Book Free Strategy Session →">احجز استشارة استراتيجية مجانية ←</span>
+            </a>
+            <a href="#case-studies" class="btn btn-outline btn-lg" data-ar="استكشف سابقة الأعمال الحية" data-en="Explore Live Portfolio">
+              <span class="code-bracket">&lt;</span> <span data-ar="استكشف سابقة الأعمال الحية" data-en="Explore Live Portfolio">استكشف سابقة الأعمال الحية</span> <span class="code-bracket">/&gt;</span>
+            </a>
+          </div>
+
+          <!-- Trust Badges Under Hero with Cyber Glow -->
+          <div class="hero-trust-row">
+            <div class="trust-item">
+              <span class="check-icon">✓</span>
+              <span data-ar="امتثال ZATCA (المرحلة 2) & ETA" data-en="ZATCA Phase 2 & ETA Ready">امتثال ZATCA (المرحلة 2) & ETA</span>
+            </div>
+            <div class="trust-item">
+              <span class="check-icon">✓</span>
+              <span data-ar="ربط مالي ومحاسبي محكم 100%" data-en="100% Accounting Reconciled">ربط مالي ومحاسبي محكم 100%</span>
+            </div>
+            <div class="trust-item">
+              <span class="check-icon">✓</span>
+              <span data-ar="دعم ورعاية تشغيلية 24/7 (Hypercare)" data-en="24/7 Hypercare & Support">دعم ورعاية تشغيلية 24/7 (Hypercare)</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Hero Visual: Cyber Tech Hub with Interactive Terminal & Live Dashboard Image -->
+        <div class="hero-visual">
+          <div class="stack-card-glow"></div>
+          
+          <div class="tech-hub-wrapper">
+            <!-- Hub Nav Tabs -->
+            <div class="hub-tabs">
+              <button class="hub-tab-btn active" id="tabBtnStack" data-tab="view-stack">
+                <span class="hub-tab-dot"></span>
+                <span data-ar="البنية المؤسسية (Stack Card)" data-en="Your Stack">البنية المؤسسية (Stack Card)</span>
+              </button>
+              <button class="hub-tab-btn" id="tabBtnDashboard" data-tab="view-dashboard">
+                <span class="hub-tab-dot dot-cyan"></span>
+                <span data-ar="لوحة التحكم (Live Telemetry)" data-en="Telemetry">لوحة التحكم (Live Telemetry)</span>
+              </button>
+              <button class="hub-tab-btn" id="tabBtnTerminal" data-tab="view-terminal">
+                <span class="terminal-prompt-icon">$</span>
+                <span data-ar="المحرك (Kernel)" data-en="COA Kernel">المحرك (Kernel)</span>
+              </button>
+            </div>
+
+            <!-- View 0: Digital Harbor Interactive YOUR STACK • ORCHESTRATED Card -->
+            <div class="hub-view-panel active" id="panelStack">
+              <div class="dh-stack-box">
+                <div class="dh-stack-header">
+                  <span class="dh-stack-title" data-ar="YOUR STACK • ORCHESTRATED" data-en="YOUR STACK • ORCHESTRATED">YOUR STACK • ORCHESTRATED</span>
+                  <span class="dh-stack-meta" data-ar="4 ركائز • شريك موحد" data-en="4 pillars • 1 partner">4 ركائز • شريك موحد</span>
+                </div>
+                <div class="dh-stack-divider"></div>
+                <div class="dh-stack-rows">
+                  <div class="dh-stack-row active" data-layer="0">
+                    <span class="dh-row-bullet"></span>
+                    <span class="dh-row-name" data-ar="الاستشارات والتدقيق المالي" data-en="Financial & Tax Advisory">الاستشارات والتدقيق المالي</span>
+                    <span class="dh-row-vendor">Chartered CPAs</span>
+                  </div>
+                  <div class="dh-stack-row" data-layer="1">
+                    <span class="dh-row-bullet"></span>
+                    <span class="dh-row-name" data-ar="تطبيقات الأعمال (Odoo ERP)" data-en="ERP & Business Apps">تطبيقات الأعمال (Odoo ERP)</span>
+                    <span class="dh-row-vendor">Odoo Silver Partner</span>
+                  </div>
+                  <div class="dh-stack-row" data-layer="2">
+                    <span class="dh-row-bullet"></span>
+                    <span class="dh-row-name" data-ar="الامتثال والفاتورة الإلكترونية" data-en="E-Invoicing & Compliance">الامتثال والفاتورة الإلكترونية</span>
+                    <span class="dh-row-vendor">ETA & ZATCA Phase 2</span>
+                  </div>
+                  <div class="dh-stack-row" data-layer="3">
+                    <span class="dh-row-bullet"></span>
+                    <span class="dh-row-name" data-ar="هندسة العمليات والتحول" data-en="Business Transformation">هندسة العمليات والتحول</span>
+                    <span class="dh-row-vendor">BPR & Automation</span>
+                  </div>
+                  <div class="dh-stack-row" data-layer="4">
+                    <span class="dh-row-bullet"></span>
+                    <span class="dh-row-name" data-ar="تدريب الشركات والكوادر" data-en="Corporate Training">تدريب الشركات والكوادر</span>
+                    <span class="dh-row-vendor">COA Academy</span>
+                  </div>
+                  <div class="dh-stack-row" data-layer="5">
+                    <span class="dh-row-bullet"></span>
+                    <span class="dh-row-name" data-ar="الدعم والرعاية السحابية" data-en="Cloud & Managed Hypercare">الدعم والرعاية السحابية</span>
+                    <span class="dh-row-vendor">24/7 SLA</span>
+                  </div>
+                </div>
+                <div class="dh-stack-footer">
+                  <div class="dh-stack-note">
+                    <span class="dh-pulse-indicator"></span>
+                    <span id="stackStatusText" data-ar="منظومة محاسبية وتشغيلية واحدة متناسقة كلياً" data-en="Fully unified operational & financial stack">منظومة محاسبية وتشغيلية واحدة متناسقة كلياً</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- View 1: Real High-Tech Image & Telemetry Overlay -->
+            <div class="hub-view-panel" id="panelDashboard">
+              <div class="dashboard-img-card">
+                <div class="card-glass-header">
+                  <div class="card-dots">
+                    <span class="dot-red"></span><span class="dot-yellow"></span><span class="dot-green"></span>
+                  </div>
+                  <div class="header-meta">
+                    <span class="status-indicator">🟢 CONNECTED</span>
+                    <span class="system-time" id="sysTime">ERP.COA.CLOUD:443</span>
+                  </div>
+                </div>
+
+                <div class="dashboard-media-frame">
+                  <img src="assets/hero-dashboard.jpg" alt="COA Odoo Financial Dashboard" class="main-dashboard-photo" width="600" height="350">
+                  <div class="scanline-overlay"></div>
+                  
+                  <!-- Floating HUD Badges on Top of Photo -->
+                  <div class="hud-badge hud-badge-top">
+                    <div class="hud-icon">⚡</div>
+                    <div>
+                      <small data-ar="ربط الزكاة والضريبة" data-en="ZATCA Phase 2 Sync">ربط الزكاة والضريبة</small>
+                      <strong>100% Cryptographic Cleared</strong>
+                    </div>
+                  </div>
+
+                  <div class="hud-badge hud-badge-bottom">
+                    <div class="hud-icon">📈</div>
+                    <div>
+                      <small data-ar="دقة التقفيل المالي IFRS" data-en="IFRS Audit Precision">دقة التقفيل المالي IFRS</small>
+                      <strong class="text-success">99.8% Reconciled</strong>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Footer Mini KPIs -->
+                <div class="dashboard-kpi-bar">
+                  <div class="hud-kpi">
+                    <span class="hud-label">UPTIME</span>
+                    <span class="hud-val">99.98%</span>
+                  </div>
+                  <div class="hud-kpi">
+                    <span class="hud-label">ODOO_CORE</span>
+                    <span class="hud-val text-red">v17/18 Ent</span>
+                  </div>
+                  <div class="hud-kpi">
+                    <span class="hud-label">LATENCY</span>
+                    <span class="hud-val">8ms</span>
+                  </div>
+                  <div class="hud-kpi">
+                    <span class="hud-label">CLIENTS</span>
+                    <span class="hud-val">500+</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- View 2: Live Interactive Code Terminal -->
+            <div class="hub-view-panel" id="panelTerminal">
+              <div class="terminal-card">
+                <div class="card-glass-header">
+                  <div class="card-dots">
+                    <span class="dot-red"></span><span class="dot-yellow"></span><span class="dot-green"></span>
+                  </div>
+                  <div class="terminal-title">bash — coa@cloud-engine:~</div>
+                  <button class="terminal-action-btn" id="runTerminalBtn" title="إعادة تشغيل المحاكاة">▶ Re-Run</button>
+                </div>
+                <div class="terminal-screen" id="terminalScreen">
+                  <div class="term-line prompt-line"><span class="term-user">coa@enterprise</span>:<span class="term-dir">/opt/stack</span>$ <span class="term-cmd">coa-engine --boot --partner "ODOO_SILVER"</span></div>
+                  <div class="term-line info-line">[SYS] Initializing COA Enterprise Architecture v4.2...</div>
+                  <div class="term-line success-line">[CPA] Chart of Accounts verified: IFRS & Local Tax Authority <span class="term-badge">PASS</span></div>
+                  <div class="term-line success-line">[ZATCA] Phase 2 Cryptographic Integration: Connected to Portal <span class="term-badge">SECURE</span></div>
+                  <div class="term-line info-line">[ERP] Mounting Modules: [Accounting, Multi-Branch POS, MRP, Inventory, HR]</div>
+                  <div class="term-line success-line">[TRANSFORM] Legacy Excel sheets eradicated: 0 paper bottlenecks remaining</div>
+                  <div class="term-line highlight-line">>>> SYSTEM READY: Operational ROI +40% | Close Cycle: 3 Days</div>
+                  <div class="term-line cursor-line"><span class="term-user">coa@enterprise</span>:<span class="term-dir">/opt/stack</span>$ <span class="terminal-cursor">█</span></div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- LIVE CLIENTS LOGO MARQUEE -->
+    <section class="clients-marquee-section">
+      <div class="container marquee-header-wrap">
+        <p class="marquee-title" data-ar="شركاء النجاح • علامات تجارية ومؤسسات تثق في COA Egypt" data-en="TRUSTED BY INDUSTRY LEADERS ACROSS EGYPT & THE REGION">
+          شركاء النجاح • علامات تجارية ومؤسسات تثق في COA Egypt
+        </p>
+      </div>
+      <div class="marquee-track-wrap">
+        <div class="marquee-track" id="marqueeTrack">
+          <!-- Client Logos / Badges -->
+          <div class="marquee-item"><span class="client-logo-pill">Saudi Dukhoon • دخون السعودية</span></div>
+          <div class="marquee-item"><span class="client-logo-pill">Bab Kebab • باب كباب</span></div>
+          <div class="marquee-item"><span class="client-logo-pill">Arab Pack • أراب باك للتصنيع</span></div>
+          <div class="marquee-item"><span class="client-logo-pill">Nano Steal • نانو ستيل للحديد</span></div>
+          <div class="marquee-item"><span class="client-logo-pill">Dottopia • دوتوبيا للتقنية</span></div>
+          <div class="marquee-item"><span class="client-logo-pill">Amnkom • أمنكم للحراسات</span></div>
+          <div class="marquee-item"><span class="client-logo-pill">Shefaa Al-Dawaa • شفاء الدواء</span></div>
+          <div class="marquee-item"><span class="client-logo-pill">Jawa Oud • جاوة للعود</span></div>
+          <div class="marquee-item"><span class="client-logo-pill">Imdad Supplies • إمداد الصناعية</span></div>
+          <div class="marquee-item"><span class="client-logo-pill">Perfect Construction • بيرفكت للمقاولات</span></div>
+          <div class="marquee-item"><span class="client-logo-pill">Falcon Logistics • فالكون للشحن</span></div>
+          <div class="marquee-item"><span class="client-logo-pill">Punalu • بونالو للمشروبات</span></div>
+          <div class="marquee-item"><span class="client-logo-pill">Al Reda Sealants • الرضا للعوازل</span></div>
+          <div class="marquee-item"><span class="client-logo-pill">Al-Mukhalaf Oud • المخلف للعود</span></div>
+          <!-- Repeat for infinite loop -->
+          <div class="marquee-item"><span class="client-logo-pill">Saudi Dukhoon • دخون السعودية</span></div>
+          <div class="marquee-item"><span class="client-logo-pill">Bab Kebab • باب كباب</span></div>
+          <div class="marquee-item"><span class="client-logo-pill">Arab Pack • أراب باك للتصنيع</span></div>
+          <div class="marquee-item"><span class="client-logo-pill">Nano Steal • نانو ستيل للحديد</span></div>
+          <div class="marquee-item"><span class="client-logo-pill">Dottopia • دوتوبيا للتقنية</span></div>
+          <div class="marquee-item"><span class="client-logo-pill">Amnkom • أمنكم للحراسات</span></div>
+          <div class="marquee-item"><span class="client-logo-pill">Shefaa Al-Dawaa • شفاء الدواء</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- WHY COA / THE COMPETITIVE EDGE SECTION -->
+    <section class="section why-section" id="why-coa">
+      <div class="container">
+        <div class="section-header text-center">
+          <div class="section-kicker" data-ar="الميزة التنافسية لـ COA" data-en="THE COA ADVANTAGE">الميزة التنافسية لـ COA</div>
+          <h2 class="section-title" data-ar="لماذا تختار الشركات COA بدلاً من شركات البرمجة التقليدية؟" data-en="Why Growing Businesses Choose COA Over Traditional IT Firms">
+            لماذا تختار الشركات COA بدلاً من شركات البرمجة التقليدية؟
+          </h2>
+          <p class="section-subtitle" data-ar="أكثر من 70% من مشاريع ERP تفشل بسبب غياب الفهم المحاسبي العميق. في COA، صممنا الحل لنضمن النجاح المطلق." data-en="Over 70% of ERP implementations stumble due to lack of accounting acumen. At COA, we solved that equation.">
+            أكثر من 70% من مشاريع ERP تفشل بسبب غياب الفهم المحاسبي العميق. في COA، صممنا الحل لنضمن النجاح المطلق.
+          </p>
+        </div>
+
+        <!-- 3-Way Comparison Matrix -->
+        <div class="comparison-grid">
+          <!-- Col 1: IT-Only Firms (Like Digital Harbor) -->
+          <div class="comparison-card other-card">
+            <div class="card-status-badge badge-warning" data-ar="شركات الـ IT والشبكات فقط" data-en="IT & Infrastructure Only">شركات الـ IT والشبكات فقط</div>
+            <h3 data-ar="شركات تكامل الأنظمة (System Integrators)" data-en="Hardware & System Integrators">شركات تكامل الأنظمة (System Integrators)</h3>
+            <ul class="comp-list">
+              <li class="comp-item negative" data-ar="يركزون على السيرفرات والأجهزة وتجهيز الشبكات" data-en="Focus heavily on costly hardware & servers">يركزون على السيرفرات والأجهزة وتجهيز الشبكات</li>
+              <li class="comp-item negative" data-ar="ضعف شديد في معالجة شجرة الحسابات والتكاليف الصناعية" data-en="Struggle with cost accounting & financial workflows">ضعف شديد في معالجة شجرة الحسابات والتكاليف الصناعية</li>
+              <li class="comp-item negative" data-ar="تكلفة باهظة وعقود ضخمة تلزمك بشراء هاردوير لا تحتاجه" data-en="Bloated contracts obligating unnecessary hardware">تكلفة باهظة وعقود ضخمة تلزمك بشراء هاردوير لا تحتاجه</li>
+              <li class="comp-item neutral" data-ar="يخفون أسماء عملائهم بدعوى السرية لقلة قصص النجاح الحية" data-en="Often anonymize all clients with zero public verification">يخفون أسماء عملائهم بدعوى السرية لقلة قصص النجاح الحية</li>
+            </ul>
+          </div>
+
+          <!-- Col 2: The COA Champion Model -->
+          <div class="comparison-card coa-highlight-card">
+            <div class="card-status-badge badge-primary" data-ar="الحل المتكامل الفائز" data-en="The Gold Standard">الحل المتكامل الفائز</div>
+            <div class="coa-card-brand">
+              <img src="assets/logo.jpg" alt="COA Egypt" width="40" height="40">
+              <h3>COA EGYPT</h3>
+            </div>
+            <p class="coa-card-tagline" data-ar="مستشارون ماليون معتمدون + Odoo Silver Partner" data-en="Certified CPAs + Odoo Silver Partner">مستشارون ماليون معتمدون + Odoo Silver Partner</p>
+            <ul class="comp-list">
+              <li class="comp-item positive" data-ar="فهم محاسبي وضريبي صارم: دورات مستندية محكمة من اليوم الأول" data-en="Strict accounting & tax compliance built-in from day one">فهم محاسبي وضريبي صارم: دورات مستندية محكمة من اليوم الأول</li>
+              <li class="comp-item positive" data-ar="تطبيق Odoo مخصص بدون تعقيد ولا تكاليف أجهزة مخفية" data-en="Lean, tailored Odoo deployment with no hidden hardware costs">تطبيق Odoo مخصص بدون تعقيد ولا تكاليف أجهزة مخفية</li>
+              <li class="comp-item positive" data-ar="تكامل كامل مع الفاتورة الإلكترونية وهيئة الزكاة (ZATCA & ETA)" data-en="Flawless integration with ZATCA Phase 2 & Egyptian Tax Authority">تكامل كامل مع الفاتورة الإلكترونية وهيئة الزكاة (ZATCA & ETA)</li>
+              <li class="comp-item positive" data-ar="سابقة أعمال حقيقية موثقة وشراكات ممتدة مع كبرى الشركات" data-en="Real, verifiable clients across Retail, F&B, Manufacturing & Tech">سابقة أعمال حقيقية موثقة وشراكات ممتدة مع كبرى الشركات</li>
+              <li class="comp-item positive" data-ar="تدريب حقيقي للكوادر ونقل المعرفة عبر أكاديمية COA" data-en="Hands-on staff training via our dedicated COA Academy">تدريب حقيقي للكوادر ونقل المعرفة عبر أكاديمية COA</li>
+            </ul>
+          </div>
+
+          <!-- Col 3: Traditional Accounting Offices -->
+          <div class="comparison-card other-card">
+            <div class="card-status-badge badge-muted" data-ar="مكاتب المحاسبة القديمة" data-en="Traditional Accounting Firms">مكاتب المحاسبة القديمة</div>
+            <h3 data-ar="المحاسب التقليدي المنفصل" data-en="Old-School Accounting Offices">المحاسب التقليدي المنفصل</h3>
+            <ul class="comp-list">
+              <li class="comp-item neutral" data-ar="يفهم الضرائب ولكن يعتمد على ملفات Excel اليدوية والورقيات" data-en="Understands tax laws but trapped in manual spreadsheets">يفهم الضرائب ولكن يعتمد على ملفات Excel اليدوية والورقيات</li>
+              <li class="comp-item negative" data-ar="عاجز عن ربط نقاط البيع والمخازن وسلاسل الإمداد سحابياً" data-en="Unable to automate cloud POS, inventory, or CRM">عاجز عن ربط نقاط البيع والمخازن وسلاسل الإمداد سحابياً</li>
+              <li class="comp-item negative" data-ar="تقارير متأخرة بالأسابيع بعد انتهاء الشهر المالي" data-en="Financial reports delayed weeks after month-end">تقارير متأخرة بالأسابيع بعد انتهاء الشهر المالي</li>
+              <li class="comp-item negative" data-ar="غياب الأتمتة والتحول الرقمي مما يرفع نسب الخطأ البشري" data-en="Zero workflow automation leading to high human error">غياب الأتمتة والتحول الرقمي مما يرفع نسب الخطأ البشري</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- EXPLORE THE STACK SECTION (DIGITAL HARBOR STYLE) -->
+    <section class="section stack-explorer-section" id="stack-explorer">
+      <div class="container">
+        <div class="section-header text-center">
+          <div class="section-kicker" data-ar="استكشف طبقات البنية التحتية" data-en="EXPLORE THE STACK">استكشف طبقات البنية التحتية</div>
+          <h2 class="section-title" data-ar="اضغط على أي طبقة.. واكتشف كيف تديرها وتؤمنها COA." data-en="Click a layer. See how COA powers it.">
+            اضغط على أي طبقة.. واكتشف كيف تديرها وتؤمنها COA.
+          </h2>
+          <p class="section-subtitle" data-ar="بنية مؤسسية موحدة تلغي تشتت الموردين وتدمج الدقة المالية مع الأتمتة السحابية" data-en="A unified architecture eliminating vendor fragmentation and fusing financial precision with cloud automation">
+            بنية مؤسسية موحدة تلغي تشتت الموردين وتدمج الدقة المالية مع الأتمتة السحابية
+          </p>
+        </div>
+
+        <div class="dh-explorer-grid">
+          <!-- Left: Layers List -->
+          <div class="dh-explorer-list" id="explorerList">
+            <button type="button" class="dh-exp-item active" data-exp="0">
+              <span class="exp-num">01</span>
+              <span class="exp-name" data-ar="الاستشارات والتدقيق المالي" data-en="Financial & Tax Advisory">الاستشارات والتدقيق المالي</span>
+              <span class="exp-arrow">←</span>
+            </button>
+            <button type="button" class="dh-exp-item" data-exp="1">
+              <span class="exp-num">02</span>
+              <span class="exp-name" data-ar="نواة Odoo ERP والعمليات" data-en="Odoo ERP Enterprise Core">نواة Odoo ERP والعمليات</span>
+              <span class="exp-arrow">←</span>
+            </button>
+            <button type="button" class="dh-exp-item" data-exp="2">
+              <span class="exp-num">03</span>
+              <span class="exp-name" data-ar="الامتثال والفاتورة الإلكترونية" data-en="E-Invoicing & Tax Compliance">الامتثال والفاتورة الإلكترونية</span>
+              <span class="exp-arrow">←</span>
+            </button>
+            <button type="button" class="dh-exp-item" data-exp="3">
+              <span class="exp-num">04</span>
+              <span class="exp-name" data-ar="إعادة هندسة الإجراءات (BPR)" data-en="Business Process Re-engineering">إعادة هندسة الإجراءات (BPR)</span>
+              <span class="exp-arrow">←</span>
+            </button>
+            <button type="button" class="dh-exp-item" data-exp="4">
+              <span class="exp-num">05</span>
+              <span class="exp-name" data-ar="تدريب الشركات (COA Academy)" data-en="Corporate Training & Transfer">تدريب الشركات (COA Academy)</span>
+              <span class="exp-arrow">←</span>
+            </button>
+            <button type="button" class="dh-exp-item" data-exp="5">
+              <span class="exp-num">06</span>
+              <span class="exp-name" data-ar="الرعاية والتشغيل السحابي 24/7" data-en="Hypercare & 24/7 SLA">الرعاية والتشغيل السحابي 24/7</span>
+              <span class="exp-arrow">←</span>
+            </button>
+          </div>
+
+          <!-- Right: Dynamic Showcase Card -->
+          <div class="dh-explorer-card" id="explorerCard">
+            <div class="card-glow-bg"></div>
+            <div class="exp-card-header">
+              <span class="exp-badge" id="expBadge">LAYER 01 • FINANCIAL EXCELLENCE</span>
+              <div class="exp-dots"><span></span><span></span><span></span></div>
+            </div>
+            <h3 class="exp-title" id="expTitle">الاستشارات والتدقيق المالي المحكم</h3>
+            <p class="exp-desc" id="expDesc">
+              الأساس الذي تُبنى عليه كافة الأنظمة. نقوم بتدقيق شجرة الحسابات، ضبط مراكز التكلفة، وإعداد القوائم المالية وفقاً لمعايير المحاسبة الدولية (IFRS) والمصرية، مما يمنح الإدارة رؤية نقدية لحظية دقيقة.
+            </p>
+            <div class="exp-meta-grid" id="expMeta">
+              <div class="meta-pill"><small>LEADERSHIP</small><strong>Chartered CPAs</strong></div>
+              <div class="meta-pill"><small>STANDARDS</small><strong>IFRS & EAS</strong></div>
+              <div class="meta-pill"><small>OUTCOME</small><strong>Zero Audit Risk</strong></div>
+            </div>
+            <div class="exp-actions">
+              <a href="#contact" class="btn btn-primary btn-sm" data-ar="احجز تدقيقاً أولياً مجانياً" data-en="Book Free Initial Audit">احجز تدقيقاً أولياً مجانياً</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CORE SERVICES SECTION (Detailed with Interactive Tabs) -->
+    <section class="section services-section" id="services">
+      <div class="container">
+        <div class="section-header text-center">
+          <div class="section-kicker" data-ar="مجالات اختصاصنا الأربعة" data-en="CORE CAPABILITIES">مجالات اختصاصنا الأربعة</div>
+          <h2 class="section-title" data-ar="خدمات شاملة تقود منشأتك من الفوضى إلى الانضباط والنمو" data-en="Comprehensive Services Powering Your Operational & Financial Growth">
+            خدمات شاملة تقود منشأتك من الفوضى إلى الانضباط والنمو
+          </h2>
+          <p class="section-subtitle" data-ar="حلول متكاملة مصممة خصيصاً للشركات الطموحة في مصر والسعودية والخليج" data-en="End-to-end consulting, ERP engineering, and workforce upskilling">
+            حلول متكاملة مصممة خصيصاً للشركات الطموحة في مصر والسعودية والخليج
+          </p>
+        </div>
+
+        <!-- Services Tabs Navigation -->
+        <div class="services-tab-nav" id="servicesTabs">
+          <button class="tab-btn active" data-tab="tab-finance">
+            <span class="tab-icon">📊</span>
+            <span data-ar="الاستشارات المالية والضريبية" data-en="Financial & Tax Consulting">الاستشارات المالية والضريبية</span>
+          </button>
+          <button class="tab-btn" data-tab="tab-odoo">
+            <span class="tab-icon">⚙️</span>
+            <span data-ar="حلول وتطبيق Odoo ERP" data-en="Odoo ERP Implementation">حلول وتطبيق Odoo ERP</span>
+          </button>
+          <button class="tab-btn" data-tab="tab-transformation">
+            <span class="tab-icon">🚀</span>
+            <span data-ar="التحول الرقمي للأعمال" data-en="Business Transformation">التحول الرقمي للأعمال</span>
+          </button>
+          <button class="tab-btn" data-tab="tab-training">
+            <span class="tab-icon">🎓</span>
+            <span data-ar="تدريب الشركات (COA Learning)" data-en="Corporate Training">تدريب الشركات (COA Learning)</span>
+          </button>
+        </div>
+
+        <!-- Services Tab Content -->
+        <div class="services-tab-content">
+          <!-- Tab 1: Financial & Tax Advisory -->
+          <div class="tab-pane active" id="tab-finance">
+            <div class="service-detail-grid">
+              <div class="service-text">
+                <div class="service-pill" data-ar="إدارة مالية دقيقة" data-en="Financial Precision">إدارة مالية دقيقة</div>
+                <h3 data-ar="الاستشارات المالية والامتثال الضريبي الشامل" data-en="Comprehensive Financial Advisory & Tax Compliance">
+                  الاستشارات المالية والامتثال الضريبي الشامل
+                </h3>
+                <p data-ar="نقدم لك قوة إدارة مالية كاملة تقود شركتك نحو الاستقرار والتوسع. نضبط دورتك المستندية، نعد قوائمك المالية وفق أعلى المعايير، ونضمن امتثالك الضريبي الكامل لمنع أي غرامات أو هدر." data-en="We act as your seasoned financial compass. We optimize bookkeeping, build standard-compliant financial statements, and protect your enterprise from tax penalties through proactive advisory.">
+                  نقدم لك قوة إدارة مالية كاملة تقود شركتك نحو الاستقرار والتوسع. نضبط دورتك المستندية، نعد قوائمك المالية وفق أعلى المعايير، ونضمن امتثالك الضريبي الكامل لمنع أي غرامات أو هدر.
+                </p>
+                <div class="service-features-grid">
+                  <div class="feat-box">
+                    <span class="feat-icon">📑</span>
+                    <div>
+                      <h5 data-ar="الفحص الضريبي والفاتورة الإلكترونية" data-en="Tax Audit & E-Invoicing">الفحص الضريبي والفاتورة الإلكترونية</h5>
+                      <p data-ar="تجهيز الإقرارات والربط المباشر مع ZATCA و ETA" data-en="Full readiness for tax audits & direct platform syncing">تجهيز الإقرارات والربط المباشر مع ZATCA و ETA</p>
+                    </div>
+                  </div>
+                  <div class="feat-box">
+                    <span class="feat-icon">📈</span>
+                    <div>
+                      <h5 data-ar="إعداد القوائم والتقارير المالية" data-en="Financial Statements & Analysis">إعداد القوائم والتقارير المالية</h5>
+                      <p data-ar="قوائم الدخل، المركز المالي، والتدفقات النقدية اللحظية" data-en="P&L, balance sheets, and real-time cash flow statements">قوائم الدخل، المركز المالي، والتدفقات النقدية اللحظية</p>
+                    </div>
+                  </div>
+                  <div class="feat-box">
+                    <span class="feat-icon">👔</span>
+                    <div>
+                      <h5 data-ar="الإدارة المالية المستأجرة (Virtual CFO)" data-en="Virtual CFO Services">الإدارة المالية المستأجرة (Virtual CFO)</h5>
+                      <p data-ar="توجيه استراتيجي لمجلس الإدارة وتحليل الربحية والاستثمار" data-en="Executive financial leadership, forecasting, and cash management">توجيه استراتيجي لمجلس الإدارة وتحليل الربحية والاستثمار</p>
+                    </div>
+                  </div>
+                  <div class="feat-box">
+                    <span class="feat-icon">🎯</span>
+                    <div>
+                      <h5 data-ar="محاسبة التكاليف وتدقيق المخزون" data-en="Cost Accounting & Audits">محاسبة التكاليف وتدقيق المخزون</h5>
+                      <p data-ar="حساب تكلفة المنتجات بدقة وضبط نسب الهدر والتصنيع" data-en="True manufacturing product costing and waste reduction">حساب تكلفة المنتجات بدقة وضبط نسب الهدر والتصنيع</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="service-action">
+                  <a href="#contact" class="btn btn-primary" data-ar="استشر خبيرنا المالي الآن" data-en="Consult Our Financial Experts">استشر خبيرنا المالي الآن</a>
+                </div>
+              </div>
+              <div class="service-card-preview">
+                <div class="preview-box tech-photo-box">
+                  <div class="preview-photo-frame">
+                    <img src="assets/financial-advisory.jpg" alt="Financial Advisory & Tax Audit" class="tab-photo" loading="lazy">
+                    <div class="photo-gradient-veil"></div>
+                    <div class="floating-tech-chip">
+                      <span class="pulse-dot-cyan"></span>
+                      <span>// MODULE_CPA_AUDIT</span>
+                    </div>
+                  </div>
+                  <div class="preview-header">
+                    <span class="p-dot"></span>
+                    <span data-ar="مؤشرات الأداء المالي الحية" data-en="Financial KPI Dashboard">مؤشرات الأداء المالي الحية</span>
+                  </div>
+                  <div class="kpi-row">
+                    <div class="kpi-card">
+                      <small data-ar="دقة التوجيه المحاسبي" data-en="Reconciliation Accuracy">دقة التوجيه المحاسبي</small>
+                      <strong class="text-success">99.8%</strong>
+                    </div>
+                    <div class="kpi-card">
+                      <small data-ar="سرعة الإقفال الشهري" data-en="Month-end Close Time">سرعة الإقفال الشهري</small>
+                      <strong>3 أيام <span class="badge-mini">-70%</span></strong>
+                    </div>
+                  </div>
+                  <p class="preview-note" data-ar="✓ امتثال كامل للمنظومة الضريبية المصرية والسعودية" data-en="✓ Fully compliant with Egyptian Tax Authority & ZATCA">✓ امتثال كامل للمنظومة الضريبية المصرية والسعودية</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tab 2: All Odoo ERP Services -->
+          <div class="tab-pane" id="tab-odoo">
+            <div class="service-detail-grid">
+              <div class="service-text">
+                <div class="service-pill tag-odoo" data-ar="Odoo Silver Partner" data-en="Certified Odoo Silver Partner">Odoo Silver Partner</div>
+                <h3 data-ar="حلول وتطبيق نظام Odoo ERP الشاملة" data-en="Full-Spectrum Odoo ERP Deployment & Customization">
+                  حلول وتطبيق نظام Odoo ERP الشاملة
+                </h3>
+                <p data-ar="بصفتنا شريك Odoo فضي معتمد، لا نقوم فقط بتثبيت البرنامج، بل نصممه هندسياً ليتناسب بدقة مع نموذج عملك. نربط خطوط إنتاجك ومخازنك ونقاط بيعك ومبيعاتك في منصة واحدة تعمل بسلاسة." data-en="As a certified Odoo Silver Partner, we engineer the platform around your unique operations. Multi-branch POS, warehouse routes, manufacturing MRP, and CRM connected in one seamless ecosystem.">
+                  بصفتنا شريك Odoo فضي معتمد، لا نقوم فقط بتثبيت البرنامج، بل نصممه هندسياً ليتناسب بدقة مع نموذج عملك. نربط خطوط إنتاجك ومخازنك ونقاط بيعك ومبيعاتك في منصة واحدة تعمل بسلاسة.
+                </p>
+                <div class="service-features-grid">
+                  <div class="feat-box">
+                    <span class="feat-icon">🏬</span>
+                    <div>
+                      <h5 data-ar="نقاط البيع والفروع (Odoo POS)" data-en="Multi-Branch Odoo POS">نقاط البيع والفروع (Odoo POS)</h5>
+                      <p data-ar="ربط الفروع سحابياً مع العمل أوفلاين والربط المالي" data-en="Cloud sync, offline resilience, and automatic journal entries">ربط الفروع سحابياً مع العمل أوفلاين والربط المالي</p>
+                    </div>
+                  </div>
+                  <div class="feat-box">
+                    <span class="feat-icon">🏭</span>
+                    <div>
+                      <h5 data-ar="إدارة التصنيع والإنتاج (Odoo MRP)" data-en="Manufacturing & Shop Floor">إدارة التصنيع والإنتاج (Odoo MRP)</h5>
+                      <p data-ar="قوائم المواد (BOM)، أوامر التشغيل، ومراقبة الجودة" data-en="Bills of materials, work orders, routing, and QA checks">قوائم المواد (BOM)، أوامر التشغيل، ومراقبة الجودة</p>
+                    </div>
+                  </div>
+                  <div class="feat-box">
+                    <span class="feat-icon">📦</span>
+                    <div>
+                      <h5 data-ar="المخازن وسلاسل الإمداد (Inventory)" data-en="Inventory & Warehouse Multi-Location">المخازن وسلاسل الإمداد (Inventory)</h5>
+                      <p data-ar="تتبع الشحنات، الباركود، تواريخ الصلاحية، والجرد اللحظي" data-en="Barcode tracking, expiry batches, and real-time valuation">تتبع الشحنات، الباركود، تواريخ الصلاحية، والجرد اللحظي</p>
+                    </div>
+                  </div>
+                  <div class="feat-box">
+                    <span class="feat-icon">⚡</span>
+                    <div>
+                      <h5 data-ar="الترحيل والترقية والدعم 24/7" data-en="Migration, Upgrades & Hypercare">الترحيل والترقية والدعم 24/7</h5>
+                      <p data-ar="نقل بياناتك القديمة بدون خسارة مع رعاية تشغيلية مكثفة" data-en="Safe legacy data migration and guaranteed SLA support">نقل بياناتك القديمة بدون خسارة مع رعاية تشغيلية مكثفة</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="service-action">
+                  <a href="#contact" class="btn btn-primary" data-ar="اطلب عرض سعر Odoo لمؤسستك" data-en="Request Odoo Proposal">اطلب عرض سعر Odoo لمؤسستك</a>
+                </div>
+              </div>
+              <div class="service-card-preview">
+                <div class="preview-box tech-photo-box">
+                  <div class="preview-photo-frame">
+                    <img src="assets/odoo-erp.jpg" alt="Odoo ERP Enterprise Deployment" class="tab-photo" loading="lazy">
+                    <div class="photo-gradient-veil"></div>
+                    <div class="floating-tech-chip">
+                      <span class="pulse-dot-red"></span>
+                      <span>// ODOO_ENTERPRISE_CORE</span>
+                    </div>
+                  </div>
+                  <div class="preview-header">
+                    <span class="p-dot"></span>
+                    <span data-ar="الموديولات التي نبرع في بنائها" data-en="Core Odoo Modules Deployed">الموديولات التي نبرع في بنائها</span>
+                  </div>
+                  <div class="odoo-modules-grid">
+                    <div class="mod-pill"><span>Accounting & Invoicing</span></div>
+                    <div class="mod-pill"><span>POS & Retail</span></div>
+                    <div class="mod-pill"><span>Inventory & Barcode</span></div>
+                    <div class="mod-pill"><span>Manufacturing (MRP)</span></div>
+                    <div class="mod-pill"><span>Purchasing & Vendor Bills</span></div>
+                    <div class="mod-pill"><span>Sales & CRM</span></div>
+                    <div class="mod-pill"><span>HR & Payroll</span></div>
+                    <div class="mod-pill"><span>ZATCA Phase 2 E-Invoice</span></div>
+                  </div>
+                  <div class="odoo-badge-footer">
+                    <span class="star-rating">⭐⭐⭐⭐⭐</span>
+                    <span data-ar="+100 عملية تطبيق ناجحة" data-en="100+ Live Implementations">+100 عملية تطبيق ناجحة</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tab 3: Business Transformation -->
+          <div class="tab-pane" id="tab-transformation">
+            <div class="service-detail-grid">
+              <div class="service-text">
+                <div class="service-pill" data-ar="أتمتة ذكية" data-en="Smart Automation">أتمتة ذكية</div>
+                <h3 data-ar="التحول الرقمي وإعادة هندسة العمليات (BPR)" data-en="Business Process Re-engineering & Digital Transformation">
+                  التحول الرقمي وإعادة هندسة العمليات (BPR)
+                </h3>
+                <p data-ar="التحول الرقمي ليس مجرد شراء سوفتوير، بل هو إعادة هيكلة طريقة عمل شركتك لتصبح أسرع وأكثر مرونة وأقل كلفة. نلغي الإجراءات اليدوية، نربط الأقسام، ونمكن الإدارة من اتخاذ قرارات مبنية على بيانات حية." data-en="Digital transformation isn't just buying software; it's redesigning how work flows. We eliminate paper bottlenecks, orchestrate cross-department communication, and give leadership instant BI visibility.">
+                  التحول الرقمي ليس مجرد شراء سوفتوير، بل هو إعادة هيكلة طريقة عمل شركتك لتصبح أسرع وأكثر مرونة وأقل كلفة. نلغي الإجراءات اليدوية، نربط الأقسام، ونمكن الإدارة من اتخاذ قرارات مبنية على بيانات حية.
+                </p>
+                <div class="service-features-grid">
+                  <div class="feat-box">
+                    <span class="feat-icon">🔄</span>
+                    <div>
+                      <h5 data-ar="أتمتة دورات الموافقات (Workflows)" data-en="Automated Approval Workflows">أتمتة دورات الموافقات (Workflows)</h5>
+                      <p data-ar="موافقات المشتريات والصرف والمبيعات آلياً عبر الموبايل" data-en="Paperless mobile approvals for POs, expenses, and discounts">موافقات المشتريات والصرف والمبيعات آلياً عبر الموبايل</p>
+                    </div>
+                  </div>
+                  <div class="feat-box">
+                    <span class="feat-icon">📊</span>
+                    <div>
+                      <h5 data-ar="لوحات تحكم ذكاء الأعمال (BI)" data-en="Business Intelligence & Dashboards">لوحات تحكم ذكاء الأعمال (BI)</h5>
+                      <p data-ar="شاشات حية تعرض مؤشرات المبيعات، السيولة، والربحية" data-en="Executive live KPI dashboards for revenue, cash, and margins">شاشات حية تعرض مؤشرات المبيعات، السيولة، والربحية</p>
+                    </div>
+                  </div>
+                  <div class="feat-box">
+                    <span class="feat-icon">🔗</span>
+                    <div>
+                      <h5 data-ar="ربط الأنظمة والتطبيقات الخارجية (API)" data-en="API & Third-Party Integrations">ربط الأنظمة والتطبيقات الخارجية (API)</h5>
+                      <p data-ar="ربط المتاجر الإلكترونية (سلة، زد، شوبيفاي) والبنوك" data-en="Direct integration with Salla, Zid, Shopify, and Banks">ربط المتاجر الإلكترونية (سلة، زد، شوبيفاي) والبنوك</p>
+                    </div>
+                  </div>
+                  <div class="feat-box">
+                    <span class="feat-icon">🛡️</span>
+                    <div>
+                      <h5 data-ar="حوكمة الصلاحيات وتقليل الهدر" data-en="Internal Governance & Auditing">حوكمة الصلاحيات وتقليل الهدر</h5>
+                      <p data-ar="سجل تدقيق كامل لكل حركة وإلغاء الازدواجية في المهام" data-en="Role-based permissions and complete audit trail on every entry">سجل تدقيق كامل لكل حركة وإلغاء الازدواجية في المهام</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="service-action">
+                  <a href="#contact" class="btn btn-primary" data-ar="ابدأ رحلة تحول أعمالك" data-en="Start Business Transformation">ابدأ رحلة تحول أعمالك</a>
+                </div>
+              </div>
+              <div class="service-card-preview">
+                <div class="preview-box tech-photo-box">
+                  <div class="preview-photo-frame">
+                    <img src="assets/business-transformation.jpg" alt="Business Transformation Workflow" class="tab-photo" loading="lazy">
+                    <div class="photo-gradient-veil"></div>
+                    <div class="floating-tech-chip">
+                      <span class="pulse-dot-cyan"></span>
+                      <span>// BPR_AUTOMATION_PIPELINE</span>
+                    </div>
+                  </div>
+                  <div class="preview-header">
+                    <span class="p-dot"></span>
+                    <span data-ar="عائد التحول الرقمي مع COA" data-en="Transformation Impact">عائد التحول الرقمي مع COA</span>
+                  </div>
+                  <div class="impact-stats">
+                    <div class="impact-item">
+                      <div class="impact-num">-65%</div>
+                      <div class="impact-label" data-ar="تقليل الوقت المستغرق في الإجراءات اليدوية" data-en="Reduction in Manual Admin Time">تقليل الوقت المستغرق في الإجراءات اليدوية</div>
+                    </div>
+                    <div class="impact-item">
+                      <div class="impact-num">100%</div>
+                      <div class="impact-label" data-ar="شفافية لحظية لمخزون الفروع والسيولة" data-en="Real-time Multi-Branch Inventory Visibility">شفافية لحظية لمخزون الفروع والسيولة</div>
+                    </div>
+                    <div class="impact-item">
+                      <div class="impact-num">+40%</div>
+                      <div class="impact-label" data-ar="زيادة سرعة معالجة طلبات المشتريات" data-en="Faster Procurement Cycle Speed">زيادة سرعة معالجة طلبات المشتريات</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tab 4: Corporate Training -->
+          <div class="tab-pane" id="tab-training">
+            <div class="service-detail-grid">
+              <div class="service-text">
+                <div class="service-pill tag-red" data-ar="COA Learning & Academy" data-en="COA Academy">COA Learning & Academy</div>
+                <h3 data-ar="تدريب الشركات والكوادر المحاسبية والتقنية" data-en="Corporate Workforce Upskilling & Practical Training">
+                  تدريب الشركات والكوادر المحاسبية والتقنية
+                </h3>
+                <p data-ar="أفضل الأنظمة البرمجية لا تفيد إذا لم يكن فريقك مؤهلاً لاستخدامها. عبر أكاديمية COA (Community of Accountants)، نقدم برامج تدريبية وتطبيقية متقدمة لفرق المحاسبة والإدارة والمخازن لضمان استيعاب النظام وتشغيله باحترافية." data-en="The world's best ERP is useless if your staff cannot operate it. Through COA Learning (Community of Accountants), we deliver tailored hands-on training for accountants, inventory managers, and leadership.">
+                  أفضل الأنظمة البرمجية لا تفيد إذا لم يكن فريقك مؤهلاً لاستخدامها. عبر أكاديمية COA (Community of Accountants)، نقدم برامج تدريبية وتطبيقية متقدمة لفرق المحاسبة والإدارة والمخازن لضمان استيعاب النظام وتشغيله باحترافية.
+                </p>
+                <div class="service-features-grid">
+                  <div class="feat-box">
+                    <span class="feat-icon">👨‍🏫</span>
+                    <div>
+                      <h5 data-ar="تدريب مخصص لفرق الشركات (In-House)" data-en="Custom Corporate Workshops">تدريب مخصص لفرق الشركات (In-House)</h5>
+                      <p data-ar="ورش عمل على بيانات شركتك وحالات عمل واقعية" data-en="Hands-on training using your company's actual workflows">ورش عمل على بيانات شركتك وحالات عمل واقعية</p>
+                    </div>
+                  </div>
+                  <div class="feat-box">
+                    <span class="feat-icon">📑</span>
+                    <div>
+                      <h5 data-ar="تأهيل المحاسبين على Odoo Accounting" data-en="Odoo Accounting Masterclass">تأهيل المحاسبين على Odoo Accounting</h5>
+                      <p data-ar="إتقان القيود، التسويات البنكية، والتقفيل السنوي" data-en="Mastering journals, bank reconciliation, and fiscal year close">إتقان القيود، التسويات البنكية، والتقفيل السنوي</p>
+                    </div>
+                  </div>
+                  <div class="feat-box">
+                    <span class="feat-icon">📚</span>
+                    <div>
+                      <h5 data-ar="أدلة الاستخدام وسياسات العمل (SOPs)" data-en="Standard Operating Procedures (SOPs)">أدلة الاستخدام وسياسات العمل (SOPs)</h5>
+                      <p data-ar="كتيبات وإرشادات فيديو موثقة تسلم لفريقك كمرجع دائم" data-en="Documented video manuals & guides customized for your staff">كتيبات وإرشادات فيديو موثقة تسلم لفريقك كمرجع دائم</p>
+                    </div>
+                  </div>
+                  <div class="feat-box">
+                    <span class="feat-icon">🏅</span>
+                    <div>
+                      <h5 data-ar="شهادات إتقان واختبارات كفاءة" data-en="Competency Testing & Certifications">شهادات إتقان واختبارات كفاءة</h5>
+                      <p data-ar="تقييم مهارات الموظفين والتأكد من جاهزيتهم التامة" data-en="Pre-and-post training assessments to guarantee adoption">تقييم مهارات الموظفين والتأكد من جاهزيتهم التامة</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="service-action">
+                  <a href="#contact" class="btn btn-primary" data-ar="احجز برنامج تدريب لفريقك" data-en="Book Team Training">احجز برنامج تدريب لفريقك</a>
+                </div>
+              </div>
+              <div class="service-card-preview">
+                <div class="preview-box tech-photo-box">
+                  <div class="preview-photo-frame">
+                    <img src="assets/corporate-training.jpg" alt="COA Learning Corporate Academy" class="tab-photo" loading="lazy">
+                    <div class="photo-gradient-veil"></div>
+                    <div class="floating-tech-chip">
+                      <span class="pulse-dot-red"></span>
+                      <span>// COA_ACADEMY_TALENT</span>
+                    </div>
+                  </div>
+                  <div class="preview-header">
+                    <span class="p-dot"></span>
+                    <span data-ar="أكاديمية COA بالأرقام" data-en="COA Academy Impact">أكاديمية COA بالأرقام</span>
+                  </div>
+                  <div class="impact-stats">
+                    <div class="impact-item">
+                      <div class="impact-num">2,500+</div>
+                      <div class="impact-label" data-ar="محاسب ومتخصص تم تدريبهم بنجاح" data-en="Trained Accountants & Operators">محاسب ومتخصص تم تدريبهم بنجاح</div>
+                    </div>
+                    <div class="impact-item">
+                      <div class="impact-num">120+</div>
+                      <div class="impact-label" data-ar="ورشة عمل تدريبية للشركات" data-en="Corporate Workshops Delivered">ورشة عمل تدريبية للشركات</div>
+                    </div>
+                    <div class="impact-item">
+                      <div class="impact-num">99%</div>
+                      <div class="impact-label" data-ar="معدل استيعاب وتطبيق النظام" data-en="System Adoption Success Rate">معدل استيعاب وتطبيق النظام</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CASE STUDIES & LIVE PORTFOLIO (The Killer Section Against Competitor) -->
+    <section class="section portfolio-section" id="case-studies">
+      <div class="container">
+        <div class="section-header text-center">
+          <div class="section-kicker" data-ar="سابقة أعمال موثقة" data-en="VERIFIABLE CASE STUDIES">سابقة أعمال موثقة</div>
+          <h2 class="section-title" data-ar="نتائج حقيقية لشركات حقيقية.. بالأرقام والأسماء" data-en="Real Results for Real Enterprises • Proven Measurable Impact">
+            نتائج حقيقية لشركات حقيقية.. بالأرقام والأسماء
+          </h2>
+          <p class="section-subtitle" data-ar="لا نخفي أسماء عملائنا؛ بل نفخر بشراكتنا مع نخبة من كبرى العلامات التجارية في السوق الإقليمي" data-en="We don't hide behind anonymous case studies. Here is how we transformed prominent enterprises.">
+            لا نخفي أسماء عملائنا؛ بل نفخر بشراكتنا مع نخبة من كبرى العلامات التجارية في السوق الإقليمي
+          </p>
+        </div>
+
+        <!-- Industry Filter Buttons -->
+        <div class="portfolio-filter-row" id="portfolioFilters">
+          <button class="filter-btn active" data-filter="all" data-ar="جميع القطاعات" data-en="All Industries">جميع القطاعات</button>
+          <button class="filter-btn" data-filter="retail" data-ar="التجزئة والتجارة" data-en="Retail & Trading">التجزئة والتجارة</button>
+          <button class="filter-btn" data-filter="manufacturing" data-ar="التصنيع والصناعة" data-en="Manufacturing">التصنيع والصناعة</button>
+          <button class="filter-btn" data-filter="hospitality" data-ar="الأغذية والضيافة" data-en="Food & Hospitality">الأغذية والضيافة</button>
+          <button class="filter-btn" data-filter="healthcare" data-ar="الرعاية الصحية" data-en="Healthcare">الرعاية الصحية</button>
+          <button class="filter-btn" data-filter="construction" data-ar="المقاولات والتشييد" data-en="Construction">المقاولات والتشييد</button>
+          <button class="filter-btn" data-filter="tech" data-ar="التقنية والخدمات" data-en="Tech & Services">التقنية والخدمات</button>
+        </div>
+
+        <!-- Case Studies Cards Grid -->
+        <div class="case-studies-grid" id="caseStudiesGrid">
+
+          <!-- 1. Saudi Dukhoon (Retail) -->
+          <div class="case-card" data-category="retail">
+            <div class="case-card-img-wrap">
+              <img src="assets/case-dukhoon.jpg" alt="Saudi Dukhoon Retail and Odoo POS" class="case-cover-img" loading="lazy">
+              <div class="case-img-gradient"></div>
+              <div class="case-img-badge">
+                <span class="live-pulse-dot"></span>
+                <span data-ar="مشروع مباشر ومكتمل" data-en="Live Production">مشروع مباشر ومكتمل</span>
+              </div>
+            </div>
+            <div class="case-card-header">
+              <span class="case-sector" data-ar="التجزئة والعطور الفاخرة" data-en="Retail & Perfumes">التجزئة والعطور الفاخرة</span>
+              <span class="case-client-badge">Saudi Dukhoon</span>
+            </div>
+            <h3 class="case-title" data-ar="توحيد شبكة فروع البيع مع الفاتورة الإلكترونية والمخازن" data-en="Multi-Branch POS Unification with ZATCA E-Invoicing">
+              توحيد شبكة فروع البيع مع الفاتورة الإلكترونية والمخازن
+            </h3>
+            <div class="case-body">
+              <div class="case-block">
+                <strong data-ar="التحدي:" data-en="The Challenge:">التحدي:</strong>
+                <p data-ar="تعدد فروع التجزئة وصعوبة مراقبة المخزون اللحظي وتأخر التسويات المالية بين الفروع والإدارة." data-en="Disjointed POS across retail branches, stock discrepancies, and delayed financial consolidation.">
+                  تعدد فروع التجزئة وصعوبة مراقبة المخزون اللحظي وتأخر التسويات المالية بين الفروع والإدارة.
+                </p>
+              </div>
+              <div class="case-block">
+                <strong data-ar="حل COA والمنظومة:" data-en="COA Stack Deployed:">حل COA والمنظومة:</strong>
+                <div class="stack-badges-wrap">
+                  <span class="pill-tech">Odoo POS</span>
+                  <span class="pill-tech">Inventory Sync</span>
+                  <span class="pill-tech">ZATCA Phase 2</span>
+                  <span class="pill-tech">Accounting</span>
+                </div>
+              </div>
+            </div>
+            <div class="case-results">
+              <div class="result-metric">
+                <span class="res-num">100%</span>
+                <span class="res-lbl" data-ar="مطابقة الجرد اليومي" data-en="Daily Inventory Match">مطابقة الجرد اليومي</span>
+              </div>
+              <div class="result-metric">
+                <span class="res-num">لحظي</span>
+                <span class="res-lbl" data-ar="إصدار الفاتورة الضريبية" data-en="Instant E-Invoicing">إصدار الفاتورة الضريبية</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- 2. Bab Kebab (Food & Hospitality) -->
+          <div class="case-card" data-category="hospitality">
+            <div class="case-card-img-wrap">
+              <img src="assets/case-babkebab.jpg" alt="Bab Kebab Restaurant Chain Odoo POS" class="case-cover-img" loading="lazy">
+              <div class="case-img-gradient"></div>
+              <div class="case-img-badge">
+                <span class="live-pulse-dot"></span>
+                <span data-ar="مشروع مباشر ومكتمل" data-en="Live Production">مشروع مباشر ومكتمل</span>
+              </div>
+            </div>
+            <div class="case-card-header">
+              <span class="case-sector" data-ar="الأغذية والمطاعم" data-en="Food & Hospitality">الأغذية والمطاعم</span>
+              <span class="case-client-badge">Bab Kebab</span>
+            </div>
+            <h3 class="case-title" data-ar="حساب تكلفة الوجبات بدقة والسيطرة على الهدر وسلاسل الإمداد" data-en="Meal Costing Accuracy & Central Kitchen Supply Chain Control">
+              حساب تكلفة الوجبات بدقة والسيطرة على الهدر وسلاسل الإمداد
+            </h3>
+            <div class="case-body">
+              <div class="case-block">
+                <strong data-ar="التحدي:" data-en="The Challenge:">التحدي:</strong>
+                <p data-ar="صعوبة تتبع تكلفة المواد الخام في المطبخ المركزي وهدر المخزون قبل ربط مبيعات المطاعم بالحسابات." data-en="Lack of raw material consumption tracking in central kitchen and waste control across branches.">
+                  صعوبة تتبع تكلفة المواد الخام في المطبخ المركزي وهدر المخزون قبل ربط مبيعات المطاعم بالحسابات.
+                </p>
+              </div>
+              <div class="case-block">
+                <strong data-ar="حل COA والمنظومة:" data-en="COA Stack Deployed:">حل COA والمنظومة:</strong>
+                <div class="stack-badges-wrap">
+                  <span class="pill-tech">Odoo Restaurant</span>
+                  <span class="pill-tech">Central Kitchen MRP</span>
+                  <span class="pill-tech">Cost Accounting</span>
+                  <span class="pill-tech">Purchase Orders</span>
+                </div>
+              </div>
+            </div>
+            <div class="case-results">
+              <div class="result-metric">
+                <span class="res-num">-22%</span>
+                <span class="res-lbl" data-ar="خفض نسبة هدر المخزون" data-en="Raw Material Waste Cut">خفض نسبة هدر المخزون</span>
+              </div>
+              <div class="result-metric">
+                <span class="res-num">دقيقة 100%</span>
+                <span class="res-lbl" data-ar="ربحية كل طبق وقائمة" data-en="Per-Dish Profitability">ربحية كل طبق وقائمة</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- 3. Arab Pack & Nano Steal (Manufacturing) -->
+          <div class="case-card" data-category="manufacturing">
+            <div class="case-card-img-wrap">
+              <img src="assets/case-arabpack.jpg" alt="Arab Pack Industrial Packaging" class="case-cover-img" loading="lazy">
+              <div class="case-img-gradient"></div>
+              <div class="case-img-badge">
+                <span class="live-pulse-dot"></span>
+                <span data-ar="مشروع مباشر ومكتمل" data-en="Live Production">مشروع مباشر ومكتمل</span>
+              </div>
+            </div>
+            <div class="case-card-header">
+              <span class="case-sector" data-ar="الصناعات الثقيلة والتغليف" data-en="Industrial & Manufacturing">الصناعات الثقيلة والتغليف</span>
+              <span class="case-client-badge">Arab Pack & Nano Steal</span>
+            </div>
+            <h3 class="case-title" data-ar="حساب تكاليف أوامر التصنيع (BOM) وأتمتة مسار الإنتاج" data-en="Automated Manufacturing Work Orders & Accurate BOM Costing">
+              حساب تكاليف أوامر التصنيع (BOM) وأتمتة مسار الإنتاج
+            </h3>
+            <div class="case-body">
+              <div class="case-block">
+                <strong data-ar="التحدي:" data-en="The Challenge:">التحدي:</strong>
+                <p data-ar="حسابات تكاليف صناعية معقدة، تداخل المصاريف غير المباشرة، وتأخر ترحيل قيود الاستهلاك للمخازن." data-en="Complex overhead allocations, untracked work-in-progress (WIP), and delayed journal postings.">
+                  حسابات تكاليف صناعية معقدة، تداخل المصاريف غير المباشرة، وتأخر ترحيل قيود الاستهلاك للمخازن.
+                </p>
+              </div>
+              <div class="case-block">
+                <strong data-ar="حل COA والمنظومة:" data-en="COA Stack Deployed:">حل COA والمنظومة:</strong>
+                <div class="stack-badges-wrap">
+                  <span class="pill-tech">Odoo MRP Advanced</span>
+                  <span class="pill-tech">Cost Accounting</span>
+                  <span class="pill-tech">Quality Control</span>
+                  <span class="pill-tech">Maintenance</span>
+                </div>
+              </div>
+            </div>
+            <div class="case-results">
+              <div class="result-metric">
+                <span class="res-num">أيام لا أسابيع</span>
+                <span class="res-lbl" data-ar="إقفال تكاليف الإنتاج" data-en="WIP Period Close Time">إقفال تكاليف الإنتاج</span>
+              </div>
+              <div class="result-metric">
+                <span class="res-num">+35%</span>
+                <span class="res-lbl" data-ar="كفاءة تشغيل خطوط الإنتاج" data-en="Line Utilization Rate">كفاءة تشغيل خطوط الإنتاج</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- 4. Shefaa Al-Dawaa (Healthcare) -->
+          <div class="case-card" data-category="healthcare">
+            <div class="case-card-img-wrap">
+              <img src="assets/case-shefaa.jpg" alt="Shefaa Al-Dawaa Pharma Batch Tracking" class="case-cover-img" loading="lazy">
+              <div class="case-img-gradient"></div>
+              <div class="case-img-badge">
+                <span class="live-pulse-dot"></span>
+                <span data-ar="مشروع مباشر ومكتمل" data-en="Live Production">مشروع مباشر ومكتمل</span>
+              </div>
+            </div>
+            <div class="case-card-header">
+              <span class="case-sector" data-ar="الرعاية الصحية والمستودعات الدوائية" data-en="Pharma & Healthcare">الرعاية الصحية والمستودعات الدوائية</span>
+              <span class="case-client-badge">Shefaa Al-Dawaa</span>
+            </div>
+            <h3 class="case-title" data-ar="إدارة تشغيلات الأدوية (Batch Tracking) والرقابة الصارمة" data-en="Pharma Batch Tracking, Expiry Controls & Medical Invoicing">
+              إدارة تشغيلات الأدوية (Batch Tracking) والرقابة الصارمة
+            </h3>
+            <div class="case-body">
+              <div class="case-block">
+                <strong data-ar="التحدي:" data-en="The Challenge:">التحدي:</strong>
+                <p data-ar="حساسية تواريخ انتهاء الصلاحية، تتبع الشحنات الدوائية، والالتزام بمعايير هيئة الغذاء والدواء." data-en="Stringent drug batch expiration dates, cold-chain tracking, and strict regulatory reporting.">
+                  حساسية تواريخ انتهاء الصلاحية، تتبع الشحنات الدوائية، والالتزام بمعايير هيئة الغذاء والدواء.
+                </p>
+              </div>
+              <div class="case-block">
+                <strong data-ar="حل COA والمنظومة:" data-en="COA Stack Deployed:">حل COA والمنظومة:</strong>
+                <div class="stack-badges-wrap">
+                  <span class="pill-tech">Odoo Inventory Batches</span>
+                  <span class="pill-tech">Pharma ERP</span>
+                  <span class="pill-tech">Auditing</span>
+                  <span class="pill-tech">E-Billing</span>
+                </div>
+              </div>
+            </div>
+            <div class="case-results">
+              <div class="result-metric">
+                <span class="res-num">صفر خطأ</span>
+                <span class="res-lbl" data-ar="في تواريخ الصلاحية والتتبع" data-en="Expiry Date Errors">في تواريخ الصلاحية والتتبع</span>
+              </div>
+              <div class="result-metric">
+                <span class="res-num">100%</span>
+                <span class="res-lbl" data-ar="امتثال للجهات الرقابية" data-en="Regulatory Compliance">امتثال للجهات الرقابية</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- 5. Perfect Construction & Nano Steal (Construction) -->
+          <div class="case-card" data-category="construction">
+            <div class="case-card-img-wrap">
+              <img src="assets/case-nanosteal.jpg" alt="Perfect Construction & Steel Engineering" class="case-cover-img" loading="lazy">
+              <div class="case-img-gradient"></div>
+              <div class="case-img-badge">
+                <span class="live-pulse-dot"></span>
+                <span data-ar="مشروع مباشر ومكتمل" data-en="Live Production">مشروع مباشر ومكتمل</span>
+              </div>
+            </div>
+            <div class="case-card-header">
+              <span class="case-sector" data-ar="المقاولات والإنشاءات" data-en="Construction & Contracting">المقاولات والإنشاءات</span>
+              <span class="case-client-badge">Perfect Construction</span>
+            </div>
+            <h3 class="case-title" data-ar="حسابات المشروعات، إدارة المستخلصات، وتكاليف المواقع" data-en="Job Costing, Contractor Submissions & Remote Site Control">
+              حسابات المشروعات، إدارة المستخلصات، وتكاليف المواقع
+            </h3>
+            <div class="case-body">
+              <div class="case-block">
+                <strong data-ar="التحدي:" data-en="The Challenge:">التحدي:</strong>
+                <p data-ar="صعوبة تتبع تكلفة كل مشروع بشكل مستقل، تأخر مستخلصات مقاولي الباطن، وضياع عهد المواقع." data-en="Untracked project job costing, delayed subcontractor claims, and untraceable field petty cash.">
+                  صعوبة تتبع تكلفة كل مشروع بشكل مستقل، تأخر مستخلصات مقاولي الباطن، وضياع عهد المواقع.
+                </p>
+              </div>
+              <div class="case-block">
+                <strong data-ar="حل COA والمنظومة:" data-en="COA Stack Deployed:">حل COA والمنظومة:</strong>
+                <div class="stack-badges-wrap">
+                  <span class="pill-tech">Odoo Project Costing</span>
+                  <span class="pill-tech">Subcontracting</span>
+                  <span class="pill-tech">Petty Cash Management</span>
+                </div>
+              </div>
+            </div>
+            <div class="case-results">
+              <div class="result-metric">
+                <span class="res-num">لحظي</span>
+                <span class="res-lbl" data-ar="موقف التكلفة مقابل الميزانية" data-en="Actual vs Budget Tracking">موقف التكلفة مقابل الميزانية</span>
+              </div>
+              <div class="result-metric">
+                <span class="res-num">-40%</span>
+                <span class="res-lbl" data-ar="تسريع دورة اعتماد المستخلص" data-en="Faster Claim Approvals">تسريع دورة اعتماد المستخلص</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- 6. Dottopia & Amnkom & Falcon (Tech & Services) -->
+          <div class="case-card" data-category="tech">
+            <div class="case-card-img-wrap">
+              <img src="assets/case-dottopia.jpg" alt="Dottopia Digital Agency and Amnkom Security" class="case-cover-img" loading="lazy">
+              <div class="case-img-gradient"></div>
+              <div class="case-img-badge">
+                <span class="live-pulse-dot"></span>
+                <span data-ar="مشروع مباشر ومكتمل" data-en="Live Production">مشروع مباشر ومكتمل</span>
+              </div>
+            </div>
+            <div class="case-card-header">
+              <span class="case-sector" data-ar="التقنية والخدمات الأمنية واللوجستية" data-en="Tech, Security & Logistics">التقنية والخدمات الأمنية واللوجستية</span>
+              <span class="case-client-badge">Dottopia, Amnkom, Falcon</span>
+            </div>
+            <h3 class="case-title" data-ar="أتمتة الفوترة الدورية وإدارة العقود والموارد البشرية" data-en="Recurring Contract Billing Automation & Fleet HR Management">
+              أتمتة الفوترة الدورية وإدارة العقود والموارد البشرية
+            </h3>
+            <div class="case-body">
+              <div class="case-block">
+                <strong data-ar="التحدي:" data-en="The Challenge:">التحدي:</strong>
+                <p data-ar="إدارة مئات عقود الخدمات الدورية وحساب رواتب الموظفين وحراس الأمن وتتبع أساطيل التوصيل." data-en="Managing hundreds of recurring service retainers, security guard shifts, and delivery fleets.">
+                  إدارة مئات عقود الخدمات الدورية وحساب رواتب الموظفين وحراس الأمن وتتبع أساطيل التوصيل.
+                </p>
+              </div>
+              <div class="case-block">
+                <strong data-ar="حل COA والمنظومة:" data-en="COA Stack Deployed:">حل COA والمنظومة:</strong>
+                <div class="stack-badges-wrap">
+                  <span class="pill-tech">Odoo Subscriptions</span>
+                  <span class="pill-tech">HR & Payroll</span>
+                  <span class="pill-tech">Fleet</span>
+                  <span class="pill-tech">CRM</span>
+                </div>
+              </div>
+            </div>
+            <div class="case-results">
+              <div class="result-metric">
+                <span class="res-num">آلي 100%</span>
+                <span class="res-lbl" data-ar="إصدار وتجديد الفواتير الدورية" data-en="Automated Subscription Invoices">إصدار وتجديد الفواتير الدورية</span>
+              </div>
+              <div class="result-metric">
+                <span class="res-num">+98%</span>
+                <span class="res-lbl" data-ar="دقة مسيرات الرواتب" data-en="Payroll Accuracy">دقة مسيرات الرواتب</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- METHODOLOGY SECTION (Proven 5-Step Process) -->
+    <section class="section methodology-section" id="methodology">
+      <div class="container">
+        <div class="section-header text-center">
+          <div class="section-kicker" data-ar="منهجية معتمدة ومحكمة" data-en="GUARANTEED DELIVERY FRAMEWORK">منهجية معتمدة ومحكمة</div>
+          <h2 class="section-title" data-ar="خطة تسليم منضبطة تضمن الالتزام بالوقت والميزانية" data-en="A Phased, Controlled Delivery Engine • Zero Unpleasant Surprises">
+            خطة تسليم منضبطة تضمن الالتزام بالوقت والميزانية
+          </h2>
+          <p class="section-subtitle" data-ar="من الجلسة التشخيصية الأولى حتى يوم التشغيل الكامل والرعاية الفائقة" data-en="From discovery workshop to post-launch hypercare">
+            من الجلسة التشخيصية الأولى حتى يوم التشغيل الكامل والرعاية الفائقة
+          </p>
+        </div>
+
+        <div class="methodology-steps-grid">
+          <!-- Step 1 -->
+          <div class="method-step-card">
+            <div class="step-badge">01</div>
+            <div class="step-icon">🔍</div>
+            <h4 data-ar="التشخيص المالي والدورة المستندية" data-en="Diagnostic & Process Audit">التشخيص المالي والدورة المستندية</h4>
+            <p data-ar="نجلس مع فريقك لدراسة الدورة المستندية الحالية، تحديد نقاط الهدر والخلل المحاسبي، وتحديد مخرجات النجاح المطلوبة." data-en="Deep dive into your current bookkeeping, pain points, and reporting needs to map ideal target architecture.">
+              نجلس مع فريقك لدراسة الدورة المستندية الحالية، تحديد نقاط الهدر والخلل المحاسبي، وتحديد مخرجات النجاح المطلوبة.
+            </p>
+          </div>
+
+          <!-- Step 2 -->
+          <div class="method-step-card">
+            <div class="step-badge">02</div>
+            <div class="step-icon">📐</div>
+            <h4 data-ar="تصميم المخطط وهندسة Odoo" data-en="Blueprint & System Architecture">تصميم المخطط وهندسة Odoo</h4>
+            <p data-ar="رسم شجرة الحسابات المعتمدة، مسارات المخازن، مصفوفة الصلاحيات، ووضع جدول زمني ثابت ومحدد التكلفة." data-en="Building the master chart of accounts, warehouse routes, access controls, and a fixed transparent scope.">
+              رسم شجرة الحسابات المعتمدة، مسارات المخازن، مصفوفة الصلاحيات، ووضع جدول زمني ثابت ومحدد التكلفة.
+            </p>
+          </div>
+
+          <!-- Step 3 -->
+          <div class="method-step-card">
+            <div class="step-badge">03</div>
+            <div class="step-icon">⚙️</div>
+            <h4 data-ar="التهيئة والبرمجة والربط الضريبي" data-en="Configuration & Tax Integration">التهيئة والبرمجة والربط الضريبي</h4>
+            <p data-ar="تخصيص موديولات Odoo وربط الفاتورة الإلكترونية (ZATCA/ETA) والربط مع المتاجر ونقاط البيع." data-en="Configuring modules, testing integrations with ZATCA Phase 2 or ETA, and building custom flows.">
+              تخصيص موديولات Odoo وربط الفاتورة الإلكترونية (ZATCA/ETA) والربط مع المتاجر ونقاط البيع.
+            </p>
+          </div>
+
+          <!-- Step 4 -->
+          <div class="method-step-card">
+            <div class="step-badge">04</div>
+            <div class="step-icon">🔄</div>
+            <h4 data-ar="ترحيل البيانات وتدريب الكوادر" data-en="Data Migration & UAT Testing">ترحيل البيانات وتدريب الكوادر</h4>
+            <p data-ar="تنظيف وترحيل الأرصدة الافتتاحية والمخزون، وتدريب فريقك عبر ورش عمل تفاعلية واختبار سيناريوهات التشغيل." data-en="Cleaning legacy opening balances, migrating stock, and hands-on user acceptance testing (UAT).">
+              تنظيف وترحيل الأرصدة الافتتاحية والمخزون، وتدريب فريقك عبر ورش عمل تفاعلية واختبار سيناريوهات التشغيل.
+            </p>
+          </div>
+
+          <!-- Step 5 -->
+          <div class="method-step-card highlight-step">
+            <div class="step-badge">05</div>
+            <div class="step-icon">🚀</div>
+            <h4 data-ar="يوم التشغيل والرعاية الفائقة (Hypercare)" data-en="Go-Live & 24/7 Hypercare">يوم التشغيل والرعاية الفائقة (Hypercare)</h4>
+            <p data-ar="نقود إطلاق النظام جنباً إلى جنب مع فريقك، ونوفر دعماً ميدانياً ورعاية مكثفة لضمان استقرار العمليات 100%." data-en="Standing shoulder-to-shoulder on launch day with intensive post-launch hypercare and ongoing SLA.">
+              نقود إطلاق النظام جنباً إلى جنب مع فريقك، ونوفر دعماً ميدانياً ورعاية مكثفة لضمان استقرار العمليات 100%.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- EXECUTIVE LEADERSHIP & CERTIFIED TALENT SECTION -->
+    <section class="section team-section" id="team">
+      <div class="container">
+        <div class="team-showcase-card">
+          <div class="team-grid">
+            <div class="team-media">
+              <img src="assets/executive-team.jpg" alt="COA Egypt Leadership and Consultants" class="team-photo" loading="lazy">
+              <div class="team-overlay"></div>
+              <div class="team-float-stat">
+                <strong class="stat-big">+15</strong>
+                <span data-ar="عاماً من الريادة المالية والتقنية" data-en="Years of Leadership">عاماً من الريادة المالية والتقنية</span>
+              </div>
+            </div>
+            <div class="team-info">
+              <div class="section-kicker" data-ar="الكوادر والاعتمادات الرسمية" data-en="EXPERT LEADERSHIP">الكوادر والاعتمادات الرسمية</div>
+              <h3 class="team-title" data-ar="نخبة من المحاسبين القانونيين ومهندسي Odoo المعتمدين" data-en="Certified CPAs & Elite Odoo Implementation Engineers">
+                نخبة من المحاسبين القانونيين ومهندسي Odoo المعتمدين
+              </h3>
+              <p class="team-desc" data-ar="في COA، لا نسلم مشروعك لمتدربين أو مبرمجين دون فهم مالي عميق. يقود كل عملية تحول فريق متكامل يضم مستشاراً مالياً قانونياً (CPA) مع مهندس برمجيات Odoo معتمد لضمان السلامة المحاسبية والتقنية بنسبة 100%." data-en="At COA, your mission-critical ERP isn't handed to juniors. Every project is steered by a dual squad: a licensed CPA auditor paired with a senior certified Odoo engineer.">
+                في COA، لا نسلم مشروعك لمتدربين أو مبرمجين دون فهم مالي عميق. يقود كل عملية تحول فريق متكامل يضم مستشاراً مالياً قانونياً (CPA) مع مهندس برمجيات Odoo معتمد لضمان السلامة المحاسبية والتقنية بنسبة 100%.
+              </p>
+              
+              <div class="credentials-row">
+                <div class="cred-item">
+                  <span class="cred-badge">📜 SOCPA / CPA</span>
+                  <span data-ar="محاسبون ومراجعون قانونيون مرخصون" data-en="Licensed Statutory Auditors">محاسبون ومراجعون قانونيون مرخصون</span>
+                </div>
+                <div class="cred-item">
+                  <span class="cred-badge badge-odoo">🥈 Odoo Certified</span>
+                  <span data-ar="شريك فضي رسمي ومعتمد (v16-v18)" data-en="Official Silver Partner (v16-v18)">شريك فضي رسمي ومعتمد (v16-v18)</span>
+                </div>
+                <div class="cred-item">
+                  <span class="cred-badge badge-zatca">⚡ ZATCA Phase 2</span>
+                  <span data-ar="اعتماد وتكامل الفاتورة الإلكترونية والربط" data-en="Accredited E-Invoicing Integrator">اعتماد وتكامل الفاتورة الإلكترونية والربط</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- INTERACTIVE PROJECT ESTIMATOR / CALCULATOR -->
+    <section class="section calc-section" id="calculator">
+      <div class="container">
+        <div class="calc-card">
+          <div class="calc-header text-center">
+            <div class="section-kicker" data-ar="أداة تفاعلية سريعة" data-en="INSTANT PROJECT ESTIMATOR">أداة تفاعلية سريعة</div>
+            <h2 class="section-title" data-ar="احسب النطاق التقديري لمنظومة شركتك" data-en="Estimate Your Enterprise Transformation Scope">
+              احسب النطاق التقديري لمنظومة شركتك
+            </h2>
+            <p class="section-subtitle" data-ar="حدد متطلباتك الأساسية لتحصل على توصية فورية وخريطة طريق مخصصة" data-en="Select your key requirements for an instant tailored implementation roadmap">
+              حدد متطلباتك الأساسية لتحصل على توصية فورية وخريطة طريق مخصصة
+            </p>
+          </div>
+
+          <div class="calc-grid">
+            <!-- Form Controls -->
+            <div class="calc-controls">
+              <div class="control-group">
+                <label data-ar="1. حجم المنشأة وعدد المستخدمين (Users):" data-en="1. Organization Size & Users:">1. حجم المنشأة وعدد المستخدمين (Users):</label>
+                <div class="radio-pill-group" id="userSizeGroup">
+                  <label class="pill-radio"><input type="radio" name="users" value="1-5" checked><span>1 - 5 مستخدمين</span></label>
+                  <label class="pill-radio"><input type="radio" name="users" value="6-20"><span>6 - 20 مستخدم</span></label>
+                  <label class="pill-radio"><input type="radio" name="users" value="21-50"><span>21 - 50 مستخدم</span></label>
+                  <label class="pill-radio"><input type="radio" name="users" value="50+"><span>+50 مستخدم (Enterprise)</span></label>
+                </div>
+              </div>
+
+              <div class="control-group">
+                <label data-ar="2. الخدمات والموديولات المطلوبة (حدد ما ينطبق):" data-en="2. Required Modules & Services:">2. الخدمات والموديولات المطلوبة (حدد ما ينطبق):</label>
+                <div class="checkbox-pill-grid" id="modulesGroup">
+                  <label class="pill-checkbox"><input type="checkbox" name="services" value="accounting" checked><span>المحاسبة والتقارير المالية</span></label>
+                  <label class="pill-checkbox"><input type="checkbox" name="services" value="zatca" checked><span>الفاتورة الإلكترونية (ZATCA / ETA)</span></label>
+                  <label class="pill-checkbox"><input type="checkbox" name="services" value="pos"><span>نقاط البيع والفروع (POS)</span></label>
+                  <label class="pill-checkbox"><input type="checkbox" name="services" value="inventory"><span>المخازن وسلاسل الإمداد</span></label>
+                  <label class="pill-checkbox"><input type="checkbox" name="services" value="manufacturing"><span>التصنيع وتكاليف الإنتاج (MRP)</span></label>
+                  <label class="pill-checkbox"><input type="checkbox" name="services" value="hr"><span>الموارد البشرية والرواتب (HR)</span></label>
+                  <label class="pill-checkbox"><input type="checkbox" name="services" value="training"><span>برنامج تدريب الكوادر (COA Academy)</span></label>
+                  <label class="pill-checkbox"><input type="checkbox" name="services" value="cfo"><span>الإدارة المالية المستأجرة (Virtual CFO)</span></label>
+                </div>
+              </div>
+
+              <div class="control-group">
+                <label data-ar="3. الدولة ومقر العمليات الرئيسي:" data-en="3. Primary Operating Country:">3. الدولة ومقر العمليات الرئيسي:</label>
+                <div class="radio-pill-group" id="countryGroup">
+                  <label class="pill-radio"><input type="radio" name="country" value="egypt" checked><span>جمهورية مصر العربية</span></label>
+                  <label class="pill-radio"><input type="radio" name="country" value="ksa"><span>المملكة العربية السعودية</span></label>
+                  <label class="pill-radio"><input type="radio" name="country" value="gcc"><span>دول الخليج الأخرى / دولي</span></label>
+                </div>
+              </div>
+            </div>
+
+            <!-- Dynamic Result Card -->
+            <div class="calc-result-box">
+              <div class="res-card-inner">
+                <div class="res-badge" data-ar="التوصية التقديرية المقترحة" data-en="Tailored Recommendation">التوصية التقديرية المقترحة</div>
+                <h4 id="calcPackageName">باقة النمو المتكامل (Growth Stack)</h4>
+                
+                <div class="calc-metrics-summary">
+                  <div class="c-summary-row">
+                    <span data-ar="المدة الزمنية المقدرة للتشغيل:" data-en="Estimated Deployment Time:">المدة الزمنية المقدرة للتشغيل:</span>
+                    <strong id="calcTimeEstimate">3 إلى 5 أسابيع</strong>
+                  </div>
+                  <div class="c-summary-row">
+                    <span data-ar="مستوى الدعم والرعاية:" data-en="Support Level:">مستوى الدعم والرعاية:</span>
+                    <strong id="calcSupportLevel">دعم مباشر ورعاية مكثفة (Hypercare)</strong>
+                  </div>
+                  <div class="c-summary-row">
+                    <span data-ar="الامتثال القانوني والضريبي:" data-en="Tax Compliance:">الامتثال القانوني والضريبي:</span>
+                    <strong class="text-success" id="calcCompliance">متوافق 100% مع الفاتورة الإلكترونية</strong>
+                  </div>
+                </div>
+
+                <div class="calc-features-list" id="calcFeatureBullets">
+                  <!-- Injected via JS -->
+                </div>
+
+                <a href="#contact" class="btn btn-primary w-100 mt-3" id="calcSubmitBtn" data-ar="احصل على دراسة تفصيلية وعرض مالي مخصص ←" data-en="Get Detailed Custom Proposal →">
+                  احصل على دراسة تفصيلية وعرض مالي مخصص ←
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TESTIMONIALS & TRUST -->
+    <section class="section testimonials-section">
+      <div class="container">
+        <div class="section-header text-center">
+          <div class="section-kicker" data-ar="شهادات نعتز بها" data-en="CLIENT TESTIMONIALS">شهادات نعتز بها</div>
+          <h2 class="section-title" data-ar="ماذا يقول عملاؤنا عن العمل مع COA Egypt؟" data-en="What Executives Say About Partnering with COA Egypt">
+            ماذا يقول عملاؤنا عن العمل مع COA Egypt؟
+          </h2>
+        </div>
+
+        <div class="testimonials-grid">
+          <div class="testi-card">
+            <div class="testi-stars">⭐⭐⭐⭐⭐</div>
+            <p class="testi-quote" data-ar="&quot;الفارق الجوهري بين COA وأي شركة برمجيات أخرى هو أنهم محاسبون بالأساس. فهموا دورتنا المستندية وتكاليف التصنيع لدينا أسرع من أي جهة أخرى، وقدموا لنا نظام Odoo يعمل بلا أدنى خطأ.&quot;" data-en="&quot;The game-changer with COA is that they are accountants first. They understood our manufacturing overhead and chart of accounts instantly, delivering a flawless Odoo deployment.&quot;">
+              "الفارق الجوهري بين COA وأي شركة برمجيات أخرى هو أنهم محاسبون بالأساس. فهموا دورتنا المستندية وتكاليف التصنيع لدينا أسرع من أي جهة أخرى، وقدموا لنا نظام Odoo يعمل بلا أدنى خطأ."
+            </p>
+            <div class="testi-author">
+              <div class="author-avatar">أ.م</div>
+              <div>
+                <strong>المدير المالي</strong>
+                <span>شركة دلتا للتصنيع والتوريدات</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="testi-card">
+            <div class="testi-stars">⭐⭐⭐⭐⭐</div>
+            <p class="testi-quote" data-ar="&quot;ربط نقاط البيع في جميع فروعنا مع الفاتورة الإلكترونية وهيئة الضرائب تم بسلاسة فائقة. تخلصنا نهائياً من التأخيرات وحساباتنا الآن تظهر لنا بنقرة زر واحدة.&quot;" data-en="&quot;Connecting POS across our entire store network with automated e-invoicing was seamless. We eliminated all month-end panic; management now gets real-time insights instantly.&quot;">
+              "ربط نقاط البيع في جميع فروعنا مع الفاتورة الإلكترونية وهيئة الضرائب تم بسلاسة فائقة. تخلصنا نهائياً من التأخيرات وحساباتنا الآن تظهر لنا بنقرة زر واحدة."
+            </p>
+            <div class="testi-author">
+              <div class="author-avatar">س.إ</div>
+              <div>
+                <strong>الرئيس التنفيذي</strong>
+                <span>سلسلة متاجر تجزئة وعطور</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="testi-card">
+            <div class="testi-stars">⭐⭐⭐⭐⭐</div>
+            <p class="testi-quote" data-ar="&quot;برنامج التدريب العملي الذي قدمته أكاديمية COA لموظفينا وفر علينا أشهراً من التخبط. أصبح موظفو الحسابات والمخازن مدربين تماماً ومتمكنين من تشغيل النظام.&quot;" data-en="&quot;The hands-on training by COA Academy saved us months of trial and error. Our accounting and warehouse teams are now confident, self-sufficient Odoo operators.&quot;">
+              "برنامج التدريب العملي الذي قدمته أكاديمية COA لموظفينا وفر علينا أشهراً من التخبط. أصبح موظفو الحسابات والمخازن مدربين تماماً ومتمكنين من تشغيل النظام."
+            </p>
+            <div class="testi-author">
+              <div class="author-avatar">م.ح</div>
+              <div>
+                <strong>مدير العمليات</strong>
+                <span>مجموعة ضيافة وأغذية</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- EXECUTIVE CONTACT & CONSULTATION BOOKING SECTION -->
+    <section class="section contact-section" id="contact">
+      <div class="container">
+        <div class="contact-box">
+          <div class="contact-grid">
+            <!-- Left Contact Info -->
+            <div class="contact-info-col">
+              <div class="section-kicker text-red" data-ar="جاهزون لمساعدتك" data-en="LET'S CONNECT">جاهزون لمساعدتك</div>
+              <h2 class="contact-heading" data-ar="ابدأ محادثتك الاستراتيجية مع خبرائنا الماليين والتقنيين" data-en="Start Your Strategic Advisory Conversation">
+                ابدأ محادثتك الاستراتيجية مع خبرائنا الماليين والتقنيين
+              </h2>
+              <p class="contact-lead" data-ar="سواء كنت تبحث عن استشارة مالية وضريبية، أو تطبيق نظام Odoo متكامل، أو تدريب كوادر شركتك؛ فريقنا الاستشاري مستعد للإجابة على جميع استفساراتك وتقديم دراسة وافية." data-en="Whether you need financial audit readiness, a comprehensive Odoo implementation, or team enablement, our senior consultants are ready to guide you.">
+                سواء كنت تبحث عن استشارة مالية وضريبية، أو تطبيق نظام Odoo متكامل، أو تدريب كوادر شركتك؛ فريقنا الاستشاري مستعد للإجابة على جميع استفساراتك وتقديم دراسة وافية.
+              </p>
+
+              <div class="contact-methods">
+                <a href="https://wa.me/201013907174" target="_blank" class="contact-item">
+                  <div class="c-icon wa-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.007c.106.005.249-.04.39.298.144.347.491 1.2.534 1.287.043.087.072.188.014.304-.058.116-.087.188-.173.289l-.26.304c-.087.086-.177.18-.076.354.101.174.449.741.964 1.201.662.591 1.221.774 1.394.861.174.086.275.072.376-.044.101-.116.433-.506.549-.68.116-.173.231-.145.39-.086.159.058 1.011.477 1.184.564.173.087.289.13.332.203.043.072.043.419-.101.824z"/></svg>
+                  </div>
+                  <div>
+                    <span class="c-title" data-ar="محادثة واتساب فورية" data-en="Instant WhatsApp">محادثة واتساب فورية</span>
+                    <span class="c-value">+20 10 1390 7174</span>
+                  </div>
+                </a>
+
+                <a href="tel:+201029243254" class="contact-item">
+                  <div class="c-icon phone-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+                  </div>
+                  <div>
+                    <span class="c-title" data-ar="الاتصال المباشر" data-en="Phone Call">الاتصال المباشر</span>
+                    <span class="c-value">+20 102 924 3254</span>
+                  </div>
+                </a>
+
+                <div class="contact-item">
+                  <div class="c-icon location-icon">📍</div>
+                  <div>
+                    <span class="c-title" data-ar="المقر الرئيسي" data-en="Main Office">المقر الرئيسي</span>
+                    <span class="c-value" data-ar="الدقي، محافظة الجيزة / مدينة نصر، القاهرة، جمهورية مصر العربية" data-en="Dokki, Giza / Nasr City, Cairo, Egypt">الدقي، محافظة الجيزة / مدينة نصر، القاهرة، جمهورية مصر العربية</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Right Booking Form -->
+            <div class="contact-form-col">
+              <form class="booking-form" id="consultationForm">
+                <h3 class="form-title" data-ar="طلب جلسة استشارة مجانية" data-en="Request Free Strategy Session">طلب جلسة استشارة مجانية</h3>
+                <p class="form-sub" data-ar="املأ البيانات وسيقوم مستشارنا التنفيذي بالتواصل معك خلال ساعتين عمل" data-en="Fill in your details and an executive consultant will reach out within 2 business hours">
+                  املأ البيانات وسيقوم مستشارنا التنفيذي بالتواصل معك خلال ساعتين عمل
+                </p>
+
+                <div class="form-row">
+                  <div class="form-group">
+                    <label for="clientName" data-ar="الاسم الكريم *" data-en="Full Name *">الاسم الكريم *</label>
+                    <input type="text" id="clientName" required placeholder="أحمد محمد" class="form-input">
+                  </div>
+                  <div class="form-group">
+                    <label for="clientPhone" data-ar="رقم الجوال / واتساب *" data-en="Mobile / WhatsApp *">رقم الجوال / واتساب *</label>
+                    <input type="tel" id="clientPhone" required placeholder="+20 10... / +966 5..." class="form-input">
+                  </div>
+                </div>
+
+                <div class="form-row">
+                  <div class="form-group">
+                    <label for="companyName" data-ar="اسم الشركة / المؤسسة *" data-en="Company Name *">اسم الشركة / المؤسسة *</label>
+                    <input type="text" id="companyName" required placeholder="شركة ..." class="form-input">
+                  </div>
+                  <div class="form-group">
+                    <label for="serviceInterest" data-ar="الخدمة الرئيسية المطلوبة" data-en="Primary Interest">الخدمة الرئيسية المطلوبة</label>
+                    <select id="serviceInterest" class="form-input">
+                      <option value="odoo" data-ar="تطبيق وتهيئة Odoo ERP" data-en="Odoo ERP Implementation">تطبيق وتهيئة Odoo ERP</option>
+                      <option value="financial" data-ar="استشارات مالية وضريبية ومسك دفاتر" data-en="Financial & Tax Consulting">استشارات مالية وضريبية ومسك دفاتر</option>
+                      <option value="zatca" data-ar="الربط مع الفاتورة الإلكترونية (ZATCA/ETA)" data-en="E-Invoicing Integration (ZATCA/ETA)">الربط مع الفاتورة الإلكترونية (ZATCA/ETA)</option>
+                      <option value="transformation" data-ar="التحول الرقمي وأتمتة العمليات" data-en="Business Process Automation">التحول الرقمي وأتمتة العمليات</option>
+                      <option value="training" data-ar="تدريب الشركات (COA Learning)" data-en="Corporate Staff Training">تدريب الشركات (COA Learning)</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="projectNotes" data-ar="تفاصيل إضافية أو حجم التحدي الحالي" data-en="Additional Project Notes">تفاصيل إضافية أو حجم التحدي الحالي</label>
+                  <textarea id="projectNotes" rows="3" placeholder="أخبرنا باختصار عن عدد الفروع، المشكلات الحالية، أو موعد البدء المتوقع..." class="form-input"></textarea>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-block btn-lg" id="submitFormBtn">
+                  <span data-ar="إرسال طلب الاستشارة المجانية ←" data-en="Submit Consultation Request →">إرسال طلب الاستشارة المجانية ←</span>
+                </button>
+
+                <div class="form-feedback" id="formFeedback"></div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- PROFESSIONAL FOOTER -->
+  <footer class="footer">
+    <div class="container footer-container">
+      <div class="footer-top-grid">
+        <div class="footer-brand-col">
+          <div class="footer-logo">
+            <img src="assets/logo.jpg" alt="COA Egypt" width="46" height="46">
+            <span class="footer-brand-title">COA EGYPT</span>
+          </div>
+          <p class="footer-desc" data-ar="كومينتي أوف أكاونتس (COA Egypt) - الشريك الفضي المعتمد لـ Odoo ومؤسسة الاستشارات المالية والضريبية الرائدة. نمكن الشركات من القيادة والنمو من خلال انضباط الأرقام وقوة التكنولوجيا." data-en="Community of Accountants (COA Egypt) - Certified Odoo Silver Partner and premier financial advisory firm empowering enterprises through accounting rigor and digital excellence.">
+            كومينتي أوف أكاونتس (COA Egypt) - الشريك الفضي المعتمد لـ Odoo ومؤسسة الاستشارات المالية والضريبية الرائدة. نمكن الشركات من القيادة والنمو من خلال انضباط الأرقام وقوة التكنولوجيا.
+          </p>
+          <div class="footer-badges">
+            <span class="f-badge">Odoo Silver Partner</span>
+            <span class="f-badge">ZATCA Phase 2</span>
+            <span class="f-badge">ETA Ready</span>
+          </div>
+        </div>
+
+        <div class="footer-links-col">
+          <h4 class="footer-heading" data-ar="الخدمات" data-en="Services">الخدمات</h4>
+          <ul class="footer-nav">
+            <li><a href="#services" data-ar="الاستشارات المالية والضريبية" data-en="Financial Consulting">الاستشارات المالية والضريبية</a></li>
+            <li><a href="#services" data-ar="تطبيق وتهيئة Odoo ERP" data-en="Odoo Implementation">تطبيق وتهيئة Odoo ERP</a></li>
+            <li><a href="#services" data-ar="الفاتورة الإلكترونية والربط الضريبي" data-en="E-Invoicing (ZATCA & ETA)">الفاتورة الإلكترونية والربط الضريبي</a></li>
+            <li><a href="#services" data-ar="التحول الرقمي وهندسة العمليات" data-en="Business Transformation">التحول الرقمي وهندسة العمليات</a></li>
+            <li><a href="#services" data-ar="تدريب الشركات (COA Learning)" data-en="COA Academy & Training">تدريب الشركات (COA Learning)</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-links-col">
+          <h4 class="footer-heading" data-ar="روابط سريعة" data-en="Quick Links">روابط سريعة</h4>
+          <ul class="footer-nav">
+            <li><a href="#about" data-ar="عن COA Egypt" data-en="About COA Egypt">عن COA Egypt</a></li>
+            <li><a href="#why-coa" data-ar="لماذا نختلف عن المنافسين؟" data-en="Why COA vs Competitors">لماذا نختلف عن المنافسين؟</a></li>
+            <li><a href="#case-studies" data-ar="قصص نجاح وسابقة الأعمال" data-en="Case Studies & Clients">قصص نجاح وسابقة الأعمال</a></li>
+            <li><a href="#methodology" data-ar="منهجية العمل والتسليم" data-en="Delivery Framework">منهجية العمل والتسليم</a></li>
+            <li><a href="#calculator" data-ar="حاسبة تقدير المشروع" data-en="Project Estimator">حاسبة تقدير المشروع</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-contact-col">
+          <h4 class="footer-heading" data-ar="التواصل المباشر" data-en="Contact Directly">التواصل المباشر</h4>
+          <p><strong>واتساب / هاتف:</strong><br><a href="https://wa.me/201013907174">+20 10 1390 7174</a></p>
+          <p><strong>خدمة العملاء:</strong><br><a href="tel:+201029243254">+20 102 924 3254</a></p>
+          <p><strong>البريد الإلكتروني:</strong><br><a href="mailto:info@coa-egypt.com">info@coa-egypt.com</a></p>
+          <p><strong>المقر:</strong><br>11 شارع جمال سالم، متفرع من مصدق، الدقي، الجيزة، مصر</p>
+        </div>
+      </div>
+
+      <div class="footer-bottom-bar">
+        <p class="copyright">
+          &copy; <span id="currentYear">2026</span> COA EGYPT (Community of Accountants). جميع الحقوق محفوظة.
+        </p>
+        <div class="footer-bottom-links">
+          <span>Learn • Apply • Grow</span>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
