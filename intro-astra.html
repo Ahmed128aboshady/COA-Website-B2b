@@ -550,10 +550,10 @@ function cameraSequence(t,beats){
   cameraBeatIndex=Math.max(0,beats.findLastIndex(([start])=>t>=start));
   for(let i=1;i<beats.length;i++){
     const previous=beats[i-1],next=beats[i],boundary=next[0];
-    const half=Math.min(.5,(previous[1]-previous[0])*.42,(next[1]-next[0])*.42);
+    const half=Math.min(.55,(previous[1]-previous[0])*.42,(next[1]-next[0])*.42);
     if(t<boundary-half||t>boundary+half)continue;
     const u=clamp01((t-boundary+half)/(2*half)),mix=u*u*u*(u*(u*6-15)+10);
-    // A short extrapolation retains both shots' velocity throughout the blend.
+    // Continuous quintic join extrapolation preserves position and velocity throughout the blend
     const a=cameraPose((t-previous[0])/(previous[1]-previous[0]),previous[2]);
     const b=cameraPose((t-next[0])/(next[1]-next[0]),next[2]);
     for(const key of Object.keys(a))a[key]=lerp(a[key],b[key],mix);
@@ -562,15 +562,49 @@ function cameraSequence(t,beats){
   const [start,end,pose]=beats[cameraBeatIndex];
   cameraTo(t-start,end-start,pose);
 }
-// A subtle nebula fade covers each scene switch, including the loop.
-// The shader renders fresh pixels; it never blends stale scene screenshots.
+
+// Unified global camera timeline across all 6 scenes — zero jump-cuts, 100% fluid gliding
+const GLOBAL_CAMERA_BEATS = [
+  // Scene 0: Welcome / Financial Precision (0 -> 3.2)
+  [0.0, 2.2, {dist: 30, yaw: -10, pitch: 3, roll: -3, zoom: -2.4}],
+  [2.2, 3.2, {x: 0.5, dist: 26.5, yaw: -3, pitch: 1, roll: 0, zoom: -1.8}],
+  
+  // Scene 1: ChatGPT prompt (3.2 -> 7.6)
+  [3.2, 4.4, {x: 0, y: 0, dist: 30, yaw: 7, pitch: 3.5, roll: 1.2, zoom: -2.8}],
+  [4.4, 6.4, {x: -4.5, y: -2.5, dist: 19.3, yaw: 5, pitch: 2, roll: 0.5, zoom: -3.2}],
+  [6.4, 7.6, {x: -3.6, y: -2.3, dist: 18.2, yaw: -7, pitch: -1, roll: -1, zoom: -2.5}],
+  
+  // Scene 2: ChatGPT answer report (7.6 -> 11.8)
+  [7.6, 10.3, {x: 0, y: 0, dist: 30, yaw: -7, pitch: 3, roll: -1.5, zoom: -2.6}],
+  [10.3, 11.8, {x: 7, y: 0.2, dist: 25, yaw: 5, pitch: 0, roll: 1, zoom: -3.2}],
+  
+  // Scene 3: Cryptographic Card (11.8 -> 16.4)
+  [11.8, 13.6, {x: 0, y: 0, dist: 31, yaw: -5, pitch: 3, roll: -2, zoom: -2.4}],
+  [13.6, 15.0, {x: 5.1, y: -0.4, dist: 23, yaw: 8, pitch: 4, roll: 1.5, zoom: -2}],
+  [15.0, 16.4, {x: 5.1, y: -0.4, dist: 21.5, yaw: -6, pitch: -2, roll: -1, zoom: -2.2}],
+  
+  // Scene 4: Refinement Prompt (16.4 -> 20.6)
+  [16.4, 17.6, {x: 0, y: 0, dist: 31, yaw: -8, pitch: 3.5, roll: -1.8, zoom: -2.8}],
+  [17.6, 19.3, {x: -3.6, y: -0.2, dist: 23, yaw: -5, pitch: 1, roll: -0.8, zoom: -3}],
+  [19.3, 20.6, {x: -3, y: -0.2, dist: 22.6, yaw: 5, pitch: -1, roll: 0.5, zoom: -2.8}],
+  
+  // Scene 5: Finale / Lead with Confidence (20.6 -> 23.8)
+  [20.6, 22.6, {x: 0, y: 0, dist: 31, yaw: 0, pitch: 0, roll: 0, zoom: -2.2}],
+  [22.6, 23.8, {x: 0, y: -0.25, dist: 27.4, yaw: 0, pitch: 0, roll: 0, zoom: -1.6}]
+];
+
+function applyGlobalCamera(t) {
+  cameraSequence(t, GLOBAL_CAMERA_BEATS);
+}
+
+// A subtle continuous nebula fade across scene switches with zero sign-flip jolt
 function sceneTransition(t){
   const boundaries=[...TIMES,TOTAL],centers=[[.5,.5],[.5,.66],[.72,.5],[.7,.5],[.42,.55],[.5,.5]];
   let nearest=0;
   for(let i=1;i<boundaries.length;i++)if(Math.abs(t-boundaries[i])<Math.abs(t-boundaries[nearest]))nearest=i;
-  const delta=t-boundaries[nearest],p=clamp01(Math.abs(delta)/.28);
-  const weight=1-p*p*p*(p*(p*6-15)+10);
-  return {weight,center:centers[nearest%TIMES.length],outgoing:delta<0};
+  const delta=t-boundaries[nearest],p=clamp01(Math.abs(delta)/.32);
+  const bell=Math.pow(Math.max(0, 1 - p * p), 2);
+  return {weight: bell, center:centers[nearest%TIMES.length]};
 }
 grade.uniforms.astraBridge={value:0};grade.uniforms.astraCenter={value:new THREE.Vector2(.5,.5)};
 grade.material.fragmentShader=grade.material.fragmentShader
@@ -630,14 +664,16 @@ function promptScene(index){
   const size=index===0?46:prompt.text.length>330?44:49;
   const allLines=wrappedLines(c,prompt.text,size,1940),h=index===0?265:Math.max(310,allLines.length*65+160),y=index===0?690:Math.max(280,(1200-h)/2+90);
   return {start,end:TIMES[index+2],group:g,update(t){ov.clear();
+    const sceneFade = 1 - seg(t, 3.85, 4.35, easeInOutCubic);
+    c.globalAlpha = sceneFade;
     if(index===0){
-      c.globalAlpha=1-seg(t,.9,1.35);
+      c.globalAlpha=Math.min(sceneFade, 1-seg(t,.9,1.35));
       reveal(c,t,0,.85,()=>blossom(c,1200,225,92,'#10A37F'));
       reveal(c,t,.12,1,()=>{
         type(c,'ChatGPT',1200,325,82,INK,'center');
         label(c,'ENTERPRISE MARKET RESEARCH // ERP SYSTEMS',1200,385,22,MUTED,'center');
       });
-      c.globalAlpha=1;
+      c.globalAlpha=sceneFade;
     }else{
       reveal(c,t,0,.9,()=>type(c,prompt.title,1200,185,71,INK,'center'));
       reveal(c,t,.2,.8,()=>label(c,`THE REAL CONVERSATION  /  ${String(index+1).padStart(2,'0')}`,1200,285,26,BLUE,'center'));
@@ -650,7 +686,9 @@ function promptScene(index){
       const last=lines.at(-1),caretX=232+measure(last,size,400,HFONT)-Math.max(0,last.length-1)*size*.045,caretY=y+69+(lines.length-1)*65;
       if(t>.65&&t<typingEnd+.1)typingDust(c,caretX,caretY,t);
       if(t<typingEnd+.1&&Math.floor(t*4)%2===0){c.fillStyle='#10A37F';c.fillRect(caretX,caretY-size*.47,2,size*1.05);}
-    });ov.update();
+    });
+    c.globalAlpha=1;
+    ov.update();
   },cam(t){
     if(index===0)cameraSequence(t,[
       [0,1.2,{dist:31,yaw:9,pitch:4,roll:1.5,zoom:-3}],
@@ -696,14 +734,20 @@ function atmosphereScene(){
 function refinementScene(){
   const {g,ov,c}=filmSurface(),phrase=PROMPTS[2].text;
   return {start:TIMES[4],end:TIMES[5],group:g,update(t){ov.clear();
-    c.globalAlpha=1-seg(t,.95,1.2);particleTitle(c,'A little more life.',1200,260,115,t,.05,INK,'center');c.globalAlpha=1;
+    const outFade = 1 - seg(t, 3.65, 4.15, easeInOutCubic);
+    c.globalAlpha = outFade;
+    c.globalAlpha = Math.min(outFade, 1 - seg(t, .95, 1.2));
+    particleTitle(c,'A little more life.',1200,260,115,t,.05,INK,'center');
+    c.globalAlpha = outFade;
     reveal(c,t,.35,.9,()=>{
       composerCard(c,{y:505,h:355,active:t>2.5});
       const n=Math.floor(phrase.length*seg(t,.35,2.5,easeInOutCubic)),lines=wrappedLines(c,phrase.slice(0,n),57,1900);
       lines.forEach((line,i)=>type(c,line,228,580+i*78,57));
       const last=lines.at(-1),x=232+measure(last,57,400,HFONT)-Math.max(0,last.length-1)*57*.045,y=580+(lines.length-1)*78;
       if(t>.35&&t<2.6)typingDust(c,x,y,t);
-    });ov.update();
+    });
+    c.globalAlpha = 1;
+    ov.update();
   },cam(t){cameraSequence(t,[
     [0,1.2,{dist:32,yaw:-9,pitch:4,roll:-2,zoom:-3}],
     [1.2,2.9,{x:-3.6,y:-.2,dist:23,yaw:-5,pitch:1,roll:-.8,zoom:-3}],
@@ -781,7 +825,10 @@ function resultScene(){
   };
 
   redrawCard();
-  return {start:TIMES[3],end:TIMES[4],group:g,update(t){ov.clear();ov.mat.opacity=1-seg(t,1.4,2.0,easeInOutCubic);ov.mesh.visible=ov.mat.opacity>0;
+  return {start:TIMES[3],end:TIMES[4],group:g,update(t){ov.clear();
+    const outFade = 1 - seg(t, 4.0, 4.55, easeInOutCubic);
+    ov.mat.opacity = outFade;
+    ov.mesh.visible = outFade > 0;
     reveal(c,t,0,.85,()=>{label(c,'LAYER 03  //  REGULATORY TAX GATEWAY',150,190,26,RED);});
     reveal(c,t,.18,1,()=>type(c,'Cryptographic',150,435,83,INK));
     reveal(c,t,.4,1.1,()=>type(c,'Tax Clearance.',150,545,83,RED));
@@ -790,7 +837,9 @@ function resultScene(){
       type(c,'ZATCA Phase 2 clearance in 0.14s.',157,730,38,MUTED);
     });
     reveal(c,t,.7,.8,()=>label(c,'100% CLEARANCE RATE  •  DIGITAL SIGNATURES  •  UUID AUDIT',157,840,24,BLUE));
-    const e=seg(t,0,.7);artifact.mesh.rotation.y=card.mesh.rotation.y=cardSky.rotation.y=-.08;cardUniforms.time.value=t;artifact.mesh.position.z=lerp(-.5,.4,e);card.mesh.position.z=artifact.mesh.position.z+.1;cardSky.position.z=artifact.mesh.position.z+.05;ov.update();
+    const e=seg(t,0,.7);artifact.mesh.rotation.y=card.mesh.rotation.y=cardSky.rotation.y=-.08;cardUniforms.time.value=t;artifact.mesh.position.z=lerp(-.5,.4,e);card.mesh.position.z=artifact.mesh.position.z+.1;cardSky.position.z=artifact.mesh.position.z+.05;
+    artifact.mesh.scale.setScalar(lerp(1, 0.95, 1 - outFade));
+    ov.update();
   },cam(t){cameraSequence(t,[
     [0,1.8,{dist:32,yaw:-5,pitch:3,roll:-2,zoom:-2.4}],
     [1.8,3.2,{x:5.1,y:-.4,dist:23,yaw:8,pitch:4,roll:1.5,zoom:-2}],
@@ -832,15 +881,15 @@ const navDots = document.querySelectorAll('.nav-dot');
 function renderAt(t){
   let idx=SCENES.findIndex(s=>t>=s.start&&t<s.end);if(idx<0)idx=SCENES.length-1;
   const s=SCENES[idx];if(idx!==cur){SCENES.forEach((x,i)=>x.group.visible=i===idx);cur=idx;}
-  const lt=t-s.start;rig.focusDist=null;s.update(lt);s.cam(lt);updateAtmosphere(t,idx);
+  const lt=t-s.start;rig.focusDist=null;s.update(lt);applyGlobalCamera(t);updateAtmosphere(t,idx);
   const transition=sceneTransition(t);
-  rig.dist+=transition.weight*(transition.outgoing?-.7:.7);
-  grade.uniforms.astraBridge.value=transition.weight;grade.uniforms.astraCenter.value.set(...transition.center);
+  rig.dist+=transition.weight*0.22;
+  grade.uniforms.astraBridge.value=transition.weight*0.82;grade.uniforms.astraCenter.value.set(...transition.center);
   surfaceReveals.forEach(({u,delay})=>u.value=seg(lt,delay,delay+.7,easeOutCubic));
   if(!motionQuery.matches){rig.yaw+=pointer.x*.7;rig.pitch+=pointer.y*.4;}
-  applyRig();const fin=seg(lt,0,.28,easeOutCubic);
-  dof.uniforms.focus.value=camera.position.distanceTo(rig.focusPoint)-(1-fin)*2.5;
-  dof.uniforms.aperture.value=rig.aperture+.035*(1-fin);dof.uniforms.maxblur.value=rig.maxblur*(1+1.2*(1-fin));
+  applyRig();const fin=seg(lt,0,.20,easeOutCubic);
+  dof.uniforms.focus.value=camera.position.distanceTo(rig.focusPoint)-(1-fin)*0.6;
+  dof.uniforms.aperture.value=rig.aperture+.010*(1-fin);dof.uniforms.maxblur.value=rig.maxblur*(1+0.35*(1-fin));
   grade.uniforms.time.value=t;grade.uniforms.fade.value=1;
   camera.layers.set(0);scene.overrideMaterial=depthMat;renderer.setClearColor(0xffffff,1);renderer.setRenderTarget(depthRT);renderer.clear();renderer.render(scene,camera);
   scene.overrideMaterial=null;camera.layers.enableAll();renderer.autoClear=false;
@@ -881,16 +930,18 @@ let targetT = 0;
 let userScrolled = false;
 let scrollTimeout = null;
 
-// Interactive Wheel / Scroll (Apple-style 3D Scroll)
+// Interactive Wheel / Scroll (Silky Proportional Cinematic Scroll)
 window.addEventListener('wheel', (e) => {
   userScrolled = true;
   clearTimeout(scrollTimeout);
-  scrollTimeout = setTimeout(() => { userScrolled = false; }, 2500);
+  scrollTimeout = setTimeout(() => { userScrolled = false; }, 2000);
 
-  const delta = e.deltaY > 0 ? 0.75 : -0.75;
-  targetT = Math.max(0, Math.min(TOTAL - 0.001, targetT + delta));
+  const rawDelta = e.deltaMode === 1 ? e.deltaY * 28 : e.deltaMode === 2 ? e.deltaY * 280 : e.deltaY;
+  // Proportional dynamic step: gentle touch = silky smooth, fast scroll = responsive gliding
+  const step = Math.sign(rawDelta) * Math.min(1.2, Math.max(0.28, Math.abs(rawDelta) * 0.0035));
+  targetT = Math.max(0, Math.min(TOTAL - 0.001, targetT + step));
   if (targetT >= TOTAL - 0.4) {
-    setTimeout(enterSite, 600);
+    setTimeout(enterSite, 500);
   }
 }, { passive: true });
 
@@ -905,10 +956,10 @@ window.addEventListener('touchmove', (e) => {
   touchStartY = currentY;
   userScrolled = true;
   clearTimeout(scrollTimeout);
-  scrollTimeout = setTimeout(() => { userScrolled = false; }, 2500);
-  targetT = Math.max(0, Math.min(TOTAL - 0.001, targetT + dy * 0.02));
+  scrollTimeout = setTimeout(() => { userScrolled = false; }, 2000);
+  targetT = Math.max(0, Math.min(TOTAL - 0.001, targetT + dy * 0.012));
   if (targetT >= TOTAL - 0.4) {
-    setTimeout(enterSite, 600);
+    setTimeout(enterSite, 500);
   }
 }, { passive: true });
 
@@ -917,7 +968,7 @@ navDots.forEach(btn => {
   btn.addEventListener('click', () => {
     userScrolled = true;
     clearTimeout(scrollTimeout);
-    scrollTimeout = setTimeout(() => { userScrolled = false; }, 2500);
+    scrollTimeout = setTimeout(() => { userScrolled = false; }, 2000);
     targetT = Number(btn.dataset.time) + 0.1;
   });
 });
@@ -928,14 +979,14 @@ addEventListener('keydown',e=>{
     e.preventDefault();
     userScrolled = true;
     clearTimeout(scrollTimeout);
-    scrollTimeout = setTimeout(() => { userScrolled = false; }, 2500);
+    scrollTimeout = setTimeout(() => { userScrolled = false; }, 2000);
     targetT = Math.min(TOTAL - 0.001, targetT + 1.2);
     if(targetT >= TOTAL - 0.4) enterSite();
   } else if(e.code==='ArrowLeft'||e.code==='ArrowUp'||e.code==='PageUp'){
     e.preventDefault();
     userScrolled = true;
     clearTimeout(scrollTimeout);
-    scrollTimeout = setTimeout(() => { userScrolled = false; }, 2500);
+    scrollTimeout = setTimeout(() => { userScrolled = false; }, 2000);
     targetT = Math.max(0, targetT - 1.2);
   } else if(e.code==='Enter'){
     enterSite();
@@ -950,11 +1001,12 @@ function loop(){
   if(document.hidden) return;
 
   if (userScrolled) {
-    // Smooth damping to user scroll position
-    T += (targetT - T) * 0.16;
+    // Silky frame-rate independent spring damping (responsive, zero sluggish lag)
+    const factor = 1 - Math.exp(-9.5 * dt);
+    T += (targetT - T) * factor;
   } else {
     // Gentle ambient cinematic drift when not actively scrolling
-    T = (T + dt * 0.7) % TOTAL;
+    T = (T + dt * 0.65) % TOTAL;
     targetT = T;
   }
   renderAt(T);
