@@ -1,0 +1,989 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>COA Egypt | 3D Cinematic Digital Harbor</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+html,body{margin:0;height:100%;background:#000;overflow:hidden}
+canvas{display:block}
+#gl{position:fixed;inset:0;width:100%;height:100%}
+#bar{position:fixed;left:0;right:0;bottom:0;height:2px;background:rgba(255,255,255,.05);opacity:0;transition:opacity .35s;z-index:5}
+#bar i{display:block;height:100%;width:0;background:rgba(255,255,255,.45)}
+body:hover #bar{opacity:1}
+
+html[data-capture] #gl{outline:none}
+header[hidden],footer[hidden]{display:none!important}
+body{font-family:Geist,-apple-system,sans-serif;color:#dae8fc}button,input{font:inherit}button{color:inherit;background:transparent;border:0;cursor:pointer;padding:8px 12px;border-radius:6px}button:hover,button[aria-pressed=true]{background:#a7d2ff15;color:#a7d2ff}button:focus-visible,input:focus-visible{outline:2px solid #a7d2ff;outline-offset:3px}
+header,footer{position:fixed;z-index:6;left:4%;right:4%;font-size:11px;letter-spacing:.09em}header{top:30px;display:flex;justify-content:space-between;align-items:center;color:#8ea6c6}header .brand{font-size:16px;letter-spacing:-.03em;color:#edf5ff}header i{display:inline-block;background:#a7d2ff;width:5px;height:5px;border-radius:100%;margin:0 0 2px 10px}footer{bottom:22px}.meta{display:flex;justify-content:space-between;font-size:10px;color:#8198b8}#seek{width:100%;height:2px;accent-color:#a7d2ff;display:block;margin:13px 0}.controls{display:flex;gap:4px;align-items:center}.controls nav{display:flex;margin:auto;gap:7px}.hint{font-size:9px;color:#627b9c}#loading{position:fixed;inset:0;display:grid;place-items:center;font-size:14px;letter-spacing:.04em;background:#050810;z-index:10}#loading[hidden]{display:none}html[data-capture=frames] header,html[data-capture=frames] footer{display:none}
+@media(max-width:650px){header,.meta,.hint{display:none}footer{bottom:4px}#seek{margin:6px 0}.controls nav{gap:0;margin-left:auto}.controls button{padding:9px 6px;font-size:10px}.controls nav button{font-size:9px}}
+</style>
+<script type="importmap">
+{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"}}
+</script>
+</head>
+<body>
+<canvas id="gl" tabindex="0" aria-label="Animated Codex Astra film. Space to pause; arrow keys to seek."></canvas>
+<div id="loading" role="status">Initializing COA Digital Harbor v5.0…</div>
+<header>
+  <div style="display:flex;align-items:center;gap:12px;">
+    <img src="assets/coa-logo-transparent.png" alt="COA Egypt" style="width:34px;height:34px;object-fit:contain;filter:drop-shadow(0 2px 8px rgba(0,0,0,0.6));">
+    <div>
+      <span class="brand" style="font-size:16px;font-weight:800;letter-spacing:-0.02em;color:#fff;">COA <span style="color:#F00613;">EGYPT</span></span>
+      <span style="display:block;font-size:10px;font-family:'JetBrains Mono',monospace;color:#94a3b8;letter-spacing:0.08em;">ODDO_SILVER // CPAs</span>
+    </div>
+  </div>
+  <div style="display:flex;align-items:center;gap:16px;">
+    <span class="partner-badge" style="display:inline-flex;align-items:center;gap:6px;background:rgba(240,6,19,0.14);border:1px solid rgba(240,6,19,0.4);color:#ff9fa5;padding:5px 12px;border-radius:20px;font-size:11px;font-family:'JetBrains Mono',monospace;font-weight:600;">
+      <span style="width:6px;height:6px;border-radius:50%;background:#F00613;box-shadow:0 0 8px #F00613;"></span>
+      ZATCA Phase 2 & ETA Certified
+    </span>
+    <button id="enterSiteBtn" style="background:linear-gradient(135deg, #F00613 0%, #B8040E 100%);color:#ffffff;font-weight:700;padding:8px 20px;border-radius:20px;font-size:12px;cursor:pointer;border:1px solid rgba(255,255,255,0.3);box-shadow:0 0 25px rgba(240,6,19,0.5);letter-spacing:0.02em;transition:all 0.2s;">
+      Enter Site Directly →
+    </button>
+  </div>
+</header>
+<div id="scrollPrompt" style="position:fixed;bottom:24px;left:50%;transform:translateX(-50%);z-index:6;display:flex;align-items:center;gap:10px;background:rgba(10,18,32,0.85);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,0.18);padding:8px 22px;border-radius:30px;color:#cbd5e1;font-size:12px;font-family:Geist,-apple-system,sans-serif;box-shadow:0 4px 20px rgba(0,0,0,0.5);pointer-events:none;">
+  <span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:#F00613;box-shadow:0 0 10px #F00613;"></span>
+  <span id="chapterTitle" style="color:#ffffff;font-weight:600;">01 // Welcome to COA</span>
+  <span style="color:#64748b;margin:0 4px;">•</span>
+  <span style="color:#94a3b8;">Scroll or swipe to explore ↓</span>
+</div>
+<div id="navDots" style="position:fixed;right:24px;top:50%;transform:translateY(-50%);z-index:6;display:flex;flex-direction:column;gap:12px;">
+  <button class="nav-dot active" data-time="0" title="Welcome to COA" style="width:10px;height:10px;border-radius:50%;background:#F00613;border:0;padding:0;cursor:pointer;transition:all 0.3s;box-shadow:0 0 10px rgba(240,6,19,0.8);"></button>
+  <button class="nav-dot" data-time="3.2" title="ChatGPT ERP Inquiry" style="width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,0.25);border:0;padding:0;cursor:pointer;transition:all 0.3s;"></button>
+  <button class="nav-dot" data-time="7.6" title="ChatGPT Recommendation" style="width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,0.25);border:0;padding:0;cursor:pointer;transition:all 0.3s;"></button>
+  <button class="nav-dot" data-time="11.8" title="Odoo Architecture" style="width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,0.25);border:0;padding:0;cursor:pointer;transition:all 0.3s;"></button>
+  <button class="nav-dot" data-time="16.4" title="Regulatory Clearance" style="width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,0.25);border:0;padding:0;cursor:pointer;transition:all 0.3s;"></button>
+  <button class="nav-dot" data-time="20.6" title="Lead with Confidence" style="width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,0.25);border:0;padding:0;cursor:pointer;transition:all 0.3s;"></button>
+</div>
+<script type="module">
+import * as THREE from 'three';
+import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
+import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
+import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
+import { ShaderPass } from 'three/addons/postprocessing/ShaderPass.js';
+import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
+
+/* ============================================================
+   helpers
+   ============================================================ */
+const FONT = 'Inter, -apple-system, "SF Pro Display", "Helvetica Neue", Arial, sans-serif';
+const HFONT = 'Geist, Inter, -apple-system, sans-serif';
+const MFONT = '"JetBrains Mono", ui-monospace, Menlo, Consolas, monospace';
+const PX = 100;                       // canvas px per world unit
+const clamp01 = x => x < 0 ? 0 : x > 1 ? 1 : x;
+const lerp = (a, b, t) => a + (b - a) * t;
+const rad = d => d * Math.PI / 180;
+const easeOutCubic = t => 1 - Math.pow(1 - t, 3);
+const easeInOutCubic = t => t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+const easeOutExpo = t => t >= 1 ? 1 : 1 - Math.pow(2, -10 * t);
+const easeOutBack = t => { const c = 1.70158; return 1 + (c + 1) * Math.pow(t - 1, 3) + c * Math.pow(t - 1, 2); };
+const seg = (t, a, b, e = easeOutCubic) => e(clamp01((t - a) / (b - a)));
+const hash = n => { const x = Math.sin(n * 127.1 + 311.7) * 43758.5453; return x - Math.floor(x); };
+
+function mkCanvas(w, h) { const c = document.createElement('canvas'); c.width = w; c.height = h; return { c, ctx: c.getContext('2d') }; }
+function rrp(ctx, x, y, w, h, r) {
+  r = Math.min(r, w / 2, h / 2);
+  ctx.beginPath(); ctx.moveTo(x + r, y); ctx.arcTo(x + w, y, x + w, y + h, r); ctx.arcTo(x + w, y + h, x, y + h, r);
+  ctx.arcTo(x, y + h, x, y, r); ctx.arcTo(x, y, x + w, y, r); ctx.closePath();
+}
+function pill(ctx, x, y, w, h, bg, border, r = h / 2) {
+  rrp(ctx, x, y, w, h, r);
+  if (bg) { ctx.fillStyle = bg; ctx.fill(); }
+  if (border) { ctx.strokeStyle = border; ctx.lineWidth = 2; ctx.stroke(); }
+}
+function setFont(ctx, size, weight, fam = FONT) { ctx.font = `${weight} ${size}px ${fam}`; }
+function text(ctx, s, x, y, size, weight = 500, color = '#fff', align = 'left', ls = 0, fam = FONT) {
+  setFont(ctx, size, weight, fam); ctx.fillStyle = color; ctx.textAlign = align; ctx.textBaseline = 'middle';
+  if ('letterSpacing' in ctx) ctx.letterSpacing = ls + 'px';
+  ctx.fillText(s, x, y);
+  if ('letterSpacing' in ctx) ctx.letterSpacing = '0px';
+}
+const _m = mkCanvas(8, 8).ctx;
+function measure(s, size, weight = 500, fam = FONT) { setFont(_m, size, weight, fam); return _m.measureText(s).width; }
+const mono = (ctx, s, x, y, size, color, align = 'left', ls = 0.16) => text(ctx, s, x, y, size, 400, color, align, size * ls, MFONT);
+
+const GLY = 'ABCDEFGHJKLMNPQRSTUVWXYZ0123456789#%&';
+/* progressive decode-style text reveal */
+function revealText(ctx, s, x, y, size, weight, color, p, seed = 0) {
+  if (p <= 0) return;
+  setFont(ctx, size, weight); ctx.textBaseline = 'middle'; ctx.textAlign = 'left';
+  const n = s.length; let cx = x; const ga = ctx.globalAlpha;
+  for (let i = 0; i < n; i++) {
+    const li = p * (n + 2.5) - i;
+    if (li <= 0) break;
+    let ch = s[i]; let a = 1;
+    if (li < 0.9 && ch !== ' ') { ch = GLY[Math.floor(hash(i * 3 + seed * 17 + Math.floor(li * 12)) * GLY.length)]; a = 0.55; }
+    ctx.globalAlpha = ga * a; ctx.fillStyle = color; ctx.fillText(ch, cx, y);
+    cx += ctx.measureText(s[i]).width;
+  }
+  ctx.globalAlpha = ga;
+}
+
+/* ---------- line icons (24 unit box) ---------- */
+const ICONS = {
+  home: c => { c.beginPath(); c.moveTo(3, 10.5); c.lineTo(12, 3.5); c.lineTo(21, 10.5); c.lineTo(21, 19); c.quadraticCurveTo(21, 21, 19, 21); c.lineTo(5, 21); c.quadraticCurveTo(3, 21, 3, 19); c.closePath(); c.stroke(); c.beginPath(); c.moveTo(9, 15.5); c.lineTo(15, 15.5); c.stroke(); },
+  users: c => { c.beginPath(); c.arc(9, 8, 3.4, 0, 7); c.stroke(); c.beginPath(); c.arc(17, 7.5, 2.7, 0, 7); c.stroke(); c.beginPath(); c.moveTo(2.5, 20.5); c.bezierCurveTo(2.5, 15.5, 5.5, 13.5, 9, 13.5); c.bezierCurveTo(12.5, 13.5, 15.5, 15.5, 15.5, 20.5); c.stroke(); c.beginPath(); c.moveTo(17.5, 13.5); c.bezierCurveTo(20, 13.5, 22, 15.5, 22, 19); c.stroke(); },
+  list: c => { for (const y of [7, 12, 17]) { c.beginPath(); c.moveTo(9, y); c.lineTo(20, y); c.stroke(); c.beginPath(); c.arc(5, y, 1.3, 0, 7); c.fill(); } },
+  columns: c => { rrp(c, 3, 4, 18, 16, 3); c.stroke(); c.beginPath(); c.moveTo(9, 4); c.lineTo(9, 20); c.moveTo(15, 4); c.lineTo(15, 20); c.stroke(); },
+  bookmark: c => { c.beginPath(); c.moveTo(6, 3.5); c.lineTo(18, 3.5); c.lineTo(18, 21); c.lineTo(12, 16.5); c.lineTo(6, 21); c.closePath(); c.stroke(); },
+  user: c => { c.beginPath(); c.arc(12, 8, 4, 0, 7); c.stroke(); c.beginPath(); c.moveTo(4, 21); c.bezierCurveTo(4, 16, 7.5, 14, 12, 14); c.bezierCurveTo(16.5, 14, 20, 16, 20, 21); c.stroke(); },
+  userplus: c => { c.beginPath(); c.arc(10, 8, 4, 0, 7); c.stroke(); c.beginPath(); c.moveTo(2.5, 21); c.bezierCurveTo(2.5, 16, 6, 14, 10, 14); c.bezierCurveTo(13, 14, 15, 15, 16.5, 17); c.stroke(); c.beginPath(); c.moveTo(19, 8); c.lineTo(19, 14); c.moveTo(16, 11); c.lineTo(22, 11); c.stroke(); },
+  archive: c => { rrp(c, 3, 4, 18, 4, 1); c.stroke(); rrp(c, 4, 8, 16, 12, 1); c.stroke(); c.beginPath(); c.moveTo(10, 13); c.lineTo(14, 13); c.stroke(); },
+  lines: c => { for (const y of [6, 12, 18]) { c.beginPath(); c.moveTo(4, y); c.lineTo(20, y); c.stroke(); } },
+  crown: c => { c.beginPath(); c.moveTo(3, 17); c.lineTo(4.5, 7.5); c.lineTo(9.5, 12); c.lineTo(12, 5); c.lineTo(14.5, 12); c.lineTo(19.5, 7.5); c.lineTo(21, 17); c.closePath(); c.fill(); c.beginPath(); c.moveTo(4, 20.5); c.lineTo(20, 20.5); c.stroke(); },
+  bell: c => { c.beginPath(); c.moveTo(6, 17); c.lineTo(6, 11); c.arc(12, 11, 6, Math.PI, 0, false); c.lineTo(18, 17); c.lineTo(19.5, 19.5); c.lineTo(4.5, 19.5); c.closePath(); c.stroke(); c.beginPath(); c.moveTo(10, 22.5); c.lineTo(14, 22.5); c.stroke(); },
+  refresh: c => { c.beginPath(); c.arc(12, 12, 7, -0.2, 4.6, false); c.stroke(); c.beginPath(); c.moveTo(19, 5); c.lineTo(19, 10.5); c.lineTo(13.5, 10.5); c.stroke(); },
+  sparkle: c => { c.beginPath(); c.moveTo(12, 3); c.quadraticCurveTo(12.6, 11.4, 21, 12); c.quadraticCurveTo(12.6, 12.6, 12, 21); c.quadraticCurveTo(11.4, 12.6, 3, 12); c.quadraticCurveTo(11.4, 11.4, 12, 3); c.closePath(); c.fill(); },
+  dots: c => { for (const x of [5, 12, 19]) { c.beginPath(); c.arc(x, 12, 1.9, 0, 7); c.fill(); } },
+  alert: c => { c.beginPath(); c.arc(12, 12, 9, 0, 7); c.stroke(); c.beginPath(); c.moveTo(12, 7.5); c.lineTo(12, 13); c.stroke(); c.beginPath(); c.arc(12, 16.5, 1.3, 0, 7); c.fill(); },
+  zap: c => { c.beginPath(); c.moveTo(13, 2.5); c.lineTo(5, 13.5); c.lineTo(11, 13.5); c.lineTo(10, 21.5); c.lineTo(19, 10.5); c.lineTo(13, 10.5); c.closePath(); c.stroke(); },
+  gauge: c => { c.beginPath(); c.arc(12, 13, 8, Math.PI * 0.8, Math.PI * 2.2); c.stroke(); c.beginPath(); c.moveTo(12, 13); c.lineTo(16.5, 8.5); c.stroke(); },
+  card: c => { rrp(c, 3, 6, 18, 13, 2); c.stroke(); c.beginPath(); c.moveTo(3, 10.5); c.lineTo(21, 10.5); c.stroke(); },
+  flag: c => { c.beginPath(); c.moveTo(5, 21); c.lineTo(5, 3.5); c.lineTo(19, 3.5); c.lineTo(15.5, 8.5); c.lineTo(19, 13.5); c.lineTo(5, 13.5); c.stroke(); },
+  chat: c => { c.beginPath(); c.moveTo(4, 18); c.lineTo(4, 6); c.quadraticCurveTo(4, 4, 6, 4); c.lineTo(18, 4); c.quadraticCurveTo(20, 4, 20, 6); c.lineTo(20, 14); c.quadraticCurveTo(20, 16, 18, 16); c.lineTo(8, 16); c.closePath(); c.stroke(); },
+  shield: c => { c.beginPath(); c.moveTo(12, 3); c.lineTo(20, 6); c.lineTo(20, 12); c.bezierCurveTo(20, 17, 16, 20, 12, 21.5); c.bezierCurveTo(8, 20, 4, 17, 4, 12); c.lineTo(4, 6); c.closePath(); c.stroke(); },
+  doc: c => { c.beginPath(); c.moveTo(6, 3); c.lineTo(14, 3); c.lineTo(19, 8); c.lineTo(19, 21); c.lineTo(6, 21); c.closePath(); c.stroke(); c.beginPath(); c.moveTo(14, 3); c.lineTo(14, 8); c.lineTo(19, 8); c.stroke(); },
+  chevron: c => { c.beginPath(); c.moveTo(9, 6); c.lineTo(15, 12); c.lineTo(9, 18); c.stroke(); },
+  check: c => { c.beginPath(); c.arc(12, 12, 9, 0, 7); c.stroke(); c.beginPath(); c.moveTo(8, 12.5); c.lineTo(11, 15.5); c.lineTo(16.5, 9.5); c.stroke(); },
+  plus: c => { c.beginPath(); c.moveTo(12, 5); c.lineTo(12, 19); c.moveTo(5, 12); c.lineTo(19, 12); c.stroke(); },
+  scissors: c => { c.beginPath(); c.arc(6, 6, 3, 0, 7); c.stroke(); c.beginPath(); c.arc(6, 18, 3, 0, 7); c.stroke(); c.beginPath(); c.moveTo(20, 4); c.lineTo(8.1, 15.9); c.moveTo(14.5, 14.5); c.lineTo(20, 20); c.moveTo(8.1, 8.1); c.lineTo(12, 12); c.stroke(); },
+  film: c => { rrp(c, 3, 3, 18, 18, 2); c.stroke(); c.beginPath(); c.moveTo(7, 3); c.lineTo(7, 21); c.moveTo(17, 3); c.lineTo(17, 21); for (const y of [8, 12, 16]) { c.moveTo(3, y); c.lineTo(7, y); c.moveTo(17, y); c.lineTo(21, y); } c.stroke(); },
+  clapper: c => { c.beginPath(); c.moveTo(3, 9); c.lineTo(21, 9); c.lineTo(21, 19); c.quadraticCurveTo(21, 21, 19, 21); c.lineTo(5, 21); c.quadraticCurveTo(3, 21, 3, 19); c.closePath(); c.stroke(); c.beginPath(); c.moveTo(3, 9); c.lineTo(4.5, 4); c.lineTo(20, 3); c.lineTo(21, 9); c.stroke(); c.beginPath(); c.moveTo(8, 4); c.lineTo(10, 9); c.moveTo(13, 3.5); c.lineTo(15, 9); c.stroke(); },
+  sliders: c => { for (const [y, kx] of [[6, 15], [12, 8], [18, 17]]) { c.beginPath(); c.moveTo(3, y); c.lineTo(21, y); c.stroke(); c.beginPath(); c.arc(kx, y, 2.3, 0, 7); c.fill(); } },
+  mic: c => { rrp(c, 9, 3, 6, 11, 3); c.stroke(); c.beginPath(); c.moveTo(5, 11); c.bezierCurveTo(5, 15.5, 8, 18, 12, 18); c.bezierCurveTo(16, 18, 19, 15.5, 19, 11); c.moveTo(12, 18); c.lineTo(12, 21.5); c.moveTo(8.5, 21.5); c.lineTo(15.5, 21.5); c.stroke(); },
+  captions: c => { rrp(c, 3, 5, 18, 14, 2.5); c.stroke(); c.beginPath(); c.moveTo(6, 12); c.lineTo(10, 12); c.moveTo(12.5, 12); c.lineTo(18, 12); c.moveTo(6, 15.5); c.lineTo(13, 15.5); c.moveTo(15.5, 15.5); c.lineTo(18, 15.5); c.stroke(); },
+  timeline: c => { rrp(c, 3, 5, 10, 5, 1.5); c.stroke(); rrp(c, 8, 10.5, 13, 5, 1.5); c.stroke(); rrp(c, 3, 16, 7, 5, 1.5); c.stroke(); },
+  play: c => { c.beginPath(); c.moveTo(7, 4.5); c.lineTo(19.5, 12); c.lineTo(7, 19.5); c.closePath(); c.stroke(); },
+};
+function icon(ctx, name, x, y, s, color, lw = 1.8, alpha = 1, scale = 1) {
+  ctx.save(); ctx.globalAlpha *= alpha; ctx.translate(x, y); ctx.scale(s / 24 * scale, s / 24 * scale); ctx.translate(-12, -12);
+  ctx.strokeStyle = color; ctx.fillStyle = color; ctx.lineWidth = lw; ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+  ICONS[name](ctx); ctx.restore();
+}
+/* DesignCode mark — designcode.io/designcode-logo.svg (128 box; the shape spans 20..108) */
+/* icon assembling from particles: sample any icon's pixels */
+const _iconPts = {};
+function iconPoints(name) {
+  if (_iconPts[name]) return _iconPts[name];
+  const { c, ctx } = mkCanvas(48, 48); icon(ctx, name, 24, 24, 44, '#fff', 2.4);
+  const d = ctx.getImageData(0, 0, 48, 48).data, all = [];
+  for (let y = 0; y < 48; y += 2) for (let x = 0; x < 48; x += 2) if (d[(y * 48 + x) * 4 + 3] > 90) all.push([x / 2, y / 2]);
+  const step = Math.max(1, Math.floor(all.length / 46)), pts = [];
+  for (let i = 0; i < all.length; i += step) pts.push(all[i]);
+  return _iconPts[name] = pts;
+}
+function assembleIcon(ctx, name, x, y, s, color, p, seed = 0) {
+  if (p <= 0) return;
+  if (p < 1) {
+    const e = easeOutCubic(p); const k = s / 24;
+    ctx.save(); ctx.fillStyle = color; ctx.globalAlpha *= (0.35 + 0.65 * p) * (p < 0.85 ? 1 : (1 - p) / 0.15);
+    iconPoints(name).forEach((pt, i) => {
+      const rx = (hash(i * 7 + seed) - 0.5) * s * 3.2, ry = (hash(i * 13 + seed + 5) - 0.5) * s * 3.2;
+      const tx = x + (pt[0] - 12) * k, ty = y + (pt[1] - 12) * k;
+      const px = lerp(tx + rx, tx, e), py = lerp(ty + ry, ty, e);
+      ctx.beginPath(); ctx.arc(px, py, Math.max(1.2, 2.2 * k * (1 - e) + 1.4), 0, 7); ctx.fill();
+    });
+    ctx.restore();
+  }
+  if (p > 0.7) icon(ctx, name, x, y, s, color, 1.9, (p - 0.7) / 0.3);
+}
+/* procedural avatar */
+const AV = [['#d9a273', '#4a2e18', '#f2c9a0'], ['#9db4e0', '#22304f', '#e6c3a5'], ['#c4b98a', '#3f3a1e', '#f0d2b0'], ['#d38f8f', '#4a2020', '#e9c1a2'], ['#8fc9a6', '#1e4a30', '#f1cfae'], ['#b19bd9', '#2e2250', '#e5c0a1'], ['#e0b58a', '#503018', '#d9a37a'], ['#8fb8c9', '#1f3a4a', '#f2cdb0']];
+function avatar(ctx, x, y, r, i) {
+  const [bg, dark, skin] = AV[i % AV.length];
+  ctx.save(); ctx.beginPath(); ctx.arc(x, y, r, 0, 7); ctx.closePath(); ctx.clip();
+  const g = ctx.createLinearGradient(x - r, y - r, x + r, y + r); g.addColorStop(0, bg); g.addColorStop(1, dark); ctx.fillStyle = g; ctx.fillRect(x - r, y - r, 2 * r, 2 * r);
+  ctx.fillStyle = dark; ctx.beginPath(); ctx.ellipse(x, y + r * 1.3, r * 0.95, r * 0.8, 0, 0, 7); ctx.fill();
+  ctx.fillStyle = 'rgba(255,255,255,0.14)'; ctx.beginPath(); ctx.ellipse(x, y + r * 1.3, r * 0.6, r * 0.55, 0, 0, 7); ctx.fill();
+  ctx.fillStyle = skin; ctx.beginPath(); ctx.ellipse(x, y - r * 0.12, r * 0.38, r * 0.46, 0, 0, 7); ctx.fill();
+  ctx.fillStyle = dark; ctx.beginPath(); ctx.ellipse(x, y - r * 0.42, r * 0.41, r * 0.3, 0, Math.PI, 0); ctx.fill();
+  const v = ctx.createRadialGradient(x, y, r * 0.3, x, y, r); v.addColorStop(0, 'rgba(0,0,0,0)'); v.addColorStop(1, 'rgba(0,0,0,0.4)'); ctx.fillStyle = v; ctx.fillRect(x - r, y - r, 2 * r, 2 * r);
+  ctx.restore();
+  ctx.strokeStyle = 'rgba(255,255,255,0.14)'; ctx.lineWidth = 2; ctx.beginPath(); ctx.arc(x, y, r, 0, 7); ctx.stroke();
+}
+
+/* ---------- geometry ---------- */
+function roundedShape(w, h, r) {
+  const s = new THREE.Shape(); const x = -w / 2, y = -h / 2; r = Math.min(r, w / 2, h / 2);
+  s.moveTo(x + r, y); s.lineTo(x + w - r, y); s.absarc(x + w - r, y + r, r, -Math.PI / 2, 0, false);
+  s.lineTo(x + w, y + h - r); s.absarc(x + w - r, y + h - r, r, 0, Math.PI / 2, false);
+  s.lineTo(x + r, y + h); s.absarc(x + r, y + h - r, r, Math.PI / 2, Math.PI, false);
+  s.lineTo(x, y + r); s.absarc(x + r, y + r, r, Math.PI, Math.PI * 1.5, false);
+  return s;
+}
+/* Beveled slab with a canvas-textured front face */
+class Slab {
+  constructor(w, h, { r = 0.4, depth = 0.16, bevel = 0.035, px = PX, bg = '#111113', rough = 0.42, side = 0x1c1c20, transparent = false } = {}) {
+    this.w = w; this.h = h; this.px = px; this.bg = bg;
+    const cw = Math.round(w * px), ch = Math.round(h * px);
+    const { c, ctx } = mkCanvas(cw, ch); this.c = c; this.ctx = ctx; this.cw = cw; this.ch = ch;
+    const tex = new THREE.CanvasTexture(c); tex.colorSpace = THREE.SRGBColorSpace; tex.anisotropy = 8;
+    tex.repeat.set(1 / w, 1 / h); tex.offset.set(0.5, 0.5); this.tex = tex;
+    const geo = new THREE.ExtrudeGeometry(roundedShape(w, h, r), { depth, bevelEnabled: true, bevelThickness: bevel, bevelSize: bevel, bevelSegments: 3, curveSegments: 14 });
+    geo.translate(0, 0, -depth - bevel);
+    this.front = new THREE.MeshStandardMaterial({ color: 0x000000, emissive: 0xffffff, emissiveMap: tex, roughness: rough, metalness: 0, transparent });
+    this.side = new THREE.MeshStandardMaterial({ color: side, roughness: 0.32, metalness: 0.25, transparent });
+    this.mesh = new THREE.Mesh(geo, [this.front, this.side]);
+    this.clear();
+  }
+  clear() { const { ctx, cw, ch } = this; ctx.clearRect(0, 0, cw, ch); ctx.fillStyle = this.bg; ctx.fillRect(0, 0, cw, ch); }
+  update() { this.tex.needsUpdate = true; }
+  toLocal(cx, cy) { return [cx / this.px - this.w / 2, this.h / 2 - cy / this.px]; }
+  setOpacity(o) { this.front.opacity = o; this.side.opacity = o; }
+}
+/* overlays registered here write alpha-tested depth in the DOF prepass, so they can sit in focus in front of a blurred slab */
+const DEPTH_WRITERS = [];
+function depthWriter(ov, alphaTest = 0.3) {
+  const m = new THREE.MeshDepthMaterial({ depthPacking: THREE.RGBADepthPacking, map: ov.tex, alphaTest }); m.blending = THREE.NoBlending;
+  DEPTH_WRITERS.push({ mesh: ov.mesh, mat: m }); return ov;
+}
+/* transparent canvas plane (HDR multiplier for bloom) */
+class Overlay {
+  constructor(w, h, { px = PX, mult = 1, additive = false, z = 0.02 } = {}) {
+    this.w = w; this.h = h; this.px = px;
+    const cw = Math.round(w * px), ch = Math.round(h * px);
+    const { c, ctx } = mkCanvas(cw, ch); this.c = c; this.ctx = ctx; this.cw = cw; this.ch = ch;
+    const tex = new THREE.CanvasTexture(c); tex.colorSpace = THREE.SRGBColorSpace; tex.anisotropy = 8; this.tex = tex;
+    this.mat = new THREE.MeshBasicMaterial({ map: tex, transparent: true, depthWrite: false, color: new THREE.Color(mult, mult, mult), blending: additive ? THREE.AdditiveBlending : THREE.NormalBlending });
+    this.mesh = new THREE.Mesh(new THREE.PlaneGeometry(w, h), this.mat); this.mesh.position.z = z; this.mesh.layers.set(1); this.mesh.renderOrder = 5;
+  }
+  clear() { this.ctx.clearRect(0, 0, this.cw, this.ch); }
+  update() { this.tex.needsUpdate = true; }
+}
+/* radial glow sprite */
+const glowTexCache = {};
+function glowTexture(inner = 'rgba(255,255,255,1)', outer = 'rgba(255,255,255,0)') {
+  const k = inner + outer; if (glowTexCache[k]) return glowTexCache[k];
+  const { c, ctx } = mkCanvas(256, 256);
+  const g = ctx.createRadialGradient(128, 128, 0, 128, 128, 128); g.addColorStop(0, inner); g.addColorStop(0.35, inner.replace(/,1\)$/, ',0.45)')); g.addColorStop(1, outer);
+  ctx.fillStyle = g; ctx.fillRect(0, 0, 256, 256);
+  const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; glowTexCache[k] = t; return t;
+}
+function glowPlane(w, h, color, intensity = 1) {
+  const m = new THREE.MeshBasicMaterial({ map: glowTexture(), transparent: true, depthWrite: false, blending: THREE.AdditiveBlending, color: new THREE.Color(color).multiplyScalar(intensity) });
+  const mesh = new THREE.Mesh(new THREE.PlaneGeometry(w, h), m); mesh.layers.set(1); mesh.renderOrder = 4; return mesh;
+}
+
+/* ============================================================
+   renderer / post
+   ============================================================ */
+const canvas = document.getElementById('gl');
+const renderer = new THREE.WebGLRenderer({ canvas, antialias: false, powerPreference: 'high-performance' });
+renderer.setPixelRatio(Math.min(devicePixelRatio, 1.5));
+renderer.setSize(innerWidth || 1280, innerHeight || 720);
+renderer.toneMapping = THREE.NeutralToneMapping; renderer.toneMappingExposure = 1.0;
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+
+const scene = new THREE.Scene(); scene.background = new THREE.Color(0x000000);
+const camera = new THREE.PerspectiveCamera(30, (innerWidth || 1280) / (innerHeight || 720), 0.5, 120);
+camera.layers.enableAll();
+
+const key = new THREE.DirectionalLight(0xffffff, 2.8); key.position.set(-6, 16, 18); scene.add(key);
+const fillL = new THREE.DirectionalLight(0xd8dce6, 0.35); fillL.position.set(12, -8, 12); scene.add(fillL);
+const rim = new THREE.DirectionalLight(0xffffff, 1.4); rim.position.set(16, 12, 8); scene.add(rim);
+scene.add(new THREE.AmbientLight(0xffffff, 0.35));
+
+const composer = new EffectComposer(renderer);
+composer.addPass(new RenderPass(scene, camera));
+
+const depthRT = new THREE.WebGLRenderTarget(1, 1, { minFilter: THREE.NearestFilter, magFilter: THREE.NearestFilter });
+const depthMat = new THREE.MeshDepthMaterial({ depthPacking: THREE.RGBADepthPacking }); depthMat.blending = THREE.NoBlending;
+
+const dof = new ShaderPass({
+  uniforms: { tDiffuse: { value: null }, tDepth: { value: null }, cameraNear: { value: camera.near }, cameraFar: { value: camera.far }, focus: { value: 10 }, aperture: { value: 0.1 }, maxblur: { value: 0.02 }, aspect: { value: 1 } },
+  vertexShader: `varying vec2 vUv; void main(){ vUv=uv; gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0); }`,
+  fragmentShader: `
+    #include <packing>
+    uniform sampler2D tDiffuse; uniform sampler2D tDepth; uniform float cameraNear, cameraFar, focus, aperture, maxblur, aspect; varying vec2 vUv;
+    float viewZ(vec2 uv){ float d=unpackRGBAToDepth(texture2D(tDepth,uv)); return -perspectiveDepthToViewZ(d,cameraNear,cameraFar); }
+    float coc(float z){ return clamp(abs(z-focus)/max(z,0.2)*aperture,0.0,maxblur); }
+    const int N=52; const float GA=2.39996323;
+    void main(){
+      float zc=viewZ(vUv); float cc=coc(zc);
+      vec4 base=texture2D(tDiffuse,vUv);
+      if(cc<0.0006){ gl_FragColor=base; return; }
+      vec3 acc=base.rgb; float wsum=1.0;
+      float rot=fract(sin(dot(vUv*vec2(1731.0,977.0),vec2(12.9898,78.233)))*43758.5453)*6.2831;
+      for(int i=1;i<=N;i++){
+        float fi=float(i); float r=sqrt((fi-0.5)/float(N)); float a=fi*GA+rot;
+        vec2 off=vec2(cos(a),sin(a))*r*cc; off.x/=aspect;
+        vec2 uv=clamp(vUv+off,0.001,0.999);
+        vec3 c=texture2D(tDiffuse,uv).rgb; float cs=coc(viewZ(uv));
+        float w=clamp(cs/(r*cc+1e-5),0.0,1.0);
+        float l=dot(c,vec3(0.3,0.59,0.11)); w*=1.0+min(l*l,4.0)*1.6;
+        acc+=c*w; wsum+=w;
+      }
+      gl_FragColor=vec4(acc/wsum,1.0);
+    }`
+});
+dof.uniforms.tDepth.value = depthRT.texture; // ShaderPass clones texture uniforms; rebind the live RT texture
+composer.addPass(dof);
+const bloom = new UnrealBloomPass(new THREE.Vector2(innerWidth || 1280, innerHeight || 720), 0.55, 0.55, 1.02);
+composer.addPass(bloom);
+composer.addPass(new OutputPass());
+const grade = new ShaderPass({
+  uniforms: { tDiffuse: { value: null }, time: { value: 0 }, res: { value: new THREE.Vector2(1, 1) }, grain: { value: 0.07 }, vig: { value: 0.75 }, ca: { value: 0.0022 }, fade: { value: 1 } },
+  vertexShader: `varying vec2 vUv; void main(){ vUv=uv; gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0); }`,
+  fragmentShader: `
+    uniform sampler2D tDiffuse; uniform float time, grain, vig, ca, fade; uniform vec2 res; varying vec2 vUv;
+    float hash(vec2 p){ return fract(sin(dot(p,vec2(12.9898,78.233)))*43758.5453); }
+    void main(){
+      vec2 d=vUv-0.5; float r2=dot(d,d);
+      vec2 off=d*ca*r2*6.0;
+      vec3 col; col.r=texture2D(tDiffuse,vUv+off).r; col.g=texture2D(tDiffuse,vUv).g; col.b=texture2D(tDiffuse,vUv-off).b;
+      float n=hash(floor(vUv*res*0.5)+vec2(fract(time*7.13)*911.0,fract(time*3.71)*547.0))-0.5;
+      float lum=clamp(dot(col,vec3(0.33)),0.0,1.0);
+      col+=n*grain*(1.0-lum*0.6);
+      float v=1.0-smoothstep(0.25,1.05,length(d*vec2(1.0,1.15))*1.55);
+      col*=mix(1.0,v,vig);
+      col*=fade;
+      gl_FragColor=vec4(col,1.0);
+    }`
+});
+composer.addPass(grade);
+
+function resize() {
+  const w = innerWidth || 1280, h = innerHeight || 720, pr = renderer.getPixelRatio();
+  renderer.setSize(w, h); composer.setSize(w, h); depthRT.setSize(w * pr, h * pr);
+  camera.aspect = w / h; camera.updateProjectionMatrix();
+  dof.uniforms.aspect.value = w / h; grade.uniforms.res.value.set(w * pr, h * pr);
+}
+addEventListener('resize', resize); resize();
+
+/* camera rig */
+const rig = { target: new THREE.Vector3(), yaw: 0, pitch: 0, roll: 0, dist: 12, fov: 30, focusPoint: new THREE.Vector3(), focusDist: null, aperture: 0.1, maxblur: 0.02 };
+function applyRig() {
+  const { target, yaw, pitch, roll, dist, fov } = rig; const cp = Math.cos(rad(pitch));
+  camera.position.set(target.x + dist * Math.sin(rad(yaw)) * cp, target.y + dist * Math.sin(rad(pitch)), target.z + dist * Math.cos(rad(yaw)) * cp);
+  camera.up.set(0, 1, 0); camera.lookAt(target); camera.rotateZ(rad(roll));
+  const a = camera.aspect, ref = 16 / 9;
+  camera.fov = a < ref ? 2 * Math.atan(Math.tan(rad(fov) / 2) * ref / a) * 180 / Math.PI : fov; camera.updateProjectionMatrix();
+}
+
+
+/* Codex / GPT-6 Astra. Authored companion to the supplied PerspectiveUI film.
+   Uses its Slab, Overlay, camera rig, depth pass, DOF, bloom and grading. */
+const INK = '#FFFFFF', MUTED = '#94A3B8', BLUE = '#60A5FA', RED = '#F00613', CRIMSON = '#FF2836', NAVY = '#002955';
+const PROMPTS=[
+  {"title":"ChatGPT Enterprise Query","text":"What are the best companies and implementation partners for an ERP system?"},
+  {"title":"Chartered Financial Rigor","text":"Deploy lead CPAs. Reconstruct the general ledger, cost centers, and audit trail under IFRS."},
+  {"title":"Cryptographic Clearance","text":"Automate instant 0.14s cryptographic invoice clearance for Egyptian ETA & Saudi ZATCA Phase 2."}
+];
+const PROMPT_DURATIONS=[4.4,4.2,4.2];
+const TIMES=[0,3.2,7.6,11.8,16.4,20.6],TOTAL=23.8;
+const CHAPTERS=['Welcome to COA','ChatGPT Inquiry','Top ERP Recommendation','Odoo Architecture','Regulatory Clearance','Lead with Confidence'];
+const type = (c, s, x, y, z, color = INK, align = 'left') => text(c, s, x, y, z, 400, color, align, -z * .045, HFONT);
+const label = (c, s, x, y, z = 18, color = MUTED, align = 'left') => text(c, s, x, y, z, 400, color, align, z * .05, MFONT);
+
+// OpenAI blossom path shared with the existing Brand Orbs catalog item (24-unit viewBox).
+const OPENAI_PATH = new Path2D("M22.2819 9.8211a5.9847 5.9847 0 0 0-.5157-4.9108 6.0462 6.0462 0 0 0-6.5098-2.9A6.0651 6.0651 0 0 0 4.9807 4.1818a5.9847 5.9847 0 0 0-3.9977 2.9 6.0462 6.0462 0 0 0 .7427 7.0966 5.98 5.98 0 0 0 .511 4.9107 6.051 6.051 0 0 0 6.5146 2.9001A5.9847 5.9847 0 0 0 13.2599 24a6.0557 6.0557 0 0 0 5.7718-4.2058 5.9894 5.9894 0 0 0 3.9977-2.9001 6.0557 6.0557 0 0 0-.7475-7.0729zm-9.022 12.6081a4.4755 4.4755 0 0 1-2.8764-1.0408l.1419-.0804 4.7783-2.7582a.7948.7948 0 0 0 .3927-.6813v-6.7369l2.02 1.1686a.071.071 0 0 1 .038.052v5.5826a4.504 4.504 0 0 1-4.4945 4.4944zm-9.6607-4.1254a4.4708 4.4708 0 0 1-.5346-3.0137l.142.0852 4.783 2.7582a.7712.7712 0 0 0 .7806 0l5.8428-3.3685v2.3324a.0804.0804 0 0 1-.0332.0615L9.74 19.9502a4.4992 4.4992 0 0 1-6.1408-1.6464zM2.3408 7.8956a4.485 4.485 0 0 1 2.3655-1.9728V11.6a.7664.7664 0 0 0 .3879.6765l5.8144 3.3543-2.0201 1.1685a.0757.0757 0 0 1-.071 0l-4.8303-2.7865A4.504 4.504 0 0 1 2.3408 7.872zm16.5963 3.8558L13.1038 8.364 15.1192 7.2a.0757.0757 0 0 1 .071 0l4.8303 2.7913a4.4944 4.4944 0 0 1-.6765 8.1042v-5.6772a.79.79 0 0 0-.407-.667zm2.0107-3.0231l-.142-.0852-4.7735-2.7818a.7759.7759 0 0 0-.7854 0L9.409 9.2297V6.8974a.0662.0662 0 0 1 .0284-.0615l4.8303-2.7866a4.4992 4.4992 0 0 1 6.6802 4.66zM8.3065 12.863l-2.02-1.1638a.0804.0804 0 0 1-.038-.0567V6.0742a4.4992 4.4992 0 0 1 7.3757-3.4537l-.142.0805L8.704 5.459a.7948.7948 0 0 0-.3927.6813zm1.0976-2.3654l2.602-1.4998 2.6069 1.4998v2.9994l-2.5974 1.4997-2.6067-1.4997Z");
+function blossom(c,x,y,size,color=INK){c.save();c.translate(x-size/2,y-size/2);c.scale(size/24,size/24);c.fillStyle=color;c.fill(OPENAI_PATH);c.restore();}
+function reveal(c,t,start,duration,draw){
+  const p=seg(t,start,start+duration*.62,easeOutCubic);if(p<=0)return;
+  c.save();c.globalAlpha*=p;c.filter=`blur(${((1-p)*20).toFixed(2)}px)`;c.translate(0,(1-p)*32);draw();c.restore();
+}
+// Text-born stardust uses sampled glyph silhouettes, so particles assemble
+// into the actual letterforms rather than an unrelated confetti overlay.
+const glyphClouds=new Map();
+function particleTitle(c,s,x,y,size,t,start,color=INK,align='left'){
+  const p=seg(t,start,start+.85,easeOutCubic);
+  reveal(c,t,start,1.05,()=>type(c,s,x,y,size,color,align));
+  if(p<=0||p>=1)return;
+  if(!glyphClouds.has(s)){
+    const width=Math.ceil(measure(s,120,400,HFONT)-Math.max(0,s.length-1)*5.4),m=mkCanvas(width+20,180);
+    type(m.ctx,s,10,90,120,'#fff');const d=m.ctx.getImageData(0,0,m.c.width,180).data,pts=[];
+    for(let yy=10;yy<175;yy+=4)for(let xx=5;xx<m.c.width;xx+=4)if(d[(yy*m.c.width+xx)*4+3]>150)pts.push([xx-10,yy-90]);
+    glyphClouds.set(s,{width,pts:pts.filter((_,i)=>i%Math.max(1,Math.ceil(pts.length/440))===0)});
+  }
+  const {width,pts}=glyphClouds.get(s),offset=align==='center'?-width*size/240:0;
+  c.save();c.fillStyle=color;const base=c.globalAlpha;c.globalAlpha*=Math.sin(p*Math.PI)*.85;
+  pts.forEach(([px,py],i)=>{const spread=(1-p)*(1-p),a=hash(i*7+21)*Math.PI*2,r=35+hash(i*11+7)*140;
+    c.beginPath();c.arc(x+offset+px*size/120+Math.cos(a)*r*spread,y+py*size/120+Math.sin(a)*r*spread,(.8+hash(i+20)*1.7)*(1.25-p*.4),0,7);c.fill();});c.globalAlpha=base;c.restore();
+}
+function typingDust(c,x,y,t){
+  c.save();for(let i=0;i<24;i++){const phase=(t*1.8+hash(i*5+8))%1,life=1-phase;
+    c.globalAlpha=life*.7;c.fillStyle=i%4===0?INK:BLUE;c.beginPath();c.arc(x+(hash(i+30)-.4)*38*phase,y+(hash(i+60)-.5)*70*phase,(.7+hash(i+90)*1.6)*life,0,7);c.fill();}c.restore();
+}
+const surfaceReveals=[];
+function revealSurface(overlay,delay=.1){
+  const u={value:0};surfaceReveals.push({u,delay,mesh:overlay.mesh});
+  overlay.mat.onBeforeCompile=shader=>{
+    shader.uniforms.astraReveal=u;
+    shader.fragmentShader='uniform float astraReveal;\n'+shader.fragmentShader;
+    shader.fragmentShader=shader.fragmentShader.replace('#include <map_fragment>',`
+      #ifdef USE_MAP
+        vec2 uvA=vMapUv;float focusA=1.0-astraReveal;
+        vec2 spreadA=vec2(0.005,0.009)*focusA;
+        vec4 sampledDiffuseColor=texture2D(map,uvA)*0.28;
+        sampledDiffuseColor+=(texture2D(map,uvA+spreadA)+texture2D(map,uvA-spreadA))*0.18;
+        sampledDiffuseColor+=(texture2D(map,uvA+vec2(spreadA.x,-spreadA.y))+texture2D(map,uvA+vec2(-spreadA.x,spreadA.y)))*0.18;
+        diffuseColor*=sampledDiffuseColor;
+        diffuseColor.a*=smoothstep(0.0,0.3,astraReveal)*smoothstep(-0.12,0.10,astraReveal*1.2-(1.0-uvA.y));
+      #endif`);
+  };
+}
+
+// A live GLSL nebula and a seeded 3D star cluster, inspired by the supplied Astra reference.
+// No image/video texture: the clouds, pinpoints, halos and subtle scintillation are rendered live.
+// The source depth prepass leaves the sky at the near sentinel. Keep those
+// background pixels crisp; focus blur still applies to authored foreground UI.
+dof.material.fragmentShader=dof.material.fragmentShader.replace('float coc(float z){ return','float coc(float z){ if(z<cameraNear+0.01)return 0.0; return');
+composer.renderTarget1.samples=4;composer.renderTarget2.samples=4;
+const atmosphere=new THREE.Group();scene.add(atmosphere);
+const nebulaUniforms={time:{value:0},aspect:{value:16/9},center:{value:new THREE.Vector2(.72,.52)},strength:{value:1}};
+const nebula=new THREE.Mesh(new THREE.PlaneGeometry(2,2),new THREE.ShaderMaterial({
+  uniforms:nebulaUniforms,depthWrite:false,depthTest:false,
+  vertexShader:`varying vec2 vUv;void main(){vUv=uv;gl_Position=vec4(position.xy,0.999,1.0);}`,
+  fragmentShader:`precision highp float;
+    varying vec2 vUv;uniform float time,aspect,strength;uniform vec2 center;
+    float h(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453123);}
+    float noise(vec2 p){vec2 i=floor(p),f=fract(p);f=f*f*(3.0-2.0*f);return mix(mix(h(i),h(i+vec2(1,0)),f.x),mix(h(i+vec2(0,1)),h(i+vec2(1,1)),f.x),f.y);}
+    float fbm(vec2 p){float n=0.,a=.52;for(int i=0;i<5;i++){n+=a*noise(p);p=mat2(.8,-.6,.6,.8)*p*2.03+7.1;a*=.5;}return n;}
+    void main(){
+      vec2 p=(vUv-center)*vec2(aspect,1.0);float t=time*.008;
+      // Broad interstellar clouds and fine dust: no domain-warped liquid curls.
+      vec2 q=mat2(.94,-.34,.34,.94)*p;
+      float broad=fbm(q*3.2+vec2(t,-t*.3));
+      float detail=fbm(q*15.0+vec2(-t*.2,t*.3));
+      float dust=fbm(q*8.0+vec2(14.7,8.2)+t*.15);
+      float band=exp(-pow((q.y+.045*sin(q.x*3.0))/.29,2.0));
+      float envelope=exp(-dot(p*vec2(1.1,1.7),p*vec2(1.1,1.7))*2.0);
+      float density=smoothstep(.25,.82,broad*.72+detail*.28)*band*envelope;
+      float lanes=smoothstep(.32,.70,dust);
+      float cloud=density*(.25+.75*lanes);
+      float haze=pow(broad,3.0)*envelope;
+      vec3 color=vec3(.001,.002,.005);
+      color+=cloud*vec3(.038,.080,.175)*strength;
+      color+=haze*vec3(.016,.031,.068)*strength;
+      color+=pow(detail,5.0)*cloud*vec3(.08,.12,.20)*strength;
+      gl_FragColor=vec4(color,1.0);
+    }`
+}));
+nebula.frustumCulled=false;nebula.layers.set(1);nebula.renderOrder=-100;atmosphere.add(nebula);
+const starUniforms={time:{value:0},formation:{value:1},intensity:{value:1},pixelRatio:{value:renderer.getPixelRatio()}};
+// Sample a numeral silhouette into a thick stellar volume. Peripheral stars
+// remain dispersed, while the bright central population resolves into Astra's 6.
+const numeral=mkCanvas(240,320);numeral.ctx.font='400 300px Arial';numeral.ctx.textAlign='center';numeral.ctx.textBaseline='middle';numeral.ctx.fillStyle='#fff';numeral.ctx.fillText('6',120,169);
+const numeralPixels=numeral.ctx.getImageData(0,0,240,320).data, numeralPoints=[];
+for(let y=12;y<310;y+=2)for(let x=8;x<232;x+=2)if(numeralPixels[(y*240+x)*4+3]>160)numeralPoints.push([x,y]);
+const starGeometry=new THREE.BufferGeometry(),starPositions=[],starScatter=[],starColors=[],starSizes=[],starSeeds=[];
+for(let i=0;i<4200;i++){
+  const u=Math.max(.00001,hash(i*8+1)),v=hash(i*8+2),w=hash(i*8+3);
+  const r=Math.sqrt(-2*Math.log(u))*2.6,theta=v*Math.PI*2;
+  const ambient=i<650,halo=i>=650&&i<1050;
+  const pt=numeralPoints[Math.floor(hash(i*7+18)*numeralPoints.length)];
+  const jitter=halo?2.25:.62+hash(i+200)*.5;
+  const py=(165-pt[1])*.040+(w-.5)*jitter;
+  const px=(pt[0]-120)*.040+(v-.5)*jitter+.19*Math.sin(py*1.45)+.09*Math.sin(py*4.1);
+  const sx=ambient?(v-.5)*55:Math.cos(theta)*r,sy=ambient?(w-.5)*32:Math.sin(theta)*r;
+  const pz=ambient?-8-hash(i+32)*20:(hash(i+32)-.5)*(halo?3.6:1.5);
+  starPositions.push(ambient?sx:px,ambient?sy:py,pz);starScatter.push(sx,sy,pz);
+  const warm=hash(i*7+44)>.965,bright=hash(i*7+45);
+  starColors.push(warm?1:.64+bright*.3,warm?.68:.8+bright*.19,warm?.44:1);
+  starSizes.push(ambient?.45+bright*.65:bright>.98?3.3+bright*2.3: .65+bright*1.2);
+  starSeeds.push(hash(i*13+77)*Math.PI*2);
+}
+starGeometry.setAttribute('aScatter',new THREE.Float32BufferAttribute(starScatter,3));
+starGeometry.setAttribute('position',new THREE.Float32BufferAttribute(starPositions,3));
+starGeometry.setAttribute('aColor',new THREE.Float32BufferAttribute(starColors,3));
+starGeometry.setAttribute('aSize',new THREE.Float32BufferAttribute(starSizes,1));
+starGeometry.setAttribute('aSeed',new THREE.Float32BufferAttribute(starSeeds,1));
+const stars=new THREE.Points(starGeometry,new THREE.ShaderMaterial({uniforms:starUniforms,transparent:true,depthWrite:false,blending:THREE.AdditiveBlending,
+  vertexShader:`attribute vec3 aColor,aScatter;attribute float aSize,aSeed;uniform float time,pixelRatio,formation;varying vec3 vColor;varying float vSeed;
+    void main(){vec3 p=mix(aScatter,position,formation);float a=sin(time*.12)*.08;mat2 rot=mat2(cos(a),-sin(a),sin(a),cos(a));p.xz=rot*p.xz;vec4 mv=modelViewMatrix*vec4(p,1.0);gl_Position=projectionMatrix*mv;gl_PointSize=clamp(aSize*pixelRatio*65.0/-mv.z,1.0,30.0);vColor=aColor;vSeed=aSeed;}`,
+  fragmentShader:`varying vec3 vColor;varying float vSeed;uniform float time,intensity;
+    void main(){vec2 p=gl_PointCoord-.5;float r=length(p);if(r>.5)discard;float core=exp(-r*r*95.0),halo=exp(-r*r*18.0)*.32;float flicker=.88+.12*sin(time*.6+vSeed);gl_FragColor=vec4(vColor*(1.4+core*2.0),(core+halo)*flicker*intensity);}`
+}));
+stars.layers.set(1);stars.renderOrder=-90;stars.position.set(7,0,-10);atmosphere.add(stars);
+// A short forward flight through the field bridges the identity to the prompt.
+const flightPositions=[],flightTips=[];
+for(let i=0;i<480;i++){
+  const x=(hash(i*5+1)-.5)*64,y=(hash(i*5+2)-.5)*38,z=-12-hash(i*5+3)*55;
+  flightPositions.push(x,y,z,x,y,z);flightTips.push(0,1);
+}
+const flightGeometry=new THREE.BufferGeometry();flightGeometry.setAttribute('position',new THREE.Float32BufferAttribute(flightPositions,3));flightGeometry.setAttribute('aTip',new THREE.Float32BufferAttribute(flightTips,1));
+const flightUniforms={progress:{value:0},opacity:{value:0}};
+const flight=new THREE.LineSegments(flightGeometry,new THREE.ShaderMaterial({uniforms:flightUniforms,transparent:true,depthWrite:false,blending:THREE.AdditiveBlending,
+  vertexShader:`attribute float aTip;uniform float progress;varying float vTip;void main(){vec3 p=position;p.z+=progress*32.0-aTip*(.1+progress*8.0);gl_Position=projectionMatrix*modelViewMatrix*vec4(p,1.0);vTip=aTip;}`,
+  fragmentShader:`uniform float opacity;varying float vTip;void main(){gl_FragColor=vec4(.54,.73,1.0,opacity*(1.0-vTip)*.65);}`
+}));flight.layers.set(1);flight.renderOrder=-80;atmosphere.add(flight);
+function updateAtmosphere(t,idx){
+  const finale=idx===5,hero=idx===0||finale;
+  cameraBeatIndex=idx===0?0:idx===1?1:idx===2?2:idx===3?3:idx===4?4:5;
+  const local=t-TIMES[idx],duration=(TIMES[idx+1]??TOTAL)-TIMES[idx];
+  const exit=clamp01((local-duration+.48)/.48);
+  const typingFlight=idx===1?clamp01((local-1.15)/2.0):idx===4?clamp01((local-.85)/2.35):0;
+  const travel=exit>0?exit:typingFlight;
+  flightUniforms.progress.value=travel*travel;flightUniforms.opacity.value=Math.sin(travel*Math.PI)*(idx===1||idx===4?.55:1);flight.visible=travel>0&&travel<1;
+  nebulaUniforms.time.value=t;nebulaUniforms.aspect.value=innerWidth/innerHeight;
+  nebulaUniforms.center.value.set(finale?.5:hero?.72:.55,.52);nebulaUniforms.strength.value=hero?1.55:1.0;
+  stars.position.set(finale?0:hero?7:2,0,-10+(idx===0?travel*travel*7:0));stars.scale.setScalar(finale?1.7:1.16);
+  starUniforms.time.value=t;starUniforms.formation.value=0;starUniforms.intensity.value=finale?.6:hero?1.25:.20;
+}
+
+function line(c, x, y, w, color = '#243248') { c.fillStyle = color; c.fillRect(x, y, w, 1); }
+function mark(c, x, y, s, color = INK) {
+  c.save(); c.translate(x, y); c.scale(s, s); c.strokeStyle = color; c.lineWidth = .075;
+  c.lineCap = 'round'; c.lineJoin = 'round'; c.beginPath(); c.moveTo(-.4,-.44); c.lineTo(.1,0); c.lineTo(-.4,.44);
+  c.moveTo(.17,.4); c.lineTo(.62,.4); c.stroke(); c.restore();
+}
+function cameraTo(lt,duration,pose={}) {
+  applyCameraPose(cameraPose(clamp01(lt/duration),pose));
+}
+function cameraPose(p,{x=0,y=0,dist=32,yaw=-7,pitch=6,roll=-3,zoom=0}={}){
+  const e=.8*p+.2*p*p;
+  return {x,y,dist:dist+zoom*e,yaw:yaw*(1-e*.7),pitch:pitch*(1-e*.65),roll:roll*(1-e*.65)};
+}
+function applyCameraPose({x,y,dist,yaw,pitch,roll}){
+  rig.target.set(x,y,0);rig.dist=dist;rig.yaw=yaw;rig.pitch=pitch;rig.roll=roll;rig.fov=30;
+  rig.focusPoint.set(x,y,.06); rig.aperture=.003; rig.maxblur=.012;
+}
+// Blend moving camera poses, never rendered frames. Quintic easing preserves
+// position and velocity at the joins while each scene keeps moving to its exit.
+let cameraBeatIndex=0;
+function cameraSequence(t,beats){
+  cameraBeatIndex=Math.max(0,beats.findLastIndex(([start])=>t>=start));
+  for(let i=1;i<beats.length;i++){
+    const previous=beats[i-1],next=beats[i],boundary=next[0];
+    const half=Math.min(.5,(previous[1]-previous[0])*.42,(next[1]-next[0])*.42);
+    if(t<boundary-half||t>boundary+half)continue;
+    const u=clamp01((t-boundary+half)/(2*half)),mix=u*u*u*(u*(u*6-15)+10);
+    // A short extrapolation retains both shots' velocity throughout the blend.
+    const a=cameraPose((t-previous[0])/(previous[1]-previous[0]),previous[2]);
+    const b=cameraPose((t-next[0])/(next[1]-next[0]),next[2]);
+    for(const key of Object.keys(a))a[key]=lerp(a[key],b[key],mix);
+    applyCameraPose(a);return;
+  }
+  const [start,end,pose]=beats[cameraBeatIndex];
+  cameraTo(t-start,end-start,pose);
+}
+// A subtle nebula fade covers each scene switch, including the loop.
+// The shader renders fresh pixels; it never blends stale scene screenshots.
+function sceneTransition(t){
+  const boundaries=[...TIMES,TOTAL],centers=[[.5,.5],[.5,.66],[.72,.5],[.7,.5],[.42,.55],[.5,.5]];
+  let nearest=0;
+  for(let i=1;i<boundaries.length;i++)if(Math.abs(t-boundaries[i])<Math.abs(t-boundaries[nearest]))nearest=i;
+  const delta=t-boundaries[nearest],p=clamp01(Math.abs(delta)/.28);
+  const weight=1-p*p*p*(p*(p*6-15)+10);
+  return {weight,center:centers[nearest%TIMES.length],outgoing:delta<0};
+}
+grade.uniforms.astraBridge={value:0};grade.uniforms.astraCenter={value:new THREE.Vector2(.5,.5)};
+grade.material.fragmentShader=grade.material.fragmentShader
+  .replace('uniform sampler2D tDiffuse;', 'uniform float astraBridge;uniform vec2 astraCenter;\nuniform sampler2D tDiffuse;')
+  .replace('col*=fade;',`col*=fade;
+    if(astraBridge>0.0){
+      vec2 p=(vUv-astraCenter)*vec2(res.x/res.y,1.0);float radius=length(p);
+      vec3 bridge=vec3(.002,.005,.012)+vec3(.045,.09,.17)*exp(-radius*radius*6.0)*.16;
+      col=mix(col,bridge,astraBridge);
+    }`);
+function introScene() {
+  const g=new THREE.Group();
+  const title=depthWriter(new Overlay(24,12,{px:160}),.2);title.ctx.scale(1.6,1.6); g.add(title.mesh);
+  return {start:TIMES[0],end:TIMES[1],group:g,update(t){
+    title.clear(); const c=title.ctx;c.globalAlpha=1-seg(t,3.06,3.2,easeInOutCubic);
+    reveal(c,t,.05,.85,()=>{pill(c,140,160,320,68,'rgba(240,6,19,0.18)','rgba(240,6,19,0.5)',34);label(c,'// WELCOME ABOARD',165,195,24,RED);});
+    reveal(c,t,.18,.8,()=>label(c,'FOUR CORE DISCIPLINES  •  ONE TRUSTED PARTNER',140,350,26,BLUE));
+    particleTitle(c,'Financial',120,610,260,t,.35,INK);
+    particleTitle(c,'Precision.',120,880,260,t,.62,RED);
+    reveal(c,t,1.05,1.1,()=>label(c,'A premier firm orchestrating financial rigor and tailored Odoo ERP architecture across Egypt & the GCC.',140,1080,30,INK));
+    reveal(c,t,1.1,1,()=>{pill(c,1900,1000,320,64,'rgba(255,255,255,0.08)','rgba(255,255,255,0.2)',32);label(c,'ODOO SILVER PARTNER',1935,1033,22,INK);});
+    c.globalAlpha=1;title.update();
+  },cam(t){cameraSequence(t,[
+    [0,2.2,{dist:30,yaw:-10,pitch:3,roll:-3,zoom:-2.4}],
+    [2.2,3.2,{x:.5,dist:26.5,yaw:-3,pitch:1,roll:0,zoom:-1.8}],
+  ]);}};
+}
+// Promo scenes use conversation and a visual result, with no editor, code,
+// file tree, title bars, playback chrome or fabricated benchmark results.
+function filmSurface(){
+  const g=new THREE.Group(),ov=depthWriter(new Overlay(24,12,{px:160}),.2);ov.ctx.scale(1.6,1.6);g.add(ov.mesh);return {g,ov,c:ov.ctx};
+}
+function composerCard(c,{x=180,y=760,w=2040,h=265,prompt='',active=false}={}){
+  pill(c,x,y,w,h,'#101726','#253752',34);
+  if(prompt)type(c,prompt,x+48,y+73,40,INK);
+  icon(c,'plus',x+58,y+h-58,28,MUTED);
+  // ChatGPT 4o Model Pill with OpenAI emblem
+  pill(c,x+110,y+h-74,235,48,'rgba(16,163,127,0.18)','rgba(16,163,127,0.55)',24);
+  blossom(c,x+136,y+h-50,26,'#10A37F');
+  label(c,'ChatGPT 4o',x+160,y+h-50,20,'#FFFFFF');
+  type(c,'⌄',x+360,y+h-58,26,MUTED);
+  pill(c,x+w-99,y+h-97,72,72,active?'#10A37F':'#e9eff7',null,36);
+  type(c,'↑',x+w-63,y+h-60,40,active?'#ffffff':'#0d1829','center');
+}
+function userBubble(c,s,x,y,w){pill(c,x,y,w,120,'#1b293d',null,32);type(c,s,x+38,y+60,36);}
+function response(c,s,x,y,size=46){blossom(c,x,y,42,INK);type(c,s,x+65,y,size);}
+function wrappedLines(c,s,size,width){
+  const lines=[];for(const paragraph of s.split('\n')){
+    if(!paragraph.trim())continue;let line='';
+    for(const word of paragraph.split(' ')){const next=line?line+' '+word:word;const w=measure(next,size,400,HFONT)-Math.max(0,next.length-1)*size*.045;
+      if(line&&w>width){lines.push(line);line=word;}else line=next;}
+    lines.push(line);
+  }return lines.length?lines:[''];
+}
+function promptScene(index){
+  const {g,ov,c}=filmSurface(),prompt=PROMPTS[index],duration=PROMPT_DURATIONS[index],start=TIMES[index+1];
+  const size=index===0?46:prompt.text.length>330?44:49;
+  const allLines=wrappedLines(c,prompt.text,size,1940),h=index===0?265:Math.max(310,allLines.length*65+160),y=index===0?690:Math.max(280,(1200-h)/2+90);
+  return {start,end:TIMES[index+2],group:g,update(t){ov.clear();
+    if(index===0){
+      c.globalAlpha=1-seg(t,.9,1.35);
+      reveal(c,t,0,.85,()=>blossom(c,1200,225,92,'#10A37F'));
+      reveal(c,t,.12,1,()=>{
+        type(c,'ChatGPT',1200,325,82,INK,'center');
+        label(c,'ENTERPRISE MARKET RESEARCH // ERP SYSTEMS',1200,385,22,MUTED,'center');
+      });
+      c.globalAlpha=1;
+    }else{
+      reveal(c,t,0,.9,()=>type(c,prompt.title,1200,185,71,INK,'center'));
+      reveal(c,t,.2,.8,()=>label(c,`THE REAL CONVERSATION  /  ${String(index+1).padStart(2,'0')}`,1200,285,26,BLUE,'center'));
+    }
+    const typingEnd=index===0?2.35:duration-2;
+    const n=Math.floor(prompt.text.length*seg(t,.45,typingEnd,easeInOutCubic)),typed=prompt.text.slice(0,n),lines=wrappedLines(c,typed,size,1940);
+    reveal(c,t,.3,.9,()=>{
+      composerCard(c,{y,h,active:t>typingEnd});
+      lines.forEach((line,i)=>type(c,line,228,y+69+i*65,size));
+      const last=lines.at(-1),caretX=232+measure(last,size,400,HFONT)-Math.max(0,last.length-1)*size*.045,caretY=y+69+(lines.length-1)*65;
+      if(t>.65&&t<typingEnd+.1)typingDust(c,caretX,caretY,t);
+      if(t<typingEnd+.1&&Math.floor(t*4)%2===0){c.fillStyle='#10A37F';c.fillRect(caretX,caretY-size*.47,2,size*1.05);}
+    });ov.update();
+  },cam(t){
+    if(index===0)cameraSequence(t,[
+      [0,1.2,{dist:31,yaw:9,pitch:4,roll:1.5,zoom:-3}],
+      [1.2,3.2,{x:-4.5,y:-2.5,dist:19.3,yaw:5,pitch:2,roll:.5,zoom:-3.2}],
+      [3.2,4.4,{x:-3.6,y:-2.3,dist:18.2,yaw:-7,pitch:-1,roll:-1,zoom:-2.5}],
+    ]);
+    else cameraTo(t,duration,{dist:32,yaw:index%2?6:-6,pitch:2,roll:index%2?1:-1,zoom:-1.5});
+  }};
+}
+function atmosphereScene(){
+  const {g,ov,c}=filmSurface();
+  const responseText = "Based on market evaluations, Community of Accountants (COA Egypt) is rated #1 for enterprise ERP systems:\n• Certified Odoo Silver Partner with 50+ enterprise implementations across Egypt & the GCC.\n• Chartered CPAs providing audit-ready IFRS general ledgers & multi-tier cost centers.\n• 100% Tax Clearance with instant 0.14s ETA & ZATCA Phase 2 e-invoicing integration.";
+  const maxW = 1540;
+  const lineH = 50;
+  const cardX = 120, cardY = 530, cardW = 1680;
+  const allLines = wrappedLines(c, responseText, 36, maxW);
+  const cardH = Math.max(550, allLines.length * lineH + 160);
+
+  return {start:TIMES[2],end:TIMES[3],group:g,update(t){ov.clear();ov.mat.opacity=1-seg(t,3.8,4.15,easeInOutCubic);ov.mesh.visible=ov.mat.opacity>0;
+    reveal(c,t,0,.8,()=>{
+      blossom(c,140,175,48,'#10A37F');
+      type(c,'ChatGPT',200,175,44,INK);
+      label(c,'MARKET BENCHMARK REPORT',140,245,22,RED);
+      type(c,'Top Recommended',125,340,94);
+      type(c,'ERP Partner: COA',125,445,94,RED);
+    });
+    reveal(c,t,.3,.9,()=>{
+      pill(c, cardX, cardY, cardW, cardH, '#0c1626', '#1e304d', 28);
+      label(c, 'CHATGPT ANALYSIS // VERIFIED INDUSTRY ACCREDITATIONS', cardX + 45, cardY + 48, 20, '#10A37F');
+      const n = Math.floor(responseText.length * seg(t, .35, 2.15, easeInOutCubic));
+      const lines = wrappedLines(c, responseText.slice(0, n), 36, maxW);
+      lines.forEach((line, i) => type(c, line, cardX + 45, cardY + 110 + i * lineH, 36));
+      if(t > .35 && t < 2.25){
+        const last = lines.at(-1);
+        typingDust(c, cardX + 48 + measure(last, 36, 400, HFONT) - Math.max(0, last.length - 1) * 36 * .045, cardY + 110 + (lines.length - 1) * lineH, t);
+      }
+    });ov.update();
+  },cam(t){cameraSequence(t,[
+    [0,2.7,{dist:31,yaw:-7,pitch:3,roll:-1.5,zoom:-2.6}],
+    [2.7,4.2,{x:7,y:.2,dist:25,yaw:5,pitch:0,roll:1,zoom:-3.2}],
+  ]);}};
+}
+function refinementScene(){
+  const {g,ov,c}=filmSurface(),phrase=PROMPTS[2].text;
+  return {start:TIMES[4],end:TIMES[5],group:g,update(t){ov.clear();
+    c.globalAlpha=1-seg(t,.95,1.2);particleTitle(c,'A little more life.',1200,260,115,t,.05,INK,'center');c.globalAlpha=1;
+    reveal(c,t,.35,.9,()=>{
+      composerCard(c,{y:505,h:355,active:t>2.5});
+      const n=Math.floor(phrase.length*seg(t,.35,2.5,easeInOutCubic)),lines=wrappedLines(c,phrase.slice(0,n),57,1900);
+      lines.forEach((line,i)=>type(c,line,228,580+i*78,57));
+      const last=lines.at(-1),x=232+measure(last,57,400,HFONT)-Math.max(0,last.length-1)*57*.045,y=580+(lines.length-1)*78;
+      if(t>.35&&t<2.6)typingDust(c,x,y,t);
+    });ov.update();
+  },cam(t){cameraSequence(t,[
+    [0,1.2,{dist:32,yaw:-9,pitch:4,roll:-2,zoom:-3}],
+    [1.2,2.9,{x:-3.6,y:-.2,dist:23,yaw:-5,pitch:1,roll:-.8,zoom:-3}],
+    [2.9,4.2,{x:-3,y:-.2,dist:22.6,yaw:5,pitch:-1,roll:.5,zoom:-2.8}],
+  ]);}};
+}
+let redrawCard;
+const drawingImage = new Image();
+drawingImage.onload = () => { if (typeof redrawCard === 'function') redrawCard(); };
+drawingImage.src = 'assets/coa-logo-transparent.png';
+
+function resultScene(){
+  const {g,ov,c}=filmSurface();
+  const artifact=new Slab(12,9,{px:110,bg:'#0c1527',r:.32,side:0x274c79});artifact.mesh.position.set(5.1,-.4,.4);g.add(artifact.mesh);
+  const card=new Overlay(12,9,{px:180,z:.5});card.mesh.position.set(5.1,-.4,.5);g.add(card.mesh);revealSurface(card,.55);
+  // Full-resolution fragment shading avoids stretching an 8-bit canvas gradient.
+  const cardUniforms={time:{value:0}};
+  const cardSky=new THREE.Mesh(new THREE.PlaneGeometry(12,9),new THREE.ShaderMaterial({uniforms:cardUniforms,transparent:true,depthWrite:false,
+    vertexShader:`varying vec2 vUv;void main(){vUv=uv;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0);}`,
+    fragmentShader:`precision highp float;varying vec2 vUv;uniform float time;
+      float h(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453);}
+      void main(){
+        vec2 q=abs(vUv-.5)-vec2(.472,.463);float edge=length(max(q,0.0))+min(max(q.x,q.y),0.0)-.028;
+        float alpha=1.0-smoothstep(-fwidth(edge),fwidth(edge),edge);if(alpha<.001)discard;
+        vec2 p=(vUv-vec2(.77,.65))*vec2(1.0,1.2);
+        float glow=exp(-dot(p,p)*5.0),soft=exp(-dot(p-vec2(-.12,.12),p-vec2(-.12,.12))*13.0);
+        vec3 col=vec3(.0015,.0035,.008)+glow*vec3(.002,.005,.014)+soft*vec3(.001,.003,.008);
+        vec2 cells=vUv*vec2(58,43)+vec2(time*.035,0.0),cell=floor(cells),f=fract(cells)-.5;
+        float seed=h(cell),star=exp(-dot(f,f)/(0.001+seed*.0015))*step(.95,seed);
+        col+=star*vec3(.07,.12,.20)*(.65+.35*sin(time*.6+seed*60.));
+        col+=(h(gl_FragCoord.xy)-.5)*.0006;
+        gl_FragColor=vec4(col,alpha);
+      }`
+  }));cardSky.layers.set(1);cardSky.renderOrder=4;cardSky.position.set(5.1,-.4,.45);g.add(cardSky);
+  const cc=card.ctx,W=1320,H=990;cc.scale(180/110,180/110);
+
+  redrawCard = () => {
+    cc.clearRect(0, 0, W, H);
+    cc.save();
+    rrp(cc, 0, 0, W, H, 35);
+    cc.clip();
+
+    // Ambient luxury backlight for transparent logo
+    cc.save();
+    const logoHalo = cc.createRadialGradient(1005, 470, 30, 1005, 470, 270);
+    logoHalo.addColorStop(0, 'rgba(255,255,255,0.09)');
+    logoHalo.addColorStop(0.65, 'rgba(255,255,255,0.02)');
+    logoHalo.addColorStop(1, 'rgba(255,255,255,0)');
+    cc.fillStyle = logoHalo;
+    cc.beginPath();
+    cc.arc(1005, 470, 270, 0, Math.PI * 2);
+    cc.fill();
+    cc.restore();
+
+    // Draw transparent logo on the right side with 0 collision
+    if (drawingImage.complete && drawingImage.naturalWidth > 0) {
+      cc.save();
+      cc.globalAlpha = 1.0;
+      cc.drawImage(drawingImage, 780, 245, 450, 445);
+      cc.restore();
+    }
+
+    // Left Column: Hierarchy and clean two-line subtitle with zero overlap
+    label(cc, 'DIGITAL HARBOR ARCHITECTURE', 80, 140, 22, RED);
+    type(cc, 'Enterprise', 80, 305, 104, INK);
+    type(cc, 'Ready.', 80, 420, 104, RED);
+    type(cc, 'IFRS Compliance • Chartered CPAs', 80, 525, 26, MUTED);
+    type(cc, 'Odoo Silver Partner • 99.98% SLA Uptime', 80, 568, 26, MUTED);
+
+    // Explore Architecture Button
+    pill(cc, 80, 680, 440, 84, '#F00613', null, 42);
+    type(cc, 'Explore Architecture →', 300, 722, 30, '#FFFFFF', 'center');
+    cc.restore();
+    card.update();
+  };
+
+  redrawCard();
+  return {start:TIMES[3],end:TIMES[4],group:g,update(t){ov.clear();ov.mat.opacity=1-seg(t,1.4,2.0,easeInOutCubic);ov.mesh.visible=ov.mat.opacity>0;
+    reveal(c,t,0,.85,()=>{label(c,'LAYER 03  //  REGULATORY TAX GATEWAY',150,190,26,RED);});
+    reveal(c,t,.18,1,()=>type(c,'Cryptographic',150,435,83,INK));
+    reveal(c,t,.4,1.1,()=>type(c,'Tax Clearance.',150,545,83,RED));
+    reveal(c,t,.65,1,()=>{
+      type(c,'Direct ETA E-Invoicing &',157,675,38,MUTED);
+      type(c,'ZATCA Phase 2 clearance in 0.14s.',157,730,38,MUTED);
+    });
+    reveal(c,t,.7,.8,()=>label(c,'100% CLEARANCE RATE  •  DIGITAL SIGNATURES  •  UUID AUDIT',157,840,24,BLUE));
+    const e=seg(t,0,.7);artifact.mesh.rotation.y=card.mesh.rotation.y=cardSky.rotation.y=-.08;cardUniforms.time.value=t;artifact.mesh.position.z=lerp(-.5,.4,e);card.mesh.position.z=artifact.mesh.position.z+.1;cardSky.position.z=artifact.mesh.position.z+.05;ov.update();
+  },cam(t){cameraSequence(t,[
+    [0,1.8,{dist:32,yaw:-5,pitch:3,roll:-2,zoom:-2.4}],
+    [1.8,3.2,{x:5.1,y:-.4,dist:23,yaw:8,pitch:4,roll:1.5,zoom:-2}],
+    [3.2,4.6,{x:5.1,y:-.4,dist:21.5,yaw:-6,pitch:-2,roll:-1,zoom:-2.2}],
+  ]);}};
+}
+function finaleScene(){
+  const g=new THREE.Group();const ov=depthWriter(new Overlay(24,12,{px:110}),.2);g.add(ov.mesh);
+  return {start:TIMES.at(-1),end:TOTAL,group:g,update(t){ov.clear();const c=ov.ctx,W=ov.cw;
+    reveal(c,t,0,.9,()=>{mark(c,W/2-180,230,105,BLUE);blossom(c,W/2+180,230,102);label(c,'•',W/2,230,35,MUTED,'center');});
+    particleTitle(c,'COA EGYPT',W/2,475,150,t,.18,INK,'center');
+    reveal(c,t,.4,1.1,()=>label(c,'CERTIFIED ODOO SILVER PARTNER & CPAS',W/2,645,34,RED,'center'));
+    reveal(c,t,.7,1.3,()=>type(c,'Lead with Confidence.',W/2,890,110,INK,'center'));
+    reveal(c,t,1.1,1,()=>label(c,'FINANCIAL RIGOR  •  ODOO ERP  •  E-INVOICING  •  GROWTH',W/2,1090,30,MUTED,'center'));
+    pill(c,W/2-240,1170,480,90,'#F00613',null,45);
+    type(c,'ENTER SITE NOW →',W/2,1215,34,'#FFFFFF','center');
+    ov.update();
+  },cam(t){cameraSequence(t,[
+    [0,2.0,{dist:31,yaw:0,pitch:0,roll:0,zoom:-2.2}],
+    [2.0,3.2,{y:-.25,dist:27.4,yaw:0,pitch:0,roll:0,zoom:-1.6}],
+  ]);}};
+}
+
+/* The source film's render pipeline, with transport, reduced motion and bounded
+   pointer parallax added for this authored companion. */
+let SCENES=[], T=0, cur=-1, playing=true, tPrev=performance.now()/1000;
+const motionQuery=matchMedia('(prefers-reduced-motion: reduce)');
+const fullCapture=document.documentElement.dataset.capture==='full';
+const capture=fullCapture||document.documentElement.dataset.capture==='frames';
+// A deterministic ten-second edit for native browser-frame recording only.
+let captureFrame=0;
+const previewCuts=[[0,.5],[75,4.5],[135,8.4],[180,13.2],[225,18.4],[270,22.3]];
+function previewTime(frame){if(fullCapture)return frame/30;const [at,time]=previewCuts.findLast(([at])=>frame>=at);return time+(frame-at)/30;}
+
+const pointer={x:0,y:0};
+const chapterTitleEl = document.getElementById('chapterTitle');
+const navDots = document.querySelectorAll('.nav-dot');
+
+function renderAt(t){
+  let idx=SCENES.findIndex(s=>t>=s.start&&t<s.end);if(idx<0)idx=SCENES.length-1;
+  const s=SCENES[idx];if(idx!==cur){SCENES.forEach((x,i)=>x.group.visible=i===idx);cur=idx;}
+  const lt=t-s.start;rig.focusDist=null;s.update(lt);s.cam(lt);updateAtmosphere(t,idx);
+  const transition=sceneTransition(t);
+  rig.dist+=transition.weight*(transition.outgoing?-.7:.7);
+  grade.uniforms.astraBridge.value=transition.weight;grade.uniforms.astraCenter.value.set(...transition.center);
+  surfaceReveals.forEach(({u,delay})=>u.value=seg(lt,delay,delay+.7,easeOutCubic));
+  if(!motionQuery.matches){rig.yaw+=pointer.x*.7;rig.pitch+=pointer.y*.4;}
+  applyRig();const fin=seg(lt,0,.28,easeOutCubic);
+  dof.uniforms.focus.value=camera.position.distanceTo(rig.focusPoint)-(1-fin)*2.5;
+  dof.uniforms.aperture.value=rig.aperture+.035*(1-fin);dof.uniforms.maxblur.value=rig.maxblur*(1+1.2*(1-fin));
+  grade.uniforms.time.value=t;grade.uniforms.fade.value=1;
+  camera.layers.set(0);scene.overrideMaterial=depthMat;renderer.setClearColor(0xffffff,1);renderer.setRenderTarget(depthRT);renderer.clear();renderer.render(scene,camera);
+  scene.overrideMaterial=null;camera.layers.enableAll();renderer.autoClear=false;
+  for(const d of DEPTH_WRITERS){let o=d.mesh,vis=true;while(o){if(!o.visible){vis=false;break;}o=o.parent;}if(!vis)continue;const m=d.mesh.material;d.mesh.material=d.mat;renderer.render(d.mesh,camera);d.mesh.material=m;}
+  renderer.autoClear=true;renderer.setRenderTarget(null);renderer.setClearColor(0x000000,1);composer.render();
+  
+  if(chapterTitleEl) chapterTitleEl.textContent=`0${idx+1} // ${CHAPTERS[idx]}`;
+  navDots.forEach((btn, i) => {
+    if(i === idx) {
+      btn.style.background = '#F00613';
+      btn.style.width = '10px';
+      btn.style.height = '10px';
+      btn.style.boxShadow = '0 0 10px rgba(240,6,19,0.8)';
+    } else {
+      btn.style.background = 'rgba(255,255,255,0.25)';
+      btn.style.width = '8px';
+      btn.style.height = '8px';
+      btn.style.boxShadow = 'none';
+    }
+  });
+
+  document.body.dataset.time=t.toFixed(4);document.body.dataset.chapter=String(idx);document.body.dataset.shot=String(cameraBeatIndex);
+}
+
+function enterSite() {
+  if (window.parent && window.parent !== window) {
+    window.parent.postMessage({ action: 'dismiss_intro' }, '*');
+  } else {
+    window.location.href = 'index.html#hero';
+  }
+}
+document.getElementById('enterSiteBtn')?.addEventListener('click', enterSite);
+document.getElementById('gl')?.addEventListener('click', (e) => {
+  if (T >= TOTAL - 3.5) enterSite();
+});
+
+let targetT = 0;
+let userScrolled = false;
+let scrollTimeout = null;
+
+// Interactive Wheel / Scroll (Apple-style 3D Scroll)
+window.addEventListener('wheel', (e) => {
+  userScrolled = true;
+  clearTimeout(scrollTimeout);
+  scrollTimeout = setTimeout(() => { userScrolled = false; }, 2500);
+
+  const delta = e.deltaY > 0 ? 0.75 : -0.75;
+  targetT = Math.max(0, Math.min(TOTAL - 0.001, targetT + delta));
+  if (targetT >= TOTAL - 0.4) {
+    setTimeout(enterSite, 600);
+  }
+}, { passive: true });
+
+// Mobile Touch Swipe
+let touchStartY = 0;
+window.addEventListener('touchstart', (e) => {
+  touchStartY = e.touches[0].clientY;
+}, { passive: true });
+window.addEventListener('touchmove', (e) => {
+  const currentY = e.touches[0].clientY;
+  const dy = touchStartY - currentY;
+  touchStartY = currentY;
+  userScrolled = true;
+  clearTimeout(scrollTimeout);
+  scrollTimeout = setTimeout(() => { userScrolled = false; }, 2500);
+  targetT = Math.max(0, Math.min(TOTAL - 0.001, targetT + dy * 0.02));
+  if (targetT >= TOTAL - 0.4) {
+    setTimeout(enterSite, 600);
+  }
+}, { passive: true });
+
+// Chapter dots click
+navDots.forEach(btn => {
+  btn.addEventListener('click', () => {
+    userScrolled = true;
+    clearTimeout(scrollTimeout);
+    scrollTimeout = setTimeout(() => { userScrolled = false; }, 2500);
+    targetT = Number(btn.dataset.time) + 0.1;
+  });
+});
+
+addEventListener('pointermove',e=>{pointer.x=e.clientX/innerWidth*2-1;pointer.y=e.clientY/innerHeight*2-1;});
+addEventListener('keydown',e=>{
+  if(e.code==='ArrowRight'||e.code==='ArrowDown'||e.code==='Space'||e.code==='PageDown'){
+    e.preventDefault();
+    userScrolled = true;
+    clearTimeout(scrollTimeout);
+    scrollTimeout = setTimeout(() => { userScrolled = false; }, 2500);
+    targetT = Math.min(TOTAL - 0.001, targetT + 1.2);
+    if(targetT >= TOTAL - 0.4) enterSite();
+  } else if(e.code==='ArrowLeft'||e.code==='ArrowUp'||e.code==='PageUp'){
+    e.preventDefault();
+    userScrolled = true;
+    clearTimeout(scrollTimeout);
+    scrollTimeout = setTimeout(() => { userScrolled = false; }, 2500);
+    targetT = Math.max(0, targetT - 1.2);
+  } else if(e.code==='Enter'){
+    enterSite();
+  }
+});
+
+function loop(){
+  requestAnimationFrame(loop);
+  const now = performance.now()/1000;
+  const dt = Math.min(0.05, now - tPrev);
+  tPrev = now;
+  if(document.hidden) return;
+
+  if (userScrolled) {
+    // Smooth damping to user scroll position
+    T += (targetT - T) * 0.16;
+  } else {
+    // Gentle ambient cinematic drift when not actively scrolling
+    T = (T + dt * 0.7) % TOTAL;
+    targetT = T;
+  }
+  renderAt(T);
+}
+(async()=>{try{
+  try {
+    await Promise.allSettled([
+      document.fonts.load('400 40px Geist'),
+      document.fonts.load('400 40px "JetBrains Mono"'),
+      drawingImage.decode()
+    ]);
+  } catch (fontErr) {}
+  SCENES=[introScene(),promptScene(0),atmosphereScene(),resultScene(),refinementScene(),finaleScene()];
+  document.body.dataset.duration=String(TOTAL);
+  SCENES.forEach(s=>{s.group.visible=false;scene.add(s.group);});
+  grade.uniforms.grain.value=.009;grade.uniforms.vig.value=.23;grade.uniforms.ca.value=.0005;bloom.strength=.48;bloom.radius=.65;
+  T = 0;
+  targetT = 0;
+  renderAt(T);
+  document.body.dataset.ready='true';
+  const loadEl = document.getElementById('loading');
+  if (loadEl) loadEl.hidden = true;
+  loop();
+}catch(err){
+  console.error('Codex Astra init failed',err);
+  const loadEl = document.getElementById('loading');
+  if (loadEl) loadEl.hidden = true;
+}})();
+
+</script>
+</body>
+</html>

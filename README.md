@@ -1,13 +1,14 @@
-﻿# COA Egypt — Official Executive Portfolio
+# COA Egypt — Official Executive Portfolio
 
 منصة بورتفوليو رقمية تفاعلية حديثة وسريعة لشركة **COA Egypt (Community of Accountants)**، تم تصميمها بمعمارية بصرية متقدمة ومستوحاة من كبرى المنصات التقنية مثل Digital Harbor، مع الاحتفاظ بالخفة والسرعة الفائقة (< 0.4 ثانية تحميل) وتطبيق الهوية البصرية الرسمية للشركة.
 
 ---
 
 ## 🎨 الهوية البصرية (Brand Identity)
-- **الكحلي الملكي (Royal Navy):** `#002955`
-- **الأحمر القرمزي (Crimson Red):** `#F00613`
-- **الأزرق السيان التكنولوجي (Electric Cyan):** `#00E5FF`
+- **الكحلي الملكي (Royal Navy):** `#002955` / `#001835`
+- **الأحمر القرمزي الرسمي (Crimson Red):** `#F00613`
+- **الأبيض والنقاء المؤسسي (Surface White):** `#FFFFFF` / `#F8FAFC`
+- **البلاتينيوم والسليت الراقي (Platinum Slate):** `#E2E8F0` / `#94A3B8`
 
 ---
 

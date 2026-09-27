@@ -5,295 +5,66 @@
  */
 
 document.addEventListener('DOMContentLoaded', () => {
-  let currentLang = 'ar';
+  let currentLang = 'en';
   const htmlEl = document.documentElement;
 
   // ========================================================
-  // 1. DIGITAL HARBOR CINEMATIC 3D INTRO TOUR CONTROLLER
+  // ========================================================
+  // 1. DIGITAL HARBOR CINEMATIC 3D INTRO CONTROLLER
   // ========================================================
   const introEl = document.getElementById('dh-intro');
-  const waveCanvas = document.getElementById('introWaveCanvas');
   const skipBtn = document.getElementById('dhSkipBtn');
-  const enterBtn = document.getElementById('dhEnterBtn');
-  const prevBtn = document.getElementById('dhPrevBtn');
-  const nextBtn = document.getElementById('dhNextBtn');
-  const dots = document.querySelectorAll('.dh-dot');
-  const scenes = document.querySelectorAll('.dh-scene');
-  const tourBar = document.getElementById('dhTourBar');
-
-  let currentScene = 0;
-  const totalScenes = scenes.length;
-  let sceneTimer = null;
   let introActive = true;
-  let waveAnimId = null;
 
-  function showScene(idx) {
-    if (!introActive) return;
-    currentScene = (idx + totalScenes) % totalScenes;
+  try {
+    sessionStorage.removeItem('coa_intro_done');
+  } catch (e) {}
 
-    scenes.forEach((sc, i) => {
-      sc.classList.toggle('active', i === currentScene);
-    });
-
-    dots.forEach((dot, i) => {
-      dot.classList.toggle('on', i === currentScene);
-    });
-
-    if (tourBar) {
-      const progress = ((currentScene + 1) / totalScenes) * 100;
-      tourBar.style.width = `${progress}%`;
-    }
-
-    // Reset slide progression timer
-    clearTimeout(sceneTimer);
-    sceneTimer = setTimeout(() => {
-      if (introActive && currentScene < totalScenes - 1) {
-        showScene(currentScene + 1);
-      }
-    }, 5500);
+  if (introEl) {
+    introEl.classList.remove('dh-skip');
+    introEl.style.display = 'block';
+    introEl.style.opacity = '1';
+    introEl.style.visibility = 'visible';
   }
 
-  function dismissIntro() {
+  function dismissIntroAndEnter(target = '#hero') {
     if (!introEl || !introActive) return;
     introActive = false;
-    clearTimeout(sceneTimer);
-    if (waveAnimId) cancelAnimationFrame(waveAnimId);
+
+    const frame = document.getElementById('introAstraFrame');
+    if (frame) {
+      try { frame.contentWindow?.postMessage('pause', '*'); } catch (err) {}
+    }
 
     introEl.classList.add('dh-skip');
     setTimeout(() => {
       introEl.style.display = 'none';
-    }, 950);
+      if (frame) {
+        frame.src = 'about:blank'; // Free up GPU memory completely
+      }
+      const section = document.querySelector(target);
+      if (section) section.scrollIntoView({ behavior: 'smooth' });
+    }, 450);
   }
 
-  if (skipBtn) skipBtn.addEventListener('click', dismissIntro);
-  if (enterBtn) enterBtn.addEventListener('click', dismissIntro);
-
-  if (prevBtn) {
-    prevBtn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      showScene(currentScene - 1);
-    });
-  }
-
-  if (nextBtn) {
-    nextBtn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      showScene(currentScene + 1);
-    });
-  }
-
-  dots.forEach(dot => {
-    dot.addEventListener('click', (e) => {
-      e.stopPropagation();
-      const targetIdx = parseInt(dot.getAttribute('data-dot'), 10);
-      if (!isNaN(targetIdx)) showScene(targetIdx);
-    });
+  // Listen for dismiss_intro message from introAstraFrame
+  window.addEventListener('message', (e) => {
+    if (e.data && (e.data.action === 'dismiss_intro' || e.data === 'dismiss_intro')) {
+      dismissIntroAndEnter('#hero');
+    }
   });
 
-  // Clicking outside text advances scene or enters
-  if (introEl) {
-    introEl.addEventListener('click', (e) => {
-      if (e.target.closest('.dh-tour-nav') || e.target.closest('.dh-skip-btn') || e.target.closest('.dh-enter-btn') || e.target.closest('.dh-pcard')) {
-        return;
-      }
-      if (currentScene < totalScenes - 1) {
-        showScene(currentScene + 1);
-      } else {
-        dismissIntro();
-      }
+  if (skipBtn) {
+    skipBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      dismissIntroAndEnter('#hero');
     });
   }
 
-  // 3D WebGL Wave / Particle Space (Three.js with 2D Canvas fallback)
-  function initIntroVisuals() {
-    if (!waveCanvas) return;
-    const parent = document.getElementById('dh-eco') || introEl;
-    let width = parent.clientWidth || window.innerWidth;
-    let height = parent.clientHeight || window.innerHeight;
-
-    if (typeof THREE !== 'undefined') {
-      try {
-        const scene = new THREE.Scene();
-        scene.fog = new THREE.FogExp2(0x070b1c, 0.0035);
-
-        const camera = new THREE.PerspectiveCamera(65, width / height, 1, 2000);
-        camera.position.set(0, 160, 480);
-        camera.lookAt(0, 0, 0);
-
-        const renderer = new THREE.WebGLRenderer({
-          canvas: waveCanvas,
-          antialias: true,
-          alpha: true,
-          powerPreference: 'high-performance'
-        });
-        renderer.setSize(width, height);
-        renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
-
-        // Particle Grid
-        const cols = 55;
-        const rows = 45;
-        const count = cols * rows;
-        const geometry = new THREE.BufferGeometry();
-        const positions = new Float32Array(count * 3);
-        const colors = new Float32Array(count * 3);
-
-        const sepX = 26;
-        const sepZ = 24;
-        const offsetX = (cols * sepX) / 2;
-        const offsetZ = (rows * sepZ) / 2;
-
-        let idx = 0;
-        for (let ix = 0; ix < cols; ix++) {
-          for (let iz = 0; iz < rows; iz++) {
-            const px = ix * sepX - offsetX;
-            const pz = iz * sepZ - offsetZ;
-            positions[idx * 3] = px;
-            positions[idx * 3 + 1] = 0;
-            positions[idx * 3 + 2] = pz;
-
-            // Cyan & Red/Blue particle gradient
-            if ((ix + iz) % 5 === 0) {
-              colors[idx * 3] = 0.94; colors[idx * 3 + 1] = 0.02; colors[idx * 3 + 2] = 0.07; // Crimson Red
-            } else {
-              colors[idx * 3] = 0.0; colors[idx * 3 + 1] = 0.90; colors[idx * 3 + 2] = 1.0; // Electric Cyan
-            }
-            idx++;
-          }
-        }
-
-        geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-        geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
-
-        // Canvas circular particle texture
-        const pCanvas = document.createElement('canvas');
-        pCanvas.width = 32; pCanvas.height = 32;
-        const pCtx = pCanvas.getContext('2d');
-        const radGrd = pCtx.createRadialGradient(16, 16, 0, 16, 16, 16);
-        radGrd.addColorStop(0, 'rgba(255, 255, 255, 1)');
-        radGrd.addColorStop(0.3, 'rgba(0, 229, 255, 0.8)');
-        radGrd.addColorStop(1, 'rgba(0, 229, 255, 0)');
-        pCtx.fillStyle = radGrd;
-        pCtx.fillRect(0, 0, 32, 32);
-
-        const pTexture = new THREE.CanvasTexture(pCanvas);
-        const material = new THREE.PointsMaterial({
-          size: 7.5,
-          vertexColors: true,
-          map: pTexture,
-          transparent: true,
-          blending: THREE.AdditiveBlending,
-          depthWrite: false
-        });
-
-        const particles = new THREE.Points(geometry, material);
-        scene.add(particles);
-
-        // 4 Glowing Discipline Orbit Nodes
-        const nodeGeometry = new THREE.SphereGeometry(6, 16, 16);
-        const nodeMatCyan = new THREE.MeshBasicMaterial({ color: 0x00E5FF });
-        const nodeMatRed = new THREE.MeshBasicMaterial({ color: 0xF00613 });
-        const orbitNodes = [];
-        for (let k = 0; k < 4; k++) {
-          const mesh = new THREE.Mesh(nodeGeometry, k % 2 === 0 ? nodeMatCyan : nodeMatRed);
-          scene.add(mesh);
-          orbitNodes.push(mesh);
-        }
-
-        let mouseX = 0, mouseY = 0;
-        window.addEventListener('mousemove', (e) => {
-          mouseX = (e.clientX - width / 2) * 0.15;
-          mouseY = (e.clientY - height / 2) * 0.15;
-        });
-
-        let clock = 0;
-        function renderThree() {
-          if (!introActive) return;
-          clock += 0.024;
-
-          const posArr = geometry.attributes.position.array;
-          let pIdx = 0;
-          for (let ix = 0; ix < cols; ix++) {
-            for (let iz = 0; iz < rows; iz++) {
-              const x = ix * sepX - offsetX;
-              const z = iz * sepZ - offsetZ;
-              // Digital Harbor exact wave formula
-              const y = (Math.sin(x * 0.016 + clock * 1.2) * 22) +
-                        (Math.cos(z * 0.022 + clock * 0.9) * 18) +
-                        (Math.sin((x + z) * 0.014 + clock * 1.5) * 12);
-              posArr[pIdx * 3 + 1] = y;
-              pIdx++;
-            }
-          }
-          geometry.attributes.position.needsUpdate = true;
-
-          // Orbit nodes
-          orbitNodes.forEach((node, nIdx) => {
-            const angle = clock * 0.6 + (nIdx * Math.PI / 2);
-            node.position.x = Math.cos(angle) * 220;
-            node.position.z = Math.sin(angle) * 180;
-            node.position.y = Math.sin(clock * 1.2 + nIdx) * 35;
-          });
-
-          // Camera parallax
-          camera.position.x += (mouseX - camera.position.x) * 0.04;
-          camera.position.y += ((160 - mouseY) - camera.position.y) * 0.04;
-          camera.lookAt(0, 0, 0);
-
-          renderer.render(scene, camera);
-          waveAnimId = requestAnimationFrame(renderThree);
-        }
-        renderThree();
-
-        window.addEventListener('resize', () => {
-          if (!introActive) return;
-          width = parent.clientWidth || window.innerWidth;
-          height = parent.clientHeight || window.innerHeight;
-          camera.aspect = width / height;
-          camera.updateProjectionMatrix();
-          renderer.setSize(width, height);
-        });
-        return;
-      } catch (err) {
-        console.warn('Three.js failed, using 2D Canvas fallback:', err);
-      }
-    }
-
-    // 2D Canvas Fallback
-    const ctx = waveCanvas.getContext('2d');
-    waveCanvas.width = width;
-    waveCanvas.height = height;
-
-    let time = 0;
-    function render2DFallback() {
-      if (!introActive) return;
-      time += 0.03;
-      ctx.clearRect(0, 0, width, height);
-
-      const cols2 = 36;
-      const rows2 = 24;
-      const stepX = width / cols2;
-      const stepY = height / rows2;
-
-      for (let i = 0; i <= cols2; i++) {
-        for (let j = 0; j <= rows2; j++) {
-          const x = i * stepX;
-          const y = j * stepY + Math.sin(i * 0.3 + time) * 16 + Math.cos(j * 0.3 + time * 0.8) * 14;
-          ctx.beginPath();
-          ctx.arc(x, y, (i + j) % 6 === 0 ? 2.5 : 1.5, 0, Math.PI * 2);
-          ctx.fillStyle = (i + j) % 7 === 0 ? 'rgba(240, 6, 19, 0.7)' : 'rgba(0, 229, 255, 0.6)';
-          ctx.fill();
-        }
-      }
-      waveAnimId = requestAnimationFrame(render2DFallback);
-    }
-    render2DFallback();
-  }
-
-  initIntroVisuals();
-  showScene(0);
+  // Intro visuals rendered via introAstraFrame
 
   // ========================================================
-  // 2. FULL-PAGE MOTHERBOARD BACKGROUND CANVAS (#dh-rain)
+  // 2. FULL-PAGE GEOMETRIC GRID BACKGROUND (#dh-rain)
   // ========================================================
   function initMotherboardCircuit() {
     const rainHolder = document.getElementById('dh-rain');
@@ -305,228 +76,169 @@ document.addEventListener('DOMContentLoaded', () => {
     let W = 0, H = 0;
     const DPR = Math.min(window.devicePixelRatio || 1, 1.6);
     let animFrame = null;
+    let tick = 0;
 
-    // 45° Dogleg Routing
-    function route(A, B) {
-      const dx = B.x - A.x, dy = B.y - A.y;
-      const adx = Math.abs(dx), ady = Math.abs(dy);
-      if (adx < 3 || ady < 3 || Math.abs(adx - ady) < 3) return [A, B];
-      const m = Math.min(adx, ady);
-      const sx = dx < 0 ? -1 : 1, sy = dy < 0 ? -1 : 1;
-      let P;
-      if (Math.random() < 0.5) {
-        P = { x: A.x + sx * m, y: A.y + sy * m };
-      } else {
-        P = (adx > ady) ? { x: B.x - sx * ady, y: A.y } : { x: A.x, y: B.y - sy * adx };
-      }
-      return [A, P, B];
-    }
+    // Diamond / rhombus shapes drifting upward
+    let diamonds = [];
+    // Animated horizontal scanlines (data lines)
+    let scanLines = [];
+    // Floating data points
+    let dataPoints = [];
 
-    function poly(pts) {
-      const seg = [];
-      let total = 0;
-      for (let i = 0; i < pts.length - 1; i++) {
-        const L = Math.hypot(pts[i + 1].x - pts[i].x, pts[i + 1].y - pts[i].y);
-        seg.push(L);
-        total += L;
-      }
-      return { seg, len: total };
-    }
-
-    let nodes = [], edges = [], chip = { x: 0, y: 0, s: 0 }, pulses = [];
-
-    function generateBoard() {
+    function setup() {
       W = window.innerWidth;
       H = rainHolder.clientHeight || 1750;
-      canvas.width = W * DPR;
+      canvas.width  = W * DPR;
       canvas.height = H * DPR;
       ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
 
-      nodes = [];
-      edges = [];
-      pulses = [];
-
-      const cx = W / 2;
-      const cy = Math.min(Math.max(H * 0.28, 380), 520);
-      const chipSize = Math.max(130, Math.min(200, Math.min(W, H) * 0.2));
-      const hs = chipSize / 2;
-      chip = { x: cx, y: cy, s: chipSize };
-
-      function addNode(x, y, ring) {
-        nodes.push({ x, y, ring: ring || 0 });
-        return nodes.length - 1;
+      // Generate diamonds (max 6 for buttery smooth 120fps)
+      diamonds = [];
+      const dCount = Math.min(6, Math.floor((W * H) / 120000) || 3);
+      for (let i = 0; i < dCount; i++) {
+        diamonds.push({
+          x: Math.random() * W,
+          y: Math.random() * H,
+          size: 8 + Math.random() * 12,
+          speed: 0.12 + Math.random() * 0.18,
+          opacity: 0.08 + Math.random() * 0.12,
+          red: Math.random() < 0.25,
+          rotation: Math.random() * Math.PI
+        });
       }
 
-      function addTrace(px, py, dx, dy, tx, ty) {
-        const pin = addNode(px, py, 0);
-        const stub = 20 + Math.random() * 35;
-        const p1 = { x: px + dx * stub, y: py + dy * stub };
-        const pad = addNode(tx, ty, 3 + Math.random() * 3);
-        const pts = [nodes[pin]].concat(route(p1, { x: tx, y: ty }));
-        const pl = poly(pts);
-        edges.push({ pts, seg: pl.seg, len: pl.len, padIdx: pad });
-      }
+      // Generate horizontal scanlines (max 2)
+      scanLines = [
+        { y: H * 0.3, speed: 0.35, width: 140, opacity: 0.08, dir: 1 },
+        { y: H * 0.7, speed: 0.45, width: 180, opacity: 0.08, dir: -1 }
+      ];
 
-      const pinsPerSide = Math.max(8, Math.floor(chipSize / 12));
-      const mTop = 30, mBot = H - 30, mLeft = 30, mRight = W - 30;
-
-      // Top & Bottom pins
-      for (let i = 0; i < pinsPerSide; i++) {
-        const fx = (i + 0.5) / pinsPerSide;
-        const px = cx - hs + fx * chipSize;
-        const spread = 1.6 + Math.random() * 1.2;
-        addTrace(px, cy - hs, 0, -1, Math.max(mLeft, Math.min(mRight, cx + (px - cx) * spread)), mTop + Math.random() * 50);
-        addTrace(px, cy + hs, 0, 1, Math.max(mLeft, Math.min(mRight, cx + (px - cx) * spread)), mBot - Math.random() * 50);
-      }
-
-      // Left & Right pins
-      for (let j = 0; j < pinsPerSide; j++) {
-        const fy = (j + 0.5) / pinsPerSide;
-        const py = cy - hs + fy * chipSize;
-        const spread = 1.6 + Math.random() * 1.2;
-        addTrace(cx - hs, py, -1, 0, mLeft + Math.random() * 50, Math.max(mTop, Math.min(mBot, cy + (py - cy) * spread)));
-        addTrace(cx + hs, py, 1, 0, mRight - Math.random() * 50, Math.max(mTop, Math.min(mBot, cy + (py - cy) * spread)));
-      }
-
-      // Initialize moving pulse particles
-      const pulseCount = Math.min(edges.length, 36);
-      for (let k = 0; k < pulseCount; k++) {
-        pulses.push({
-          edgeIdx: Math.floor(Math.random() * edges.length),
-          progress: Math.random(),
-          speed: 0.0018 + Math.random() * 0.0035,
-          color: Math.random() < 0.25 ? '#F00613' : '#00E5FF',
-          size: 2.2 + Math.random() * 1.8
+      // Generate floating data points (max 12)
+      dataPoints = [];
+      for (let i = 0; i < 12; i++) {
+        dataPoints.push({
+          x: Math.random() * W,
+          y: Math.random() * H,
+          pulse: Math.random() * Math.PI * 2,
+          pulseSpeed: 0.02 + Math.random() * 0.02,
+          size: 1.5 + Math.random() * 1.5,
+          red: i % 4 === 0
         });
       }
     }
 
-    generateBoard();
-    window.addEventListener('resize', generateBoard);
+    setup();
+    window.addEventListener('resize', setup);
 
-    let tick = 0;
-    function drawCircuit() {
-      tick += 0.02;
+    function drawGrid() {
+      tick += 0.016;
       ctx.clearRect(0, 0, W, H);
 
-      // Draw traces
+      // ── 1. Diagonal crosshatch grid ──────────────────────────
+      const gridSpacing = 72;
+      ctx.lineWidth = 0.5;
+
+      // Lines going ↘ (top-left to bottom-right)
+      ctx.strokeStyle = 'rgba(0, 41, 85, 0.18)';
+      ctx.beginPath();
+      for (let x = -H; x < W + H; x += gridSpacing) {
+        ctx.moveTo(x, 0);
+        ctx.lineTo(x + H, H);
+      }
+      ctx.stroke();
+
+      // Lines going ↗ (top-right to bottom-left)
+      ctx.strokeStyle = 'rgba(0, 41, 85, 0.12)';
+      ctx.beginPath();
+      for (let x = -H; x < W + H; x += gridSpacing) {
+        ctx.moveTo(x + H, 0);
+        ctx.lineTo(x, H);
+      }
+      ctx.stroke();
+
+      // Subtle horizontal rules every 160px
+      ctx.strokeStyle = 'rgba(240, 6, 19, 0.06)';
       ctx.lineWidth = 1;
-      ctx.strokeStyle = 'rgba(0, 229, 255, 0.16)';
-      edges.forEach(e => {
-        ctx.beginPath();
-        ctx.moveTo(e.pts[0].x, e.pts[0].y);
-        for (let i = 1; i < e.pts.length; i++) {
-          ctx.lineTo(e.pts[i].x, e.pts[i].y);
-        }
-        ctx.stroke();
-      });
+      ctx.beginPath();
+      for (let y = 80; y < H; y += 160) {
+        ctx.moveTo(0, y);
+        ctx.lineTo(W, y);
+      }
+      ctx.stroke();
 
-      // Draw circular nodes & via rings
-      nodes.forEach(n => {
-        if (n.ring > 0) {
-          ctx.beginPath();
-          ctx.arc(n.x, n.y, n.ring, 0, Math.PI * 2);
-          ctx.strokeStyle = 'rgba(0, 229, 255, 0.4)';
-          ctx.lineWidth = 1.2;
-          ctx.stroke();
+      // ── 2. Floating data-point pulses ────────────────────────
+      dataPoints.forEach(dp => {
+        dp.pulse += dp.pulseSpeed;
+        const glow = (Math.sin(dp.pulse) * 0.5 + 0.5);
+        const r = dp.size * (1 + glow * 1.2);
+        const alpha = 0.15 + glow * 0.45;
 
+        if (dp.red) {
+          // Red accent dot with halo
           ctx.beginPath();
-          ctx.arc(n.x, n.y, 1.5, 0, Math.PI * 2);
-          ctx.fillStyle = 'rgba(0, 229, 255, 0.7)';
+          ctx.arc(dp.x, dp.y, r * 2.5, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(240, 6, 19, ${alpha * 0.25})`;
+          ctx.fill();
+          ctx.beginPath();
+          ctx.arc(dp.x, dp.y, r, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(240, 6, 19, ${alpha})`;
+          ctx.fill();
+        } else {
+          ctx.beginPath();
+          ctx.arc(dp.x, dp.y, r, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(0, 65, 140, ${alpha * 0.6})`;
           ctx.fill();
         }
       });
 
-      // Central Processor Chip (CPU) Hardware Die
-      const hs = chip.s / 2;
-      const breathe = Math.sin(tick * 1.5) * 0.15 + 0.85;
-
-      // Chip Radial Ambient Glow
-      const glowGrad = ctx.createRadialGradient(chip.x, chip.y, chip.s * 0.2, chip.x, chip.y, chip.s * 1.4);
-      glowGrad.addColorStop(0, `rgba(0, 229, 255, ${0.14 * breathe})`);
-      glowGrad.addColorStop(0.5, `rgba(240, 6, 19, ${0.06 * breathe})`);
-      glowGrad.addColorStop(1, 'rgba(7, 11, 28, 0)');
-      ctx.fillStyle = glowGrad;
-      ctx.fillRect(chip.x - chip.s * 1.4, chip.y - chip.s * 1.4, chip.s * 2.8, chip.s * 2.8);
-
-      // Chip Body Glass
-      ctx.fillStyle = 'rgba(12, 18, 42, 0.5)';
-      ctx.fillRect(chip.x - hs, chip.y - hs, chip.s, chip.s);
-
-      // Outer Frame
-      ctx.strokeStyle = `rgba(0, 229, 255, ${0.45 * breathe})`;
-      ctx.lineWidth = 1.5;
-      ctx.strokeRect(chip.x - hs, chip.y - hs, chip.s, chip.s);
-
-      // Corner Registration Brackets
-      const bLen = 14;
-      ctx.strokeStyle = 'rgba(0, 229, 255, 0.9)';
-      ctx.lineWidth = 2;
-      // Top-Left
-      ctx.beginPath(); ctx.moveTo(chip.x - hs, chip.y - hs + bLen); ctx.lineTo(chip.x - hs, chip.y - hs); ctx.lineTo(chip.x - hs + bLen, chip.y - hs); ctx.stroke();
-      // Top-Right
-      ctx.beginPath(); ctx.moveTo(chip.x + hs - bLen, chip.y - hs); ctx.lineTo(chip.x + hs, chip.y - hs); ctx.lineTo(chip.x + hs, chip.y - hs + bLen); ctx.stroke();
-      // Bottom-Left
-      ctx.beginPath(); ctx.moveTo(chip.x - hs, chip.y + hs - bLen); ctx.lineTo(chip.x - hs, chip.y + hs); ctx.lineTo(chip.x - hs + bLen, chip.y + hs); ctx.stroke();
-      // Bottom-Right
-      ctx.beginPath(); ctx.moveTo(chip.x + hs - bLen, chip.y + hs); ctx.lineTo(chip.x + hs, chip.y + hs); ctx.lineTo(chip.x + hs, chip.y + hs - bLen); ctx.stroke();
-
-      // Inner Silicon Core
-      const innerS = chip.s * 0.62;
-      ctx.strokeStyle = `rgba(240, 6, 19, ${0.45 * breathe})`;
-      ctx.lineWidth = 1.2;
-      ctx.strokeRect(chip.x - innerS / 2, chip.y - innerS / 2, innerS, innerS);
-
-      // Micro Pins
-      const pinCount = 6;
-      for (let p = 0; p < pinCount; p++) {
-        const pOffset = (p + 1) * (innerS / (pinCount + 1)) - innerS / 2;
-        ctx.fillStyle = 'rgba(0, 229, 255, 0.6)';
-        ctx.fillRect(chip.x + pOffset - 1, chip.y - innerS / 2 - 4, 2, 4);
-        ctx.fillRect(chip.x + pOffset - 1, chip.y + innerS / 2, 2, 4);
-        ctx.fillRect(chip.x - innerS / 2 - 4, chip.y + pOffset - 1, 4, 2);
-        ctx.fillRect(chip.x + innerS / 2, chip.y + pOffset - 1, 4, 2);
-      }
-
-      // Animate flowing pulses along edges
-      pulses.forEach(p => {
-        p.progress += p.speed;
-        if (p.progress > 1) {
-          p.progress = 0;
-          p.edgeIdx = Math.floor(Math.random() * edges.length);
+      // ── 3. Drifting diamond shapes ────────────────────────────
+      diamonds.forEach(d => {
+        d.y -= d.speed;
+        d.rotation += 0.002;
+        if (d.y + d.size < 0) {
+          d.y = H + d.size;
+          d.x = Math.random() * W;
         }
 
-        const e = edges[p.edgeIdx];
-        if (!e) return;
-        const targetDist = p.progress * e.len;
-        let accum = 0;
-        let curX = e.pts[0].x, curY = e.pts[0].y;
-
-        for (let s = 0; s < e.seg.length; s++) {
-          if (accum + e.seg[s] >= targetDist) {
-            const frac = (targetDist - accum) / (e.seg[s] || 1);
-            curX = e.pts[s].x + (e.pts[s + 1].x - e.pts[s].x) * frac;
-            curY = e.pts[s].y + (e.pts[s + 1].y - e.pts[s].y) * frac;
-            break;
-          }
-          accum += e.seg[s];
-        }
-
-        // Draw pulse particle & glow
-        ctx.beginPath();
-        ctx.arc(curX, curY, p.size * 2.2, 0, Math.PI * 2);
-        ctx.fillStyle = p.color === '#F00613' ? 'rgba(240, 6, 19, 0.25)' : 'rgba(0, 229, 255, 0.25)';
-        ctx.fill();
-
-        ctx.beginPath();
-        ctx.arc(curX, curY, p.size, 0, Math.PI * 2);
-        ctx.fillStyle = p.color;
-        ctx.fill();
+        ctx.save();
+        ctx.translate(d.x, d.y);
+        ctx.rotate(d.rotation + Math.PI / 4);
+        ctx.strokeStyle = d.red
+          ? `rgba(240, 6, 19, ${d.opacity})`
+          : `rgba(0, 41, 85, ${d.opacity})`;
+        ctx.lineWidth = 1;
+        ctx.strokeRect(-d.size / 2, -d.size / 2, d.size, d.size);
+        ctx.restore();
       });
 
-      animFrame = requestAnimationFrame(drawCircuit);
+      // ── 4. Horizontal scanning light beams ───────────────────
+      scanLines.forEach(sl => {
+        sl.y += sl.speed * sl.dir;
+        if (sl.y > H + 40) { sl.y = -40; sl.dir = 1; }
+        if (sl.y < -40)    { sl.y = H + 40; sl.dir = -1; }
+
+        const grad = ctx.createLinearGradient(0, sl.y - 1, 0, sl.y + 1);
+        grad.addColorStop(0, 'transparent');
+        grad.addColorStop(0.5, `rgba(240, 6, 19, ${sl.opacity})`);
+        grad.addColorStop(1, 'transparent');
+        ctx.fillStyle = grad;
+        ctx.fillRect(0, sl.y - 1, W, 2);
+      });
+
+      // ── 5. COA Brand corner mark (bottom-right subtle) ───────
+      const breathe = Math.sin(tick * 1.2) * 0.3 + 0.7;
+      ctx.strokeStyle = `rgba(240, 6, 19, ${0.12 * breathe})`;
+      ctx.lineWidth = 1;
+      const mx = W - 60, my = H - 60, ms = 40;
+      ctx.strokeRect(mx, my, ms, ms);
+      // inner
+      ctx.strokeStyle = `rgba(0, 41, 85, ${0.2 * breathe})`;
+      ctx.strokeRect(mx + 8, my + 8, ms - 16, ms - 16);
+
+      animFrame = requestAnimationFrame(drawGrid);
     }
-    drawCircuit();
+
+    drawGrid();
   }
 
   initMotherboardCircuit();
@@ -537,20 +249,20 @@ document.addEventListener('DOMContentLoaded', () => {
   const tickerEl = document.getElementById('tickerItems');
   const tickerMessages = [
     {
-      ar: '⚡ جاري تكامل وتفعيل الفاتورة الإلكترونية والربط الضريبي (ZATCA & ETA) لـ 18 منشأة تجارية وصناعية',
-      en: '⚡ Active ZATCA Phase 2 & ETA E-Invoicing integrations currently underway across 18+ enterprises'
+      ar: 'جاري تكامل وتفعيل الفاتورة الإلكترونية والربط الضريبي (ZATCA & ETA) لـ 18 منشأة تجارية وصناعية',
+      en: 'Active ZATCA Phase 2 & ETA E-Invoicing integrations currently underway across 18+ enterprises'
     },
     {
-      ar: '🏆 COA Egypt معتمد رسمياً كـ Odoo Silver Partner في مصر والمملكة العربية السعودية',
-      en: '🏆 COA Egypt officially certified as an Odoo Silver Partner across Egypt & Saudi Arabia'
+      ar: 'COA Egypt معتمد رسمياً كـ Odoo Silver Partner في مصر والمملكة العربية السعودية',
+      en: 'COA Egypt officially certified as an Odoo Silver Partner across Egypt & Saudi Arabia'
     },
     {
-      ar: '📈 اكتمال برنامج تأهيل وتدريب 45 محاسباً على منظومة Odoo Accounting بنجاح',
-      en: '📈 Successful completion of hands-on Odoo Accounting training for 45 corporate accountants'
+      ar: 'اكتمال برنامج تأهيل وتدريب 45 محاسباً على منظومة Odoo Accounting بنجاح',
+      en: 'Successful completion of hands-on Odoo Accounting training for 45 corporate accountants'
     },
     {
-      ar: '🏭 إطلاق خطوط الإنتاج والربط المخزني التلقائي لشركتين صناعيتين جديدتين',
-      en: '🏭 Live Go-Live achieved for manufacturing MRP & automated warehouse routing for 2 industrial clients'
+      ar: 'إطلاق خطوط الإنتاج والربط المخزني التلقائي لشركتين صناعيتين جديدتين',
+      en: 'Live Go-Live achieved for manufacturing MRP & automated warehouse routing for 2 industrial clients'
     }
   ];
   let tickerIdx = 0;
@@ -567,16 +279,12 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // ========================================================
-  // 4. LANGUAGE SWITCHER (AR <-> EN)
+  // 4. LANGUAGE — ENGLISH ONLY
   // ========================================================
-  const langSwitchBtn = document.getElementById('langSwitch');
-  const langText = document.getElementById('langText');
-
   function setLanguage(lang) {
     currentLang = lang;
     htmlEl.setAttribute('lang', lang);
     htmlEl.setAttribute('dir', lang === 'ar' ? 'rtl' : 'ltr');
-    if (langText) langText.textContent = lang === 'ar' ? 'EN' : 'عربي';
 
     document.querySelectorAll('[data-ar]').forEach(el => {
       const text = el.getAttribute(`data-${lang}`);
@@ -595,37 +303,47 @@ document.addEventListener('DOMContentLoaded', () => {
     localStorage.setItem('coa_lang', lang);
   }
 
-  const savedLang = localStorage.getItem('coa_lang') || 'ar';
-  if (savedLang !== 'ar') {
-    setLanguage(savedLang);
-  }
-
-  if (langSwitchBtn) {
-    langSwitchBtn.addEventListener('click', () => {
-      const nextLang = currentLang === 'ar' ? 'en' : 'ar';
-      setLanguage(nextLang);
-    });
-  }
+  // Always English — call immediately on load
+  setLanguage('en');
 
   // ========================================================
   // 5. THEME TOGGLE (DARK / LIGHT)
   // ========================================================
   const themeToggleBtn = document.getElementById('themeToggle');
-  function setTheme(theme) {
-    htmlEl.setAttribute('data-theme', theme);
-    localStorage.setItem('coa_theme', theme);
-  }
-
-  if (themeToggleBtn) {
-    themeToggleBtn.addEventListener('click', () => {
-      const cur = htmlEl.getAttribute('data-theme') || 'dark';
-      const nxt = cur === 'dark' ? 'light' : 'dark';
-      setTheme(nxt);
+  const themeToggleMobile = document.getElementById('themeToggleMobile');
+  
+  function updateThemeButtonLabels(theme) {
+    const isDark = theme === 'dark';
+    const text = isDark ? 'Light' : 'Dark';
+    const textAr = isDark ? 'لايت' : 'دارك';
+    document.querySelectorAll('.theme-toggle-label, #themeToggleText').forEach(el => {
+      el.textContent = currentLang === 'ar' ? textAr : text;
+      el.setAttribute('data-en', text);
+      el.setAttribute('data-ar', textAr);
     });
   }
 
-  // Default to dark midnight theme like Digital Harbor
-  const savedTheme = localStorage.getItem('coa_theme') || 'dark';
+  function setTheme(theme) {
+    htmlEl.setAttribute('data-theme', theme);
+    localStorage.setItem('coa_theme', theme);
+    updateThemeButtonLabels(theme);
+  }
+
+  function toggleThemeAction() {
+    const cur = htmlEl.getAttribute('data-theme') || 'dark';
+    const nxt = cur === 'dark' ? 'light' : 'dark';
+    setTheme(nxt);
+  }
+
+  if (themeToggleBtn) {
+    themeToggleBtn.addEventListener('click', toggleThemeAction);
+  }
+  if (themeToggleMobile) {
+    themeToggleMobile.addEventListener('click', toggleThemeAction);
+  }
+
+  // Initialize theme
+  const savedTheme = localStorage.getItem('coa_theme') || (htmlEl.getAttribute('data-theme') || 'dark');
   setTheme(savedTheme);
 
   // ========================================================
@@ -806,28 +524,33 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   ];
 
+  function loadExpPanel(idx) {
+    const data = stackDetails[idx];
+    if (!data) return;
+    if (expBadge) expBadge.textContent = data.badge;
+    if (expTitle) expTitle.textContent = data.titleEn;
+    if (expDesc)  expDesc.textContent  = data.descEn;
+    if (expMeta) {
+      expMeta.innerHTML = data.meta.map(m => `
+        <div class="meta-pill">
+          <small>${m.label}</small>
+          <strong>${m.val}</strong>
+        </div>
+      `).join('');
+    }
+  }
+
   expItems.forEach(item => {
     item.addEventListener('click', () => {
       expItems.forEach(i => i.classList.remove('active'));
       item.classList.add('active');
       const idx = parseInt(item.getAttribute('data-exp'), 10);
-      const data = stackDetails[idx];
-      if (!data) return;
-
-      if (expBadge) expBadge.textContent = data.badge;
-      if (expTitle) expTitle.textContent = currentLang === 'ar' ? data.titleAr : data.titleEn;
-      if (expDesc) expDesc.textContent = currentLang === 'ar' ? data.descAr : data.descEn;
-
-      if (expMeta) {
-        expMeta.innerHTML = data.meta.map(m => `
-          <div class="meta-pill">
-            <small>${m.label}</small>
-            <strong>${m.val}</strong>
-          </div>
-        `).join('');
-      }
+      loadExpPanel(idx);
     });
   });
+
+  // Load first panel in English on page load
+  loadExpPanel(0);
 
   // ========================================================
   // 8. SERVICES TABS CONTROLLER
@@ -872,96 +595,189 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // ========================================================
-  // 10. INTERACTIVE SCOPE ESTIMATOR & DYNAMIC RECOMMENDATIONS
+  // 10. REFORMED EXACT WORKFORCE & PROJECT ESTIMATOR
   // ========================================================
-  const userRadios = document.querySelectorAll('input[name="users"]');
-  const serviceBoxes = document.querySelectorAll('input[name="services"]');
-  const countryRadios = document.querySelectorAll('input[name="country"]');
+  const usersInput = document.getElementById('calcUsersInput');
+  const usersSlider = document.getElementById('calcUsersSlider');
+  const decBtn = document.getElementById('calcUsersDec');
+  const incBtn = document.getElementById('calcUsersInc');
+  const presetBtns = document.querySelectorAll('#userPresets .preset-chip');
+  const tierBadge = document.getElementById('calcTierBadge');
+  const usersSummary = document.getElementById('calcUsersSummary');
 
   const pkgNameEl = document.getElementById('calcPackageName');
   const timeEstEl = document.getElementById('calcTimeEstimate');
   const supportEl = document.getElementById('calcSupportLevel');
   const compEl = document.getElementById('calcCompliance');
   const bulletsEl = document.getElementById('calcFeatureBullets');
+  const submitBtn = document.getElementById('calcSubmitBtn');
+  const serviceBoxes = document.querySelectorAll('input[name="services"]');
+  const countryRadios = document.querySelectorAll('input[name="country"]');
+
+  let currentUsers = 15;
+
+  function setUsers(val) {
+    let num = parseInt(val, 10);
+    if (isNaN(num) || num < 1) num = 1;
+    if (num > 1000) num = 1000;
+    currentUsers = num;
+
+    if (usersInput && usersInput.value != currentUsers) usersInput.value = currentUsers;
+    if (usersSlider) usersSlider.value = Math.min(currentUsers, 250);
+
+    // Update preset chip active states
+    presetBtns.forEach(btn => {
+      const p = parseInt(btn.getAttribute('data-users'), 10);
+      btn.classList.toggle('active', p === currentUsers || (p === 200 && currentUsers >= 200));
+    });
+
+    updateEstimator();
+  }
+
+  if (usersInput) {
+    usersInput.addEventListener('input', (e) => {
+      const val = parseInt(e.target.value, 10);
+      if (!isNaN(val)) setUsers(val);
+    });
+  }
+
+  if (usersSlider) {
+    usersSlider.addEventListener('input', (e) => {
+      setUsers(e.target.value);
+    });
+  }
+
+  if (decBtn) {
+    decBtn.addEventListener('click', () => {
+      const step = currentUsers > 50 ? 5 : 1;
+      setUsers(Math.max(1, currentUsers - step));
+    });
+  }
+
+  if (incBtn) {
+    incBtn.addEventListener('click', () => {
+      const step = currentUsers >= 50 ? 5 : 1;
+      setUsers(currentUsers + step);
+    });
+  }
+
+  presetBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const u = parseInt(btn.getAttribute('data-users'), 10);
+      setUsers(u);
+    });
+  });
 
   function updateEstimator() {
-    let selectedUserSize = '1-5';
-    userRadios.forEach(r => { if (r.checked) selectedUserSize = r.value; });
-
     let selectedCountry = 'egypt';
     countryRadios.forEach(r => { if (r.checked) selectedCountry = r.value; });
 
     const checkedServices = [];
     serviceBoxes.forEach(b => { if (b.checked) checkedServices.push(b.value); });
+    const moduleCount = checkedServices.length;
 
-    const pkgData = {
-      '1-5': {
-        ar: { name: 'باقة الانطلاق السريع (Starter Core)', time: '2 إلى 3 أسابيع', support: 'دعم مباشر خلال الإطلاق' },
-        en: { name: 'Starter Core Stack', time: '2 to 3 weeks', support: 'Launch Hypercare Support' }
-      },
-      '6-20': {
-        ar: { name: 'باقة النمو المتكامل (Growth Stack)', time: '3 إلى 5 أسابيع', support: 'دعم مباشر ورعاية مكثفة (Hypercare)' },
-        en: { name: 'Growth Stack', time: '3 to 5 weeks', support: 'Direct Hypercare & Live SLA' }
-      },
-      '21-50': {
-        ar: { name: 'باقة التوسع المؤسسي (Scale & Automate)', time: '6 إلى 8 أسابيع', support: 'مدير حساب مخصص + رعاية 24/7' },
-        en: { name: 'Scale & Automate Stack', time: '6 to 8 weeks', support: 'Dedicated Account Lead + 24/7 SLA' }
-      },
-      '50+': {
-        ar: { name: 'باقة التحول المؤسسي الشامل (Enterprise Transformation)', time: '8 إلى 12 أسبوعاً', support: 'فريق استشاري مقيم + رعاية سحابية كاملة 24/7' },
-        en: { name: 'Enterprise Transformation', time: '8 to 12 weeks', support: 'Resident CPA Squad + Full 24/7 SLA' }
-      }
-    };
+    // Dynamic categorization based on exact user count
+    let tierName = 'Growth Team';
+    let pkgTitle = 'Growth & Scale Architecture';
+    let timeEst = '3 to 5 Weeks';
+    let squadText = 'Lead CPA + Certified Odoo Consultant';
 
-    const curPkg = pkgData[selectedUserSize] || pkgData['6-20'];
-    const p = currentLang === 'ar' ? curPkg.ar : curPkg.en;
+    if (currentUsers <= 5) {
+      tierName = 'Starter Core';
+      pkgTitle = 'Starter Core Deployment';
+      timeEst = moduleCount > 4 ? '3 to 4 Weeks' : '2 to 3 Weeks';
+      squadText = 'Senior Consultant + CPA Verification';
+    } else if (currentUsers <= 25) {
+      tierName = 'Growth Team';
+      pkgTitle = 'Growth & Scale Architecture';
+      timeEst = moduleCount > 5 ? '4 to 6 Weeks' : '3 to 5 Weeks';
+      squadText = '1 Lead CPA Auditor + 2 Certified Odoo Engineers';
+    } else if (currentUsers <= 60) {
+      tierName = 'Scale & Automate';
+      pkgTitle = 'Scale & Multi-Branch Framework';
+      timeEst = moduleCount > 5 ? '6 to 9 Weeks' : '5 to 7 Weeks';
+      squadText = 'Dedicated Engagement Partner + Technical Squad';
+    } else {
+      tierName = 'Enterprise Scale';
+      pkgTitle = 'Full Enterprise Digital Transformation';
+      timeEst = moduleCount > 5 ? '10 to 14 Weeks' : '8 to 12 Weeks';
+      squadText = 'Resident CPA Squad + Full 24/7 SLA Team';
+    }
 
-    if (pkgNameEl) pkgNameEl.textContent = p.name;
-    if (timeEstEl) timeEstEl.textContent = p.time;
-    if (supportEl) supportEl.textContent = p.support;
+    if (tierBadge) tierBadge.textContent = tierName;
+    if (usersSummary) usersSummary.textContent = `${currentUsers} Users Scope`;
+    if (pkgNameEl) pkgNameEl.textContent = pkgTitle;
+    if (timeEstEl) timeEstEl.textContent = timeEst;
+    if (supportEl) supportEl.textContent = squadText;
 
     if (compEl) {
       if (selectedCountry === 'egypt') {
-        compEl.textContent = currentLang === 'ar' ? 'متوافق 100% مع منظومة الفاتورة والإيصال الإلكتروني (ETA)' : '100% Egyptian ETA E-Invoicing & E-Receipt Ready';
+        compEl.textContent = '100% Egyptian ETA E-Invoicing & E-Receipt Ready';
       } else if (selectedCountry === 'ksa') {
-        compEl.textContent = currentLang === 'ar' ? 'معتمد ومربوط مع هيئة الزكاة والضريبة والجمارك (ZATCA المرحلة 2)' : 'Certified ZATCA Phase 2 E-Invoicing Integration';
+        compEl.textContent = 'Certified ZATCA Phase 2 E-Invoicing Integration';
       } else {
-        compEl.textContent = currentLang === 'ar' ? 'متوافق مع معايير IFRS والأنظمة الضريبية الإقليمية' : 'IFRS & GCC Regional Tax Regulations Compliant';
+        compEl.textContent = 'IFRS & GCC Regional Tax Regulations Compliant';
       }
     }
 
     if (bulletsEl) {
       const items = [];
       if (checkedServices.includes('accounting')) {
-        items.push(currentLang === 'ar' ? 'تدقيق محاسبي لشجرة الحسابات والدورة المستندية' : 'Chart of accounts & financial workflows audit');
+        items.push('Full financial audit, chart of accounts & balance migration');
       }
       if (checkedServices.includes('zatca')) {
-        items.push(currentLang === 'ar' ? 'ربط آلي مباشر للفواتير بضمان شهادة الامتثال' : 'Direct API integration with tax clearance');
+        items.push(selectedCountry === 'ksa' ? 'Automated ZATCA Phase 2 cryptographic invoice clearance' : 'Automated ETA E-Invoicing & E-Receipt compliance portal');
+      }
+      if (checkedServices.includes('inventory')) {
+        items.push('Multi-warehouse inventory routing, valuation & barcode sync');
+      }
+      if (checkedServices.includes('pos')) {
+        items.push('Offline-ready multi-branch POS network with instant fiscal sync');
       }
       if (checkedServices.includes('manufacturing')) {
-        items.push(currentLang === 'ar' ? 'حساب دقيق لتكاليف أوامر التصنيع ومراكز التكلفة' : 'BOM costing & production center allocation');
+        items.push('BOM routing, WIP costing & automated work center scheduling');
+      }
+      if (checkedServices.includes('hr')) {
+        items.push('Automated payroll formulas, shifts, biometric attendance & leaves');
       }
       if (checkedServices.includes('training')) {
-        items.push(currentLang === 'ar' ? 'برنامج تدريب عملي معتمد لكوادر الشركة (COA Academy)' : 'Staff certification via COA Academy');
+        items.push('Hands-on staff certification workshops via COA Academy');
+      }
+      if (checkedServices.includes('cfo')) {
+        items.push('Monthly strategic virtual CFO reviews & Board-level P&L dashboards');
       }
       if (items.length === 0) {
-        items.push(currentLang === 'ar' ? 'تخصيص شامل وضبط مالي وإداري محكم' : 'Full custom operational & financial deployment');
+        items.push('Full custom operational, tax and financial Odoo architecture');
       }
 
+      // Clean single checkmark badge, no double checkmark!
       bulletsEl.innerHTML = items.map(it => `
-        <div class="c-bullet" style="display: flex; align-items: center; gap: 8px; margin-top: 8px; font-size: 0.88rem; color: var(--text-body);">
-          <span class="c-check" style="color: #10B981; font-weight: bold;">✓</span>
+        <div class="c-bullet">
+          <span class="c-check-icon">✓</span>
           <span>${it}</span>
         </div>
       `).join('');
     }
   }
 
-  [...userRadios, ...serviceBoxes, ...countryRadios].forEach(inp => {
+  // Pre-fill consultation form on CTA click
+  if (submitBtn) {
+    submitBtn.addEventListener('click', () => {
+      const notesField = document.getElementById('clientNotes');
+      if (notesField) {
+        let countryName = 'Egypt';
+        countryRadios.forEach(r => { if (r.checked) countryName = r.value === 'ksa' ? 'Saudi Arabia' : (r.value === 'gcc' ? 'GCC / International' : 'Egypt'); });
+        const selectedModules = [];
+        serviceBoxes.forEach(b => { if (b.checked) selectedModules.push(b.parentElement.textContent.trim()); });
+        notesField.value = `[Estimator Scope]: ${currentUsers} Users in ${countryName}. Modules: ${selectedModules.join(', ')}.`;
+      }
+    });
+  }
+
+  [...serviceBoxes, ...countryRadios].forEach(inp => {
     inp.addEventListener('change', updateEstimator);
   });
-  updateEstimator();
-  updateCalculator();
+  setUsers(15);
 
   // ========================================================
   // 11. FAQ ACCORDION
@@ -1011,4 +827,89 @@ document.addEventListener('DOMContentLoaded', () => {
     updateClock();
     setInterval(updateClock, 1000);
   }
+
+  // ========================================================
+  // 14. COA SIGNATURE RADIANT LIGHT ORB CURSOR CONTROLLER
+  // ========================================================
+  const cursorEl = document.getElementById('coaCursor');
+
+  if (cursorEl) {
+    let mouseX = -200, mouseY = -200;
+    let currX = -200, currY = -200;
+    let isTouch = false;
+    let isVisible = false;
+
+    window.addEventListener('touchstart', () => {
+      isTouch = true;
+      cursorEl.classList.remove('is-active');
+      document.body.classList.remove('has-custom-cursor');
+    }, { passive: true, once: true });
+
+    window.addEventListener('mousemove', (e) => {
+      if (isTouch) return;
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+
+      if (!isVisible) {
+        isVisible = true;
+        currX = mouseX;
+        currY = mouseY;
+        document.body.classList.add('has-custom-cursor');
+        cursorEl.classList.add('is-active');
+      }
+    });
+
+    document.addEventListener('mouseleave', () => {
+      cursorEl.classList.remove('is-active');
+    });
+
+    document.addEventListener('mouseenter', () => {
+      if (isVisible && !isTouch) {
+        cursorEl.classList.add('is-active');
+      }
+    });
+
+    window.addEventListener('mousedown', () => {
+      if (isVisible) cursorEl.classList.add('is-down');
+    });
+    window.addEventListener('mouseup', () => {
+      if (isVisible) cursorEl.classList.remove('is-down');
+    });
+
+    // Hover detection for all interactive components
+    const interactiveTarget = 'a, button, input, select, textarea, label, .btn, .dh-pcard, .dh-exp-item, .tab-btn, .case-card, .faq-item, .pill-radio, .pill-checkbox, .dh-skip-btn, .dh-enter-btn, .dh-nav-btn, .dh-dot, .dh-scroll-cue, .stat-pill, .meta-pill, .service-detail-grid, .author-avatar';
+
+    document.addEventListener('mouseover', (e) => {
+      if (e.target.closest(interactiveTarget)) {
+        cursorEl.classList.add('is-hover');
+      }
+    });
+
+    document.addEventListener('mouseout', (e) => {
+      if (e.target.closest(interactiveTarget)) {
+        cursorEl.classList.remove('is-hover');
+      }
+    });
+
+    // 120fps hardware-accelerated transform loop (instant & jitter-free)
+    function renderCursor() {
+      if (isVisible && !isTouch) {
+        // High-precision tracking with subtle sub-pixel smoothing (0.75 for instant response with zero lag)
+        currX += (mouseX - currX) * 0.75;
+        currY += (mouseY - currY) * 0.75;
+        cursorEl.style.transform = `translate3d(${currX}px, ${currY}px, 0)`;
+      }
+      requestAnimationFrame(renderCursor);
+    }
+    renderCursor();
+  }
+
+  // ========================================================
+  // 15. COA ZERO-LAG UI ENGINE (PURE HARDWARE-ACCELERATED)
+  // ========================================================
+  const cyberCanvas = document.getElementById('cyberCanvas');
+  if (cyberCanvas) {
+    cyberCanvas.style.display = 'none';
+  }
 });
+
