@@ -1669,14 +1669,14 @@ h1, h2, h3, h4, h5, h6 {
 .method-step-card h4 {
   font-size: 0.98rem;
   font-weight: 700;
-  color: #FFFFFF;
+  color: var(--text-main);
   margin-bottom: 10px;
   line-height: 1.35;
 }
 
 .method-step-card p {
   font-size: 0.82rem;
-  color: #CBD5E1;
+  color: var(--text-body);
   line-height: 1.6;
 }
 
@@ -4681,24 +4681,24 @@ body.has-custom-cursor * {
 }
 
 /* Project Estimator in White Glass */
-[data-theme="light"] .pill-checkbox,
-[data-theme="light"] .pill-radio {
-  background: rgba(255, 255, 255, 0.65) !important;
-  border: 1px solid rgba(255, 255, 255, 0.85) !important;
-  color: #002955 !important;
-  box-shadow: 0 4px 14px rgba(0, 41, 85, 0.03), inset 0 1px 0 rgba(255, 255, 255, 0.95) !important;
+[data-theme="light"] .pill-checkbox span,
+[data-theme="light"] .pill-radio span {
+  background: #FFFFFF !important;
+  border-color: #D1D9E6 !important;
+  color: #1E293B !important;
 }
-[data-theme="light"] .pill-checkbox:hover,
-[data-theme="light"] .pill-radio:hover {
-  background: rgba(255, 255, 255, 0.9) !important;
-  border-color: rgba(240, 6, 19, 0.3) !important;
+[data-theme="light"] .pill-checkbox:hover span,
+[data-theme="light"] .pill-radio:hover span {
+  background: #F8FAFC !important;
+  border-color: rgba(240, 6, 19, 0.4) !important;
+  color: #002955 !important;
 }
 [data-theme="light"] .pill-checkbox input:checked + span,
 [data-theme="light"] .pill-radio input:checked + span {
-  background: #FFFFFF !important;
+  background: #FFF0F0 !important;
   border-color: #F00613 !important;
-  color: #002955 !important;
-  box-shadow: 0 4px 14px rgba(240, 6, 19, 0.12), inset 0 1px 0 rgba(255, 255, 255, 1) !important;
+  color: #C7040F !important;
+  box-shadow: 0 4px 14px rgba(240, 6, 19, 0.12) !important;
 }
 [data-theme="light"] .calc-stepper-btn {
   background: rgba(255, 255, 255, 0.85) !important;
@@ -5104,7 +5104,128 @@ body.has-custom-cursor * {
   display: none !important;
 }
 
+/* ==========================================================================
+   LIGHT THEME — COMPREHENSIVE COLOR CORRECTIONS
+   Fix dark-hardcoded backgrounds that look wrong in light mode
+   ========================================================================== */
 
+/* ── Country Pill Cards ─────────────────────────────── */
+[data-theme="light"] .country-pill span {
+  background: #FFFFFF !important;
+  border-color: #D1D9E6 !important;
+}
+[data-theme="light"] .country-pill span strong {
+  color: #002955 !important;
+}
+[data-theme="light"] .country-pill span small {
+  color: #64748B !important;
+}
+[data-theme="light"] .country-pill:hover span {
+  background: #F8FAFC !important;
+  border-color: rgba(240, 6, 19, 0.35) !important;
+}
+[data-theme="light"] .country-pill input:checked + span {
+  background: #FFF0F0 !important;
+  border-color: #F00613 !important;
+  box-shadow: 0 4px 14px rgba(240, 6, 19, 0.15) !important;
+}
+[data-theme="light"] .country-pill input:checked + span strong {
+  color: #C7040F !important;
+}
+[data-theme="light"] .country-pill input:checked + span small {
+  color: #F00613 !important;
+}
 
+/* ── Calc Result Blueprint Box ──────────────────────── */
+[data-theme="light"] .calc-result-box {
+  background: linear-gradient(135deg, #FFFFFF 0%, #F0F4FF 100%) !important;
+  border: 1.5px solid rgba(0, 41, 85, 0.18) !important;
+  box-shadow: 0 12px 35px rgba(0, 41, 85, 0.10) !important;
+  color: #002955 !important;
+}
+[data-theme="light"] .calc-result-box::before {
+  display: none !important;
+}
+[data-theme="light"] .calc-result-box .result-label {
+  color: #64748B !important;
+}
+[data-theme="light"] .calc-result-box .result-value {
+  color: #002955 !important;
+}
+[data-theme="light"] .calc-tier-badge {
+  background: rgba(240, 6, 19, 0.10) !important;
+  color: #C7040F !important;
+  border-color: rgba(240, 6, 19, 0.3) !important;
+}
+[data-theme="light"] .calc-users-summary {
+  color: #64748B !important;
+}
+[data-theme="light"] #calcPackageName {
+  color: #002955 !important;
+}
+[data-theme="light"] #calcTimeEstimate,
+[data-theme="light"] #calcSupportLevel {
+  color: #1E293B !important;
+}
+[data-theme="light"] .c-bullet {
+  color: #334155 !important;
+}
+[data-theme="light"] .c-check-icon {
+  color: #10B981 !important;
+}
+[data-theme="light"] .kpi-label {
+  color: #64748B !important;
+}
+
+/* ── Methodology Step Cards ─────────────────────────── */
+[data-theme="light"] .method-step-card {
+  background: #FFFFFF !important;
+  border-color: #E2E8F0 !important;
+  box-shadow: 0 4px 16px rgba(0, 41, 85, 0.06) !important;
+}
+[data-theme="light"] .method-step-card:hover {
+  border-color: var(--coa-red) !important;
+  box-shadow: 0 10px 30px rgba(0, 41, 85, 0.12), 0 0 20px rgba(240, 6, 19, 0.12) !important;
+}
+[data-theme="light"] .highlight-step {
+  background: linear-gradient(180deg, #FFFFFF 0%, rgba(240, 6, 19, 0.06) 100%) !important;
+  border-color: var(--coa-red) !important;
+}
+[data-theme="light"] .highlight-step p {
+  color: #475569 !important;
+}
+
+/* ── Hero / Stack rows ──────────────────────────────── */
+[data-theme="light"] .dh-stack-row {
+  background: #FFFFFF !important;
+  border-color: #E2E8F0 !important;
+}
+[data-theme="light"] .dh-stack-row:hover,
+[data-theme="light"] .dh-stack-row.active {
+  background: #F8FAFC !important;
+  border-color: rgba(240, 6, 19, 0.4) !important;
+}
+
+/* ── Preset Chips ───────────────────────────────────── */
+[data-theme="light"] .preset-chip {
+  background: #F1F5F9 !important;
+  border-color: #D1D9E6 !important;
+  color: #475569 !important;
+}
+[data-theme="light"] .preset-chip.active {
+  background: #FFF0F0 !important;
+  border-color: #F00613 !important;
+  color: #C7040F !important;
+}
+
+/* ── Users Slider Track ─────────────────────────────── */
+[data-theme="light"] .calc-slider-wrap .slider-track {
+  background: #E2E8F0 !important;
+}
+
+/* ── Calc grid labels ───────────────────────────────── */
+[data-theme="light"] .calc-section-label {
+  color: #64748B !important;
+}
 
 
