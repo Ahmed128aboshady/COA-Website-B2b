@@ -64,6 +64,114 @@ document.addEventListener('DOMContentLoaded', () => {
   // Intro visuals rendered via introAstraFrame
 
   // ========================================================
+  // 1b. LENIS-STYLE JS SMOOTH SCROLL ENGINE
+  // ========================================================
+  (function initSmoothScroll() {
+    // Only apply on mouse-capable devices (not touch-only)
+    if (window.matchMedia('(hover: none)').matches) return;
+
+    let targetScrollY = window.scrollY;
+    let currentScrollY = window.scrollY;
+    let rafId = null;
+    let isScrolling = false;
+    const EASE = 0.095; // lerp factor — lower = silkier
+
+    // Override HTML scroll-behavior so our lerp controls everything
+    document.documentElement.style.scrollBehavior = 'auto';
+
+    function lerp(a, b, t) { return a + (b - a) * t; }
+
+    function onWheel(e) {
+      e.preventDefault();
+      const delta = e.deltaY * (e.deltaMode === 1 ? 30 : e.deltaMode === 2 ? 300 : 1);
+      targetScrollY = Math.max(0, Math.min(targetScrollY + delta, document.body.scrollHeight - window.innerHeight));
+      if (!isScrolling) {
+        isScrolling = true;
+        loop();
+      }
+    }
+
+    function loop() {
+      currentScrollY = lerp(currentScrollY, targetScrollY, EASE);
+      window.scrollTo(0, currentScrollY);
+      if (Math.abs(targetScrollY - currentScrollY) > 0.5) {
+        rafId = requestAnimationFrame(loop);
+      } else {
+        window.scrollTo(0, targetScrollY);
+        currentScrollY = targetScrollY;
+        isScrolling = false;
+        rafId = null;
+      }
+    }
+
+    // Keep targetScrollY in sync when scroll happens programmatically (scrollIntoView, etc.)
+    window.addEventListener('scroll', () => {
+      if (!isScrolling) {
+        currentScrollY = window.scrollY;
+        targetScrollY = window.scrollY;
+      }
+    }, { passive: true });
+
+    window.addEventListener('wheel', onWheel, { passive: false });
+  })();
+
+  // ========================================================
+  // 1c. NAVBAR SCROLLED-STATE (shadow + deeper blur on scroll)
+  // ========================================================
+  (function initNavbarScroll() {
+    const navbar = document.querySelector('.navbar');
+    if (!navbar) return;
+    let ticking = false;
+
+    function updateNavbar() {
+      if (window.scrollY > 20) {
+        navbar.classList.add('scrolled');
+      } else {
+        navbar.classList.remove('scrolled');
+      }
+      ticking = false;
+    }
+
+    window.addEventListener('scroll', () => {
+      if (!ticking) {
+        requestAnimationFrame(updateNavbar);
+        ticking = true;
+      }
+    }, { passive: true });
+  })();
+
+  // ========================================================
+  // 1d. SCROLL-REVEAL — IntersectionObserver fade-in engine
+  // ========================================================
+  (function initScrollReveal() {
+    const revealEls = document.querySelectorAll(
+      '.section-header, .dh-pcard, .case-card, .methodology-step, ' +
+      '.faq-item, .dh-exp-item, .stat-item, .service-badge, ' +
+      '.coa-contact-split > *, .dh-stack-row, .testimonial-card, ' +
+      '.hero-content > *, .calc-body > *, .footer-col'
+    );
+
+    revealEls.forEach((el, i) => {
+      el.classList.add('sr-hidden');
+      // Stagger siblings inside same parent (cards in a grid)
+      const siblings = el.parentElement ? [...el.parentElement.children].indexOf(el) : 0;
+      el.style.transitionDelay = `${Math.min(siblings * 60, 320)}ms`;
+    });
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.remove('sr-hidden');
+          entry.target.classList.add('sr-visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+    revealEls.forEach(el => observer.observe(el));
+  })();
+
+  // ========================================================
   // 2. FULL-PAGE GEOMETRIC GRID BACKGROUND (#dh-rain)
   // ========================================================
   function initMotherboardCircuit() {
@@ -894,9 +1002,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // 120fps hardware-accelerated transform loop (instant & jitter-free)
     function renderCursor() {
       if (isVisible && !isTouch) {
-        // High-precision tracking with subtle sub-pixel smoothing (0.75 for instant response with zero lag)
-        currX += (mouseX - currX) * 0.75;
-        currY += (mouseY - currY) * 0.75;
+        // Silky smooth trailing cursor (0.09 = luxurious lag, like liquid)
+        currX += (mouseX - currX) * 0.09;
+        currY += (mouseY - currY) * 0.09;
         cursorEl.style.transform = `translate3d(${currX}px, ${currY}px, 0)`;
       }
       requestAnimationFrame(renderCursor);
