@@ -172,6 +172,97 @@ document.addEventListener('DOMContentLoaded', () => {
   })();
 
   // ========================================================
+  // 1e. HERO CINEMATIC — PARTICLES + MOUSE PARALLAX ORBS
+  // ========================================================
+  (function initHeroCinematic() {
+    const heroSection = document.getElementById('hero');
+    const particlesEl = document.getElementById('heroParticles');
+    const orb1 = heroSection?.querySelector('.hero-orb-1');
+    const orb2 = heroSection?.querySelector('.hero-orb-2');
+    if (!heroSection) return;
+
+    // ── Generate floating particles ──────────────────────
+    if (particlesEl) {
+      const isDark = () => document.documentElement.getAttribute('data-theme') === 'dark';
+      const PARTICLE_COUNT = 18;
+      const particles = [];
+
+      for (let i = 0; i < PARTICLE_COUNT; i++) {
+        const p = document.createElement('div');
+        p.className = 'hero-particle';
+
+        const isRed = i % 5 === 0;
+        const size = 2 + Math.random() * 3.5;
+        const x = Math.random() * 100;
+        const y = Math.random() * 100;
+        const dur = 5 + Math.random() * 8;
+        const delay = -Math.random() * 10;
+
+        p.style.cssText = `
+          width: ${size}px;
+          height: ${size}px;
+          left: ${x}%;
+          top: ${y}%;
+          background: ${isRed ? 'rgba(240,6,19,0.55)' : 'rgba(0,41,85,0.35)'};
+          animation-duration: ${dur}s;
+          animation-delay: ${delay}s;
+          box-shadow: 0 0 ${size * 2}px ${isRed ? 'rgba(240,6,19,0.4)' : 'rgba(0,65,140,0.3)'};
+        `;
+        particlesEl.appendChild(p);
+        particles.push(p);
+      }
+
+      // Update particle colors when theme changes
+      const themeObs = new MutationObserver(() => {
+        const dark = isDark();
+        particles.forEach((p, i) => {
+          const isRed = i % 5 === 0;
+          if (dark) {
+            p.style.background = isRed ? 'rgba(240,6,19,0.7)' : 'rgba(0,80,180,0.5)';
+            p.style.boxShadow = `0 0 ${(2 + i % 4) * 2}px ${isRed ? 'rgba(240,6,19,0.5)' : 'rgba(0,100,200,0.4)'}`;
+          } else {
+            p.style.background = isRed ? 'rgba(240,6,19,0.55)' : 'rgba(0,41,85,0.35)';
+            p.style.boxShadow = `0 0 ${(2 + i % 4) * 2}px ${isRed ? 'rgba(240,6,19,0.4)' : 'rgba(0,65,140,0.3)'}`;
+          }
+        });
+      });
+      themeObs.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+    }
+
+    // ── Mouse parallax on orbs ────────────────────────────
+    if (orb1 || orb2) {
+      let mx = 0, my = 0;
+      let cx1 = 0, cy1 = 0, cx2 = 0, cy2 = 0;
+      let raf;
+
+      heroSection.addEventListener('mousemove', (e) => {
+        const rect = heroSection.getBoundingClientRect();
+        mx = (e.clientX - rect.left) / rect.width  - 0.5; // -0.5 to 0.5
+        my = (e.clientY - rect.top)  / rect.height - 0.5;
+      });
+
+      heroSection.addEventListener('mouseleave', () => {
+        mx = 0;
+        my = 0;
+      });
+
+      function parallaxLoop() {
+        // Lerp orb positions toward mouse influence
+        cx1 += (mx * 40 - cx1) * 0.05;
+        cy1 += (my * 35 - cy1) * 0.05;
+        cx2 += (-mx * 30 - cx2) * 0.04;
+        cy2 += (-my * 28 - cy2) * 0.04;
+
+        if (orb1) orb1.style.transform = `translate(${cx1}px, ${cy1}px)`;
+        if (orb2) orb2.style.transform = `translate(${cx2}px, ${cy2}px)`;
+        raf = requestAnimationFrame(parallaxLoop);
+      }
+
+      parallaxLoop();
+    }
+  })();
+
+  // ========================================================
   // 2. FULL-PAGE GEOMETRIC GRID BACKGROUND (#dh-rain)
   // ========================================================
   function initMotherboardCircuit() {

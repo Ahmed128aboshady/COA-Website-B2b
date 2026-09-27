@@ -10,7 +10,7 @@
 <link href="https://fonts.googleapis.com" rel="preconnect"/>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&amp;family=IBM+Plex+Mono:wght@400;500;600;700&amp;family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&amp;family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
-<link href="style.css?v=5.4" rel="stylesheet"/>
+<link href="style.css?v=5.5" rel="stylesheet"/>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 </head>
 <body class="dh-body">
@@ -111,13 +111,13 @@
 </div>
 </div>
 <main>
-<!-- HERO SECTION WITH CYBER CANVAS & TECH HUB -->
+<!-- HERO SECTION — CINEMATIC EDITION -->
 <section class="hero-section" id="hero">
-<!-- Interactive Cyber Circuit & Particle Canvas Background -->
-<canvas class="cyber-canvas" id="cyberCanvas"></canvas>
-<div class="cyber-glow-orb orb-1"></div>
-<div class="cyber-glow-orb orb-2"></div>
-<div class="cyber-grid-overlay"></div>
+<!-- Animated floating orbs -->
+<div class="hero-orb hero-orb-1"></div>
+<div class="hero-orb hero-orb-2"></div>
+<!-- Floating particles layer (populated by JS) -->
+<div class="hero-particles" id="heroParticles"></div>
 <div class="container hero-container">
 <div class="hero-content">
 <!-- Official Partner Badge -->
@@ -1488,6 +1488,6 @@
 </div>
 </div>
 </footer>
-<script src="app.js?v=6.2"></script>
+<script src="app.js?v=6.3"></script>
 </body>
 </html>
