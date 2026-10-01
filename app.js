@@ -434,10 +434,23 @@ document.addEventListener('DOMContentLoaded', () => {
       ctx.strokeStyle = `rgba(0, 41, 85, ${0.2 * breathe})`;
       ctx.strokeRect(mx + 8, my + 8, ms - 16, ms - 16);
 
-      animFrame = requestAnimationFrame(drawGrid);
+      if (introActive) {
+        animFrame = setTimeout(drawGrid, 250);
+      } else {
+        animFrame = requestAnimationFrame(drawGrid);
+      }
     }
 
-    drawGrid();
+    if (!introActive) {
+      drawGrid();
+    } else {
+      // Defer start until intro dismissed
+      window.addEventListener('message', (e) => {
+        if (e.data && (e.data.action === 'dismiss_intro' || e.data === 'dismiss_intro')) {
+          drawGrid();
+        }
+      }, { once: true });
+    }
   }
 
   initMotherboardCircuit();

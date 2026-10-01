@@ -274,7 +274,7 @@ function glowPlane(w, h, color, intensity = 1) {
    ============================================================ */
 const canvas = document.getElementById('gl');
 const renderer = new THREE.WebGLRenderer({ canvas, antialias: false, powerPreference: 'high-performance' });
-renderer.setPixelRatio(Math.min(devicePixelRatio, 1.5));
+renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.15));
 renderer.setSize(innerWidth || 1280, innerHeight || 720);
 renderer.toneMapping = THREE.NeutralToneMapping; renderer.toneMappingExposure = 1.0;
 renderer.outputColorSpace = THREE.SRGBColorSpace;
@@ -302,7 +302,7 @@ const dof = new ShaderPass({
     uniform sampler2D tDiffuse; uniform sampler2D tDepth; uniform float cameraNear, cameraFar, focus, aperture, maxblur, aspect; varying vec2 vUv;
     float viewZ(vec2 uv){ float d=unpackRGBAToDepth(texture2D(tDepth,uv)); return -perspectiveDepthToViewZ(d,cameraNear,cameraFar); }
     float coc(float z){ return clamp(abs(z-focus)/max(z,0.2)*aperture,0.0,maxblur); }
-    const int N=52; const float GA=2.39996323;
+    const int N=14; const float GA=2.39996323;
     void main(){
       float zc=viewZ(vUv); float cc=coc(zc);
       vec4 base=texture2D(tDiffuse,vUv);
@@ -349,7 +349,8 @@ composer.addPass(grade);
 
 function resize() {
   const w = innerWidth || 1280, h = innerHeight || 720, pr = renderer.getPixelRatio();
-  renderer.setSize(w, h); composer.setSize(w, h); depthRT.setSize(w * pr, h * pr);
+  renderer.setSize(w, h); composer.setSize(w, h);
+  depthRT.setSize(Math.round(w * pr * 0.5), Math.round(h * pr * 0.5));
   camera.aspect = w / h; camera.updateProjectionMatrix();
   dof.uniforms.aspect.value = w / h; grade.uniforms.res.value.set(w * pr, h * pr);
 }
@@ -472,10 +473,10 @@ const numeral=mkCanvas(240,320);numeral.ctx.font='400 300px Arial';numeral.ctx.t
 const numeralPixels=numeral.ctx.getImageData(0,0,240,320).data, numeralPoints=[];
 for(let y=12;y<310;y+=2)for(let x=8;x<232;x+=2)if(numeralPixels[(y*240+x)*4+3]>160)numeralPoints.push([x,y]);
 const starGeometry=new THREE.BufferGeometry(),starPositions=[],starScatter=[],starColors=[],starSizes=[],starSeeds=[];
-for(let i=0;i<4200;i++){
+for(let i=0;i<2000;i++){
   const u=Math.max(.00001,hash(i*8+1)),v=hash(i*8+2),w=hash(i*8+3);
   const r=Math.sqrt(-2*Math.log(u))*2.6,theta=v*Math.PI*2;
-  const ambient=i<650,halo=i>=650&&i<1050;
+  const ambient=i<350,halo=i>=350&&i<600;
   const pt=numeralPoints[Math.floor(hash(i*7+18)*numeralPoints.length)];
   const jitter=halo?2.25:.62+hash(i+200)*.5;
   const py=(165-pt[1])*.040+(w-.5)*jitter;
@@ -617,7 +618,7 @@ grade.material.fragmentShader=grade.material.fragmentShader
     }`);
 function introScene() {
   const g=new THREE.Group();
-  const title=depthWriter(new Overlay(24,12,{px:160}),.2);title.ctx.scale(1.6,1.6); g.add(title.mesh);
+  const title=depthWriter(new Overlay(24,12,{px:100}),.2);title.ctx.scale(1.0,1.0); g.add(title.mesh);
   return {start:TIMES[0],end:TIMES[1],group:g,update(t){
     title.clear(); const c=title.ctx;c.globalAlpha=1-seg(t,3.06,3.2,easeInOutCubic);
     reveal(c,t,.05,.85,()=>{pill(c,140,160,320,68,'rgba(240,6,19,0.18)','rgba(240,6,19,0.5)',34);label(c,'// WELCOME ABOARD',165,195,24,RED);});
@@ -635,7 +636,7 @@ function introScene() {
 // Promo scenes use conversation and a visual result, with no editor, code,
 // file tree, title bars, playback chrome or fabricated benchmark results.
 function filmSurface(){
-  const g=new THREE.Group(),ov=depthWriter(new Overlay(24,12,{px:160}),.2);ov.ctx.scale(1.6,1.6);g.add(ov.mesh);return {g,ov,c:ov.ctx};
+  const g=new THREE.Group(),ov=depthWriter(new Overlay(24,12,{px:100}),.2);ov.ctx.scale(1.0,1.0);g.add(ov.mesh);return {g,ov,c:ov.ctx};
 }
 function composerCard(c,{x=180,y=760,w=2040,h=265,prompt='',active=false}={}){
   pill(c,x,y,w,h,'#101726','#253752',34);
@@ -651,13 +652,19 @@ function composerCard(c,{x=180,y=760,w=2040,h=265,prompt='',active=false}={}){
 }
 function userBubble(c,s,x,y,w){pill(c,x,y,w,120,'#1b293d',null,32);type(c,s,x+38,y+60,36);}
 function response(c,s,x,y,size=46){blossom(c,x,y,42,INK);type(c,s,x+65,y,size);}
+const linesCache = new Map();
 function wrappedLines(c,s,size,width){
+  const key = `${s.length}_${size}_${width}_${s.slice(0, 16)}`;
+  if (linesCache.has(key)) return linesCache.get(key);
   const lines=[];for(const paragraph of s.split('\n')){
     if(!paragraph.trim())continue;let line='';
     for(const word of paragraph.split(' ')){const next=line?line+' '+word:word;const w=measure(next,size,400,HFONT)-Math.max(0,next.length-1)*size*.045;
       if(line&&w>width){lines.push(line);line=word;}else line=next;}
     lines.push(line);
-  }return lines.length?lines:[''];
+  }
+  const result = lines.length?lines:[''];
+  linesCache.set(key, result);
+  return result;
 }
 function promptScene(index){
   const {g,ov,c}=filmSurface(),prompt=PROMPTS[index],duration=PROMPT_DURATIONS[index],start=TIMES[index+1];
