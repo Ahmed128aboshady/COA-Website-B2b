@@ -1838,6 +1838,200 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /* ==========================================================================
+   VERIFIED CLIENT DIRECTORY (From Official Odoo Portfolio)
+   ========================================================================== */
+.client-directory-wrap {
+  margin-top: 55px;
+  padding-top: 45px;
+  border-top: 1px solid var(--border-color);
+}
+
+.directory-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 28px;
+}
+
+.dir-header-title h3 {
+  font-size: 1.5rem;
+  font-weight: 800;
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.dir-header-title p {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+}
+
+.odoo-verify-badge-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 18px;
+  border-radius: var(--radius-pill);
+  background: rgba(240, 6, 19, 0.1);
+  border: 1px solid rgba(240, 6, 19, 0.3);
+  color: var(--coa-red);
+  font-size: 0.82rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition: var(--transition);
+}
+
+.odoo-verify-badge-btn:hover {
+  background: var(--coa-red);
+  color: #FFFFFF;
+  box-shadow: 0 4px 14px rgba(240, 6, 19, 0.35);
+}
+
+.directory-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+  gap: 16px;
+}
+
+.dir-client-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 14px;
+  padding: 16px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  transition: all 0.25s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.dir-client-card:hover {
+  transform: translateY(-3px);
+  border-color: var(--coa-red);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+}
+
+[data-theme="light"] .dir-client-card {
+  background: rgba(255, 255, 255, 0.85);
+  box-shadow: 0 2px 10px rgba(0, 41, 85, 0.04);
+}
+
+[data-theme="dark"] .dir-client-card {
+  background: rgba(11, 23, 40, 0.7);
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+.dir-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.dir-num-badge {
+  font-family: 'Fira Code', monospace;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  background: rgba(255, 255, 255, 0.06);
+  padding: 2px 8px;
+  border-radius: 6px;
+}
+
+[data-theme="light"] .dir-num-badge {
+  background: rgba(0, 41, 85, 0.06);
+}
+
+.dir-country-tag {
+  font-size: 0.76rem;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 10px;
+  border-radius: var(--radius-pill);
+  background: rgba(0, 41, 85, 0.1);
+  color: var(--coa-navy);
+}
+
+[data-theme="dark"] .dir-country-tag {
+  background: rgba(147, 197, 253, 0.15);
+  color: #93C5FD;
+}
+
+.dir-client-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.dir-logo-circle {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: #FFFFFF;
+  border: 1.5px solid rgba(0, 41, 85, 0.12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 0.95rem;
+  color: var(--coa-navy);
+  flex-shrink: 0;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.dir-logo-circle img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: contain;
+  padding: 3px;
+}
+
+.dir-names {
+  flex: 1;
+  min-width: 0;
+}
+
+.dir-name-main {
+  font-size: 1rem;
+  font-weight: 750;
+  color: var(--text-main);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: block;
+}
+
+.dir-sector-badge {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--coa-red);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.dir-specialty {
+  font-size: 0.82rem;
+  color: var(--text-body);
+  line-height: 1.45;
+  background: rgba(0, 41, 85, 0.03);
+  padding: 8px 12px;
+  border-radius: 8px;
+  border-left: 2px solid var(--coa-red);
+}
+
+[data-theme="dark"] .dir-specialty {
+  background: rgba(255, 255, 255, 0.03);
+  color: #CBD5E1;
+}
+
+/* ==========================================================================
    METHODOLOGY (5 STEPS)
    ========================================================================== */
 .methodology-section {
