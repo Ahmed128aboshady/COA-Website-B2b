@@ -1123,5 +1123,53 @@ document.addEventListener('DOMContentLoaded', () => {
   if (cyberCanvas) {
     cyberCanvas.style.display = 'none';
   }
+
+  // ========================================================
+  // 16. CONSULTATION FORM → WHATSAPP (+20 10 1390 7174)
+  // ========================================================
+  (function initWhatsAppForm() {
+    const form = document.getElementById('consultationForm');
+    if (!form) return;
+    const WA_NUMBER = '201013907174';
+    const feedback = document.getElementById('formFeedback');
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const val = (id) => (document.getElementById(id)?.value || '').trim();
+      const name = val('clientName');
+      const phone = val('clientPhone');
+      const company = val('companyName');
+      const notes = val('projectNotes');
+      const serviceEl = document.getElementById('serviceInterest');
+      const service = serviceEl ? serviceEl.options[serviceEl.selectedIndex].text.trim() : '';
+
+      if (!name || !phone || !company) {
+        if (feedback) {
+          feedback.textContent = 'Please fill in all required fields.';
+          feedback.style.color = 'var(--coa-red)';
+        }
+        return;
+      }
+
+      const lines = [
+        '*New Consultation Request - COA Website*',
+        '',
+        `*Name:* ${name}`,
+        `*Mobile / WhatsApp:* ${phone}`,
+        `*Company:* ${company}`,
+        `*Primary Interest:* ${service}`
+      ];
+      if (notes) lines.push(`*Notes:* ${notes}`);
+
+      const url = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(lines.join('\n'))}`;
+      window.open(url, '_blank', 'noopener');
+
+      if (feedback) {
+        feedback.textContent = 'Opening WhatsApp... send the message to complete your request.';
+        feedback.style.color = '#16a34a';
+      }
+      form.reset();
+    });
+  })();
 });
 
