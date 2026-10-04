@@ -380,13 +380,26 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .logo-img {
-  width: 46px;
-  height: 46px;
+  width: 48px;
+  height: 48px;
   border-radius: 50%;
-  object-fit: cover;
+  object-fit: contain;
+  background: #FFFFFF;
+  padding: 2px;
   border: 2px solid var(--coa-navy);
-  box-shadow: 0 2px 8px rgba(0, 41, 85, 0.15);
+  box-shadow: 0 3px 10px rgba(0, 41, 85, 0.2);
   flex-shrink: 0;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+[data-theme="dark"] .logo-img {
+  border-color: rgba(147, 197, 253, 0.4);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4);
+}
+
+.brand-logo:hover .logo-img {
+  transform: scale(1.06);
+  border-color: var(--coa-red);
 }
 
 .brand-text {

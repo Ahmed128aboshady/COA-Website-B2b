@@ -809,11 +809,22 @@ function resultScene(){
     cc.fill();
     cc.restore();
 
-    // Draw transparent logo on the right side with 0 collision
+    // Draw official circular logo badge with drop shadow and clean ring
     if (drawingImage.complete && drawingImage.naturalWidth > 0) {
       cc.save();
-      cc.globalAlpha = 1.0;
-      cc.drawImage(drawingImage, 780, 245, 450, 445);
+      cc.shadowColor = 'rgba(0, 0, 0, 0.65)';
+      cc.shadowBlur = 35;
+      cc.shadowOffsetX = 0;
+      cc.shadowOffsetY = 12;
+      cc.drawImage(drawingImage, 782, 247, 446, 446);
+      cc.restore();
+
+      cc.save();
+      cc.strokeStyle = 'rgba(255, 255, 255, 0.22)';
+      cc.lineWidth = 1.5;
+      cc.beginPath();
+      cc.arc(1005, 470, 224, 0, Math.PI * 2);
+      cc.stroke();
       cc.restore();
     }
 
