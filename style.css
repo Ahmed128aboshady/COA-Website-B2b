@@ -1061,26 +1061,27 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /* ==========================================================================
-   CLIENTS MARQUEE (Ultra Fast CSS Only)
+   CLIENTS MARQUEE (Ultra Fast CSS Only) — CINEMATIC PROPORTIONS
    ========================================================================== */
 .clients-marquee-section {
-  padding: 40px 0;
+  padding: 60px 0 65px;
   border-top: 1px solid var(--border-color);
   border-bottom: 1px solid var(--border-color);
   background: var(--bg-surface);
   overflow: hidden;
+  position: relative;
 }
 
 .marquee-header-wrap {
   text-align: center;
-  margin-bottom: 22px;
+  margin-bottom: 30px;
 }
 
 .marquee-title {
-  font-size: 0.92rem;
-  font-weight: 800;
+  font-size: 1.05rem;
+  font-weight: 850;
   color: var(--text-muted);
-  letter-spacing: 0.1em;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
 }
 
@@ -1089,16 +1090,17 @@ h1, h2, h3, h4, h5, h6 {
   width: 100%;
   overflow: hidden;
   position: relative;
-  mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
-  -webkit-mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+  padding: 10px 0;
+  mask-image: linear-gradient(to right, transparent, black 6%, black 94%, transparent);
+  -webkit-mask-image: linear-gradient(to right, transparent, black 6%, black 94%, transparent);
 }
 
 .marquee-track {
   display: flex;
   align-items: center;
-  gap: 22px;
+  gap: 28px;
   white-space: nowrap;
-  animation: scrollMarquee 70s linear infinite;
+  animation: scrollMarquee 75s linear infinite;
   width: max-content;
 }
 
@@ -1112,7 +1114,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 [dir="ltr"] .marquee-track {
-  animation: scrollMarqueeLTR 70s linear infinite;
+  animation: scrollMarqueeLTR 75s linear infinite;
 }
 
 @keyframes scrollMarqueeLTR {
@@ -1123,51 +1125,51 @@ h1, h2, h3, h4, h5, h6 {
 .client-logo-pill {
   display: inline-flex;
   align-items: center;
-  gap: 14px;
-  padding: 10px 24px 10px 12px;
+  gap: 16px;
+  padding: 12px 28px 12px 14px;
   background: var(--bg-card-subtle);
   border: 1.5px solid var(--border-color);
   border-radius: var(--radius-pill);
-  font-size: 1.05rem;
-  font-weight: 700;
+  font-size: 1.18rem;
+  font-weight: 750;
   color: var(--text-main);
-  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: all 0.28s cubic-bezier(0.16, 1, 0.3, 1);
   white-space: nowrap;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
 }
 
 [dir="rtl"] .client-logo-pill {
-  padding: 10px 12px 10px 24px;
+  padding: 12px 14px 12px 28px;
 }
 
 .client-logo-img {
-  width: 44px;
-  height: 44px;
+  width: 58px;
+  height: 58px;
   border-radius: 50%;
   object-fit: contain;
   background: #FFFFFF;
-  padding: 4px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  padding: 5px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.25);
   flex-shrink: 0;
-  border: 1.5px solid rgba(0, 41, 85, 0.15);
-  transition: transform 0.25s ease;
+  border: 2px solid rgba(0, 41, 85, 0.16);
+  transition: transform 0.28s ease;
 }
 
 .client-logo-pill .client-name {
-  font-size: 1.05rem;
-  font-weight: 750;
-  letter-spacing: -0.01em;
+  font-size: 1.18rem;
+  font-weight: 800;
+  letter-spacing: -0.015em;
 }
 
 .client-logo-pill:hover {
   border-color: var(--coa-red);
   color: var(--coa-red);
-  transform: translateY(-3px) scale(1.03);
-  box-shadow: 0 8px 24px rgba(240, 6, 19, 0.25);
+  transform: translateY(-4px) scale(1.04);
+  box-shadow: 0 12px 32px rgba(240, 6, 19, 0.28);
 }
 
 .client-logo-pill:hover .client-logo-img {
-  transform: scale(1.08);
+  transform: scale(1.1);
 }
 
 /* ==========================================================================
