@@ -3079,6 +3079,78 @@ h1, h2, h3, h4, h5, h6 {
   .contact-box, .calc-card, .services-tab-content {
     padding: 24px;
   }
+
+  /* Calculator Mobile Polish */
+  .calc-card {
+    padding: 20px 16px !important;
+  }
+
+  .control-label-row {
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: flex-start;
+  }
+
+  .control-label-row label {
+    font-size: 0.88rem;
+    line-height: 1.4;
+    flex: 1;
+    min-width: 0;
+  }
+
+  .user-tier-label {
+    align-self: flex-start;
+    font-size: 0.72rem;
+    padding: 2px 8px;
+    white-space: nowrap;
+  }
+
+  .user-counter-widget {
+    padding: 16px 12px;
+    gap: 14px;
+  }
+
+  .stepper-box {
+    gap: 10px;
+  }
+
+  .stepper-btn {
+    width: 38px;
+    height: 38px;
+    font-size: 1.2rem;
+    border-radius: 10px;
+  }
+
+  .stepper-input-wrap {
+    padding: 4px 12px;
+    gap: 6px;
+  }
+
+  .stepper-input-wrap input[type="number"] {
+    width: 60px;
+    font-size: 1.4rem;
+  }
+
+  .stepper-unit {
+    font-size: 0.75rem;
+  }
+
+  .quick-preset-chips {
+    gap: 6px;
+  }
+
+  .preset-chip {
+    padding: 4px 9px;
+    font-size: 0.72rem;
+  }
+
+  .pill-checkbox span {
+    min-height: auto;
+    padding: 12px 14px;
+    font-size: 0.85rem;
+    line-height: 1.35;
+    text-align: center;
+  }
 }
 
 /* ==========================================================================
