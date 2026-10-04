@@ -2841,103 +2841,163 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /* ==========================================================================
-   TEAM & CONSULTING FORCE CAROUSEL SECTION
+   TEAM & CONSULTING FORCE SECTION (LEADER SPOTLIGHT + CONTINUOUS MARQUEE)
    ========================================================================== */
 .team-section {
   background: var(--bg-surface);
   position: relative;
   overflow: hidden;
   border-top: 1px solid var(--border-color);
-  padding: 85px 0 75px;
+  padding: 85px 0 80px;
 }
 
-.team-header-wrapper {
+/* --- LEADER SPOTLIGHT CARD --- */
+.team-leader-wrapper {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-bottom: 24px;
-  position: relative;
-}
-
-.team-carousel-controls {
-  display: inline-flex;
-  align-items: center;
-  gap: 12px;
-  margin-top: 20px;
-  background: rgba(0, 41, 85, 0.05);
-  border: 1px solid var(--border-color);
-  padding: 5px 14px;
-  border-radius: var(--radius-pill);
-}
-
-[data-theme="dark"] .team-carousel-controls {
-  background: rgba(255, 255, 255, 0.04);
-}
-
-.team-nav-btn {
-  width: 38px;
-  height: 38px;
-  border-radius: 50%;
-  border: 1px solid var(--border-color);
-  background: var(--bg-card);
-  color: var(--text-main);
-  display: inline-flex;
-  align-items: center;
   justify-content: center;
-  cursor: pointer;
-  transition: all 0.22s ease;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-  outline: none;
-  padding: 0;
-}
-
-.team-nav-btn:hover {
-  background: var(--coa-red);
-  color: #FFFFFF;
-  border-color: var(--coa-red);
-  transform: scale(1.08);
-  box-shadow: 0 4px 14px rgba(240, 6, 19, 0.35);
-}
-
-.team-nav-counter {
-  font-family: 'Fira Code', monospace;
-  font-size: 0.85rem;
-  font-weight: 750;
-  color: var(--text-muted);
-  min-width: 65px;
-  text-align: center;
-  letter-spacing: 0.04em;
-  user-select: none;
-}
-
-.team-carousel-container {
-  position: relative;
+  margin: 36px 0 50px;
   width: 100%;
 }
 
-.team-track {
+.team-leader-card {
+  background: var(--bg-card);
+  border: 2px solid var(--coa-red);
+  border-radius: 22px;
+  padding: 34px 32px 30px;
   display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  position: relative;
+  max-width: 520px;
+  width: 100%;
+  box-shadow: 0 16px 42px rgba(240, 6, 19, 0.16), 0 4px 16px rgba(0, 0, 0, 0.1);
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.team-leader-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 22px 50px rgba(240, 6, 19, 0.24), 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+[data-theme="light"] .team-leader-card {
+  background: #FFFFFF;
+  border-color: rgba(240, 6, 19, 0.9);
+  box-shadow: 0 14px 38px rgba(240, 6, 19, 0.12), 0 4px 18px rgba(0, 41, 85, 0.08);
+}
+
+[data-theme="dark"] .team-leader-card {
+  background: rgba(14, 28, 48, 0.95);
+  border-color: var(--coa-red);
+}
+
+.leader-crown-badge {
+  position: absolute;
+  top: -14px;
+  background: linear-gradient(135deg, #F00613 0%, #B3000A 100%);
+  color: #FFFFFF;
+  font-size: 0.74rem;
+  font-weight: 850;
+  padding: 5px 18px;
+  border-radius: var(--radius-pill);
+  box-shadow: 0 4px 14px rgba(240, 6, 19, 0.45);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.leader-image-wrap {
+  width: 154px;
+  height: 154px;
+  margin-top: 6px;
+  margin-bottom: 20px;
+}
+
+.leader-img {
+  border: 3.5px solid var(--coa-red) !important;
+  box-shadow: 0 0 24px rgba(240, 6, 19, 0.35), 0 8px 24px rgba(0, 0, 0, 0.15);
+}
+
+.leader-badge {
+  background: var(--coa-red) !important;
+  border-color: rgba(255, 255, 255, 0.4) !important;
+}
+
+.leader-name {
+  font-size: 1.35rem !important;
+  font-weight: 850 !important;
+  margin-bottom: 6px !important;
+}
+
+.leader-role {
+  font-size: 0.84rem !important;
+  font-weight: 800 !important;
+  color: var(--coa-red) !important;
+  margin-bottom: 16px !important;
+}
+
+.leader-quote {
+  font-size: 0.92rem !important;
+  padding: 14px 20px !important;
+  border-radius: 12px !important;
+  line-height: 1.6 !important;
+}
+
+/* --- CONTINUOUS ROTATING MARQUEE STREAM --- */
+.team-marquee-section-wrap {
+  width: 100vw;
+  margin-left: calc(-50vw + 50%);
+  position: relative;
+  overflow: hidden;
+}
+
+.team-marquee-track-wrap {
+  display: flex;
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+  padding: 18px 0 24px;
+  mask-image: linear-gradient(to right, transparent, black 6%, black 94%, transparent);
+  -webkit-mask-image: linear-gradient(to right, transparent, black 6%, black 94%, transparent);
+}
+
+.team-marquee-track {
+  display: flex;
+  align-items: stretch;
   gap: 24px;
-  overflow-x: auto;
-  scroll-snap-type: x mandatory;
-  scroll-behavior: smooth;
-  -webkit-overflow-scrolling: touch;
-  scrollbar-width: none;
-  padding: 14px 6px 28px;
+  white-space: normal;
+  width: max-content;
+  animation: scrollTeamMarquee 50s linear infinite;
+  will-change: transform;
 }
 
-.team-track::-webkit-scrollbar {
-  display: none;
+.team-marquee-track:hover {
+  animation-play-state: paused;
 }
 
-.team-card {
-  flex: 0 0 calc((100% - 48px) / 3);
-  scroll-snap-align: start;
-  scroll-snap-stop: normal;
+@keyframes scrollTeamMarquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+[dir="ltr"] .team-marquee-track {
+  animation: scrollTeamMarqueeLTR 50s linear infinite;
+}
+
+@keyframes scrollTeamMarqueeLTR {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+/* Team Card (Exact styling, fixed width for marquee) */
+.team-marquee-track .team-card {
+  width: 330px;
+  min-width: 330px;
+  max-width: 330px;
+  flex-shrink: 0;
   background: var(--bg-card);
   border: 1.5px solid var(--border-color);
   border-radius: 20px;
-  padding: 28px 22px;
+  padding: 26px 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -2947,27 +3007,27 @@ h1, h2, h3, h4, h5, h6 {
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
 }
 
-.team-card:hover {
+.team-marquee-track .team-card:hover {
   transform: translateY(-6px);
   border-color: var(--coa-red);
   box-shadow: 0 16px 36px rgba(240, 6, 19, 0.14), 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
-[data-theme="light"] .team-card {
+[data-theme="light"] .team-marquee-track .team-card {
   background: #FFFFFF;
   box-shadow: 0 4px 18px rgba(0, 41, 85, 0.06);
 }
 
-[data-theme="dark"] .team-card {
+[data-theme="dark"] .team-marquee-track .team-card {
   background: rgba(11, 23, 40, 0.85);
   border-color: rgba(255, 255, 255, 0.08);
 }
 
 .team-card-image-wrap {
   position: relative;
-  width: 144px;
-  height: 144px;
-  margin-bottom: 20px;
+  width: 140px;
+  height: 140px;
+  margin-bottom: 18px;
 }
 
 .team-member-img {
@@ -3020,7 +3080,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .team-name {
-  font-size: 1.18rem;
+  font-size: 1.15rem;
   font-weight: 800;
   color: var(--text-main);
   margin-bottom: 6px;
@@ -3042,13 +3102,13 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .team-quote {
-  font-size: 0.86rem;
+  font-size: 0.85rem;
   line-height: 1.55;
   color: var(--text-muted);
   font-style: italic;
   background: rgba(0, 41, 85, 0.03);
   border-radius: 12px;
-  padding: 14px 16px;
+  padding: 13px 15px;
   margin-top: auto;
   border-left: 3px solid var(--coa-red);
   text-align: left;
@@ -3066,54 +3126,32 @@ h1, h2, h3, h4, h5, h6 {
   color: #CBD5E1;
 }
 
-/* Dots pagination */
-.team-dots {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  margin-top: 18px;
-}
-
-.team-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: rgba(0, 41, 85, 0.18);
-  border: none;
-  cursor: pointer;
-  padding: 0;
-  transition: all 0.25s ease;
-}
-
-[data-theme="dark"] .team-dot {
-  background: rgba(255, 255, 255, 0.18);
-}
-
-.team-dot.active {
-  width: 24px;
-  border-radius: 4px;
-  background: var(--coa-red);
-  box-shadow: 0 0 10px rgba(240, 6, 19, 0.4);
-}
-
-@media (max-width: 1024px) {
-  .team-card {
-    flex: 0 0 calc((100% - 20px) / 2);
-    padding: 24px 18px;
-  }
-}
-
 @media (max-width: 640px) {
   .team-section {
-    padding: 55px 0 45px;
+    padding: 55px 0 50px;
   }
-  .team-track {
+  .team-leader-card {
+    padding: 24px 18px;
+    margin: 0 12px;
+  }
+  .leader-image-wrap {
+    width: 130px;
+    height: 130px;
+  }
+  .leader-name {
+    font-size: 1.18rem !important;
+  }
+  .leader-quote {
+    font-size: 0.85rem !important;
+    padding: 12px 14px !important;
+  }
+  .team-marquee-track {
     gap: 16px;
-    padding: 10px 4px 20px;
   }
-  .team-card {
-    flex: 0 0 86%;
+  .team-marquee-track .team-card {
+    width: 280px;
+    min-width: 280px;
+    max-width: 280px;
     padding: 20px 16px;
   }
   .team-card-image-wrap {
@@ -3122,7 +3160,7 @@ h1, h2, h3, h4, h5, h6 {
     margin-bottom: 16px;
   }
   .team-name {
-    font-size: 1.06rem;
+    font-size: 1.05rem;
   }
   .team-quote {
     font-size: 0.82rem;
