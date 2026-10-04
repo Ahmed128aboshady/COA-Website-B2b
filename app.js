@@ -1171,5 +1171,141 @@ document.addEventListener('DOMContentLoaded', () => {
       form.reset();
     });
   })();
+
+  // ========================================================
+  // 17. EXECUTIVE TEAM REVOLVING CAROUSEL ENGINE
+  // ========================================================
+  (function initTeamCarousel() {
+    const track = document.getElementById('teamTrack');
+    const container = document.getElementById('teamCarousel');
+    const prevBtn = document.getElementById('teamPrevBtn');
+    const nextBtn = document.getElementById('teamNextBtn');
+    const counter = document.getElementById('teamCounter');
+    const dotsWrap = document.getElementById('teamDots');
+    if (!track || !prevBtn || !nextBtn) return;
+
+    const cards = Array.from(track.querySelectorAll('.team-card'));
+    const total = cards.length;
+    let currentIndex = 0;
+    let autoInterval = null;
+
+    // Build dynamic dots
+    if (dotsWrap) {
+      dotsWrap.innerHTML = '';
+      cards.forEach((_, idx) => {
+        const dot = document.createElement('button');
+        dot.type = 'button';
+        dot.className = `team-dot ${idx === 0 ? 'active' : ''}`;
+        dot.setAttribute('aria-label', `Go to team member ${idx + 1}`);
+        dot.addEventListener('click', () => {
+          scrollToIndex(idx);
+          resetAutoPlay();
+        });
+        dotsWrap.appendChild(dot);
+      });
+    }
+
+    const dots = dotsWrap ? Array.from(dotsWrap.querySelectorAll('.team-dot')) : [];
+
+    function updateState() {
+      // Find card closest to track start
+      const scrollLeft = track.scrollLeft;
+      let minDiff = Infinity;
+      let closestIdx = 0;
+
+      cards.forEach((card, idx) => {
+        const diff = Math.abs(card.offsetLeft - track.offsetLeft - scrollLeft);
+        if (diff < minDiff) {
+          minDiff = diff;
+          closestIdx = idx;
+        }
+      });
+
+      currentIndex = closestIdx;
+
+      if (counter) {
+        counter.textContent = `${String(currentIndex + 1).padStart(2, '0')} / ${String(total).padStart(2, '0')}`;
+      }
+
+      dots.forEach((dot, idx) => {
+        dot.classList.toggle('active', idx === currentIndex);
+      });
+    }
+
+    function scrollToIndex(index) {
+      if (index < 0) index = total - 1;
+      if (index >= total) index = 0;
+
+      const targetCard = cards[index];
+      if (targetCard) {
+        const scrollTarget = targetCard.offsetLeft - track.offsetLeft;
+        track.scrollTo({
+          left: scrollTarget,
+          behavior: 'smooth'
+        });
+      }
+    }
+
+    function advance(direction) {
+      const maxScroll = track.scrollWidth - track.clientWidth - 10;
+      if (direction === 1 && track.scrollLeft >= maxScroll) {
+        // Loop back to start smoothly
+        scrollToIndex(0);
+      } else if (direction === -1 && track.scrollLeft <= 5) {
+        // Loop to end smoothly
+        scrollToIndex(total - 1);
+      } else {
+        scrollToIndex(currentIndex + direction);
+      }
+    }
+
+    prevBtn.addEventListener('click', () => {
+      advance(-1);
+      resetAutoPlay();
+    });
+
+    nextBtn.addEventListener('click', () => {
+      advance(1);
+      resetAutoPlay();
+    });
+
+    let scrollTimeout;
+    track.addEventListener('scroll', () => {
+      clearTimeout(scrollTimeout);
+      scrollTimeout = setTimeout(updateState, 45);
+    }, { passive: true });
+
+    // Auto-rotation engine (revolving smoothly every 4.2 seconds)
+    function startAutoPlay() {
+      stopAutoPlay();
+      autoInterval = setInterval(() => {
+        advance(1);
+      }, 4200);
+    }
+
+    function stopAutoPlay() {
+      if (autoInterval) {
+        clearInterval(autoInterval);
+        autoInterval = null;
+      }
+    }
+
+    function resetAutoPlay() {
+      stopAutoPlay();
+      startAutoPlay();
+    }
+
+    if (container) {
+      container.addEventListener('mouseenter', stopAutoPlay);
+      container.addEventListener('mouseleave', startAutoPlay);
+      container.addEventListener('touchstart', stopAutoPlay, { passive: true });
+      container.addEventListener('touchend', startAutoPlay, { passive: true });
+    }
+
+    // Start rotation & initialize indicators
+    updateState();
+    startAutoPlay();
+    window.addEventListener('resize', updateState, { passive: true });
+  })();
 });
 
