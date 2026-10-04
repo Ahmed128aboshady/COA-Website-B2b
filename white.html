@@ -1264,15 +1264,27 @@
         Comprehensive index of client enterprises, countries, sectors, and specialized operational scope
       </p>
     </div>
-    <a class="odoo-verify-badge-btn" href="https://www.odoo.com/accounting-firms/community-of-accountants-15477317" target="_blank" rel="noopener noreferrer">
-      <span>★ Verify on Odoo.com Partner Page</span>
-      <span>↗</span>
-    </a>
+    <div class="dir-header-actions">
+      <a class="odoo-verify-badge-btn" href="https://www.odoo.com/accounting-firms/community-of-accountants-15477317" target="_blank" rel="noopener noreferrer">
+        <span>★ Verify on Odoo.com Partner Page</span>
+        <span>↗</span>
+      </a>
+      <div class="dir-carousel-nav" aria-label="Directory navigation">
+        <button type="button" class="dir-nav-btn dir-nav-prev" id="dirPrevBtn" aria-label="Previous clients">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+        </button>
+        <span class="dir-nav-counter" id="dirCounter">01 / 29</span>
+        <button type="button" class="dir-nav-btn dir-nav-next" id="dirNextBtn" aria-label="Next clients">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+        </button>
+      </div>
+    </div>
   </div>
 
-  <div class="directory-grid">
-    <!-- 01. Arab Pack Egypt -->
-    <div class="dir-client-card">
+  <div class="directory-carousel-container">
+    <div class="directory-grid" id="dirTrack">
+      <!-- 01. Arab Pack Egypt -->
+      <div class="dir-client-card">
       <div class="dir-card-top">
         <span class="dir-num-badge">#01</span>
         <span class="dir-country-tag">🇪🇬 Egypt</span>
@@ -1734,6 +1746,7 @@
       </div>
       <div class="dir-specialty">Wood &amp; Steel Fabrication &bull; 500+ Staff &bull; Riyadh HQ (Est. 2003)</div>
     </div>
+  </div>
   </div>
 </div>
 </div>

@@ -1123,5 +1123,72 @@ document.addEventListener('DOMContentLoaded', () => {
   if (cyberCanvas) {
     cyberCanvas.style.display = 'none';
   }
+
+  // ========================================================
+  // 16. VERIFIED DIRECTORY CLIENTS CAROUSEL ENGINE
+  // ========================================================
+  (function initDirectoryCarousel() {
+    const track = document.getElementById('dirTrack');
+    const prevBtn = document.getElementById('dirPrevBtn');
+    const nextBtn = document.getElementById('dirNextBtn');
+    const counter = document.getElementById('dirCounter');
+    if (!track || !prevBtn || !nextBtn) return;
+
+    const cards = track.querySelectorAll('.dir-client-card');
+    const totalCards = cards.length;
+
+    function updateNavState() {
+      const scrollLeft = track.scrollLeft;
+      const maxScroll = track.scrollWidth - track.clientWidth - 5;
+      
+      prevBtn.disabled = scrollLeft <= 5;
+      nextBtn.disabled = scrollLeft >= maxScroll;
+
+      // Calculate approximate active card index
+      if (cards.length > 0 && counter) {
+        let activeIdx = 0;
+        let minDiff = Infinity;
+        const trackLeft = track.getBoundingClientRect().left;
+
+        cards.forEach((card, idx) => {
+          const diff = Math.abs(card.getBoundingClientRect().left - trackLeft);
+          if (diff < minDiff) {
+            minDiff = diff;
+            activeIdx = idx;
+          }
+        });
+        const currentStr = String(activeIdx + 1).padStart(2, '0');
+        const totalStr = String(totalCards).padStart(2, '0');
+        counter.textContent = `${currentStr} / ${totalStr}`;
+      }
+    }
+
+    function scrollByDirection(direction) {
+      const firstCard = track.querySelector('.dir-client-card');
+      const cardWidth = firstCard ? firstCard.getBoundingClientRect().width : 320;
+      const gap = 18;
+      // Scroll by 1 card on mobile, or 2/3 cards on wider screens
+      const visibleCols = Math.max(1, Math.floor(track.clientWidth / (cardWidth + gap)));
+      const scrollAmount = (cardWidth + gap) * (visibleCols > 1 ? visibleCols : 1);
+
+      track.scrollBy({
+        left: direction * scrollAmount,
+        behavior: 'smooth'
+      });
+    }
+
+    prevBtn.addEventListener('click', () => scrollByDirection(-1));
+    nextBtn.addEventListener('click', () => scrollByDirection(1));
+
+    let scrollTimeout;
+    track.addEventListener('scroll', () => {
+      clearTimeout(scrollTimeout);
+      scrollTimeout = setTimeout(updateNavState, 40);
+    }, { passive: true });
+
+    // Initial state check
+    updateNavState();
+    window.addEventListener('resize', updateNavState, { passive: true });
+  })();
 });
 

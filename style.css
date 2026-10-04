@@ -1891,7 +1891,7 @@ h1, h2, h3, h4, h5, h6 {
   justify-content: space-between;
   flex-wrap: wrap;
   gap: 16px;
-  margin-bottom: 28px;
+  margin-bottom: 24px;
 }
 
 .dir-header-title h3 {
@@ -1906,6 +1906,13 @@ h1, h2, h3, h4, h5, h6 {
 .dir-header-title p {
   font-size: 0.9rem;
   color: var(--text-muted);
+}
+
+.dir-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
 }
 
 .odoo-verify-badge-btn {
@@ -1929,13 +1936,87 @@ h1, h2, h3, h4, h5, h6 {
   box-shadow: 0 4px 14px rgba(240, 6, 19, 0.35);
 }
 
+.dir-carousel-nav {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(0, 41, 85, 0.05);
+  border: 1px solid var(--border-color);
+  padding: 4px 10px;
+  border-radius: var(--radius-pill);
+}
+
+[data-theme="dark"] .dir-carousel-nav {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.dir-nav-btn {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 1px solid var(--border-color);
+  background: var(--bg-card);
+  color: var(--text-main);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  outline: none;
+  padding: 0;
+}
+
+.dir-nav-btn:hover:not(:disabled) {
+  background: var(--coa-red);
+  color: #FFFFFF;
+  border-color: var(--coa-red);
+  transform: scale(1.06);
+  box-shadow: 0 4px 12px rgba(240, 6, 19, 0.35);
+}
+
+.dir-nav-btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.dir-nav-counter {
+  font-family: 'Fira Code', monospace;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  min-width: 58px;
+  text-align: center;
+  letter-spacing: 0.04em;
+  user-select: none;
+}
+
+.directory-carousel-container {
+  position: relative;
+  width: 100%;
+}
+
 .directory-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
-  gap: 16px;
+  display: flex;
+  gap: 18px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none; /* Firefox */
+  padding: 8px 4px 24px;
+}
+
+.directory-grid::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Edge */
 }
 
 .dir-client-card {
+  flex: 0 0 calc((100% - 36px) / 3);
+  scroll-snap-align: start;
+  scroll-snap-stop: normal;
   background: var(--bg-card);
   border: 1.5px solid var(--border-color);
   border-radius: 16px;
@@ -2072,6 +2153,52 @@ h1, h2, h3, h4, h5, h6 {
 [data-theme="dark"] .dir-specialty {
   background: rgba(255, 255, 255, 0.03);
   color: #CBD5E1;
+}
+
+@media (max-width: 1024px) {
+  .dir-client-card {
+    flex: 0 0 calc((100% - 18px) / 2);
+  }
+}
+
+@media (max-width: 768px) {
+  .directory-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 14px;
+    margin-bottom: 18px;
+  }
+  .dir-header-actions {
+    width: 100%;
+    justify-content: space-between;
+  }
+  .dir-client-card {
+    flex: 0 0 86%;
+    padding: 16px 18px;
+    gap: 12px;
+  }
+  .dir-logo-circle {
+    width: 46px;
+    height: 46px;
+    font-size: 1rem;
+  }
+  .dir-name-main {
+    font-size: 1.02rem;
+  }
+  .dir-specialty {
+    font-size: 0.82rem;
+    padding: 8px 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .dir-client-card {
+    flex: 0 0 88%;
+  }
+  .odoo-verify-badge-btn {
+    font-size: 0.76rem;
+    padding: 6px 12px;
+  }
 }
 
 /* ==========================================================================
