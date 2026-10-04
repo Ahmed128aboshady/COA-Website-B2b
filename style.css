@@ -4681,6 +4681,16 @@ body.has-custom-cursor * {
   will-change: transform;
 }
 
+@media (max-width: 991px), (hover: none), (pointer: coarse) {
+  body.has-custom-cursor,
+  body.has-custom-cursor * {
+    cursor: auto !important;
+  }
+  .coa-cursor {
+    display: none !important;
+  }
+}
+
 .coa-cursor.is-active {
   opacity: 1 !important;
 }
@@ -5669,6 +5679,57 @@ body.has-custom-cursor * {
 
 /* ── Calc grid labels ───────────────────────────────── */
 [data-theme="light"] .calc-section-label {
+  color: #64748B !important;
+}
+
+/* ── Calculator Control Labels & Stepper Contrast (Light Mode) ── */
+[data-theme="light"] .control-label-row label {
+  color: #002955 !important;
+}
+[data-theme="light"] .control-num {
+  color: #F00613 !important;
+  background: rgba(240, 6, 19, 0.08) !important;
+  border-color: rgba(240, 6, 19, 0.25) !important;
+}
+[data-theme="light"] .user-tier-label {
+  color: #C7040F !important;
+  background: #FFF0F0 !important;
+  border-color: rgba(240, 6, 19, 0.25) !important;
+}
+[data-theme="light"] .user-counter-widget {
+  background: #FFFFFF !important;
+  border-color: #E2E8F0 !important;
+  box-shadow: 0 4px 20px rgba(0, 41, 85, 0.05) !important;
+}
+[data-theme="light"] .stepper-btn {
+  background: #F1F5F9 !important;
+  border-color: #CBD5E1 !important;
+  color: #002955 !important;
+}
+[data-theme="light"] .stepper-btn:hover {
+  background: #F00613 !important;
+  border-color: #F00613 !important;
+  color: #FFFFFF !important;
+}
+[data-theme="light"] .stepper-input-wrap {
+  background: #FFFFFF !important;
+  border-color: #CBD5E1 !important;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.04) !important;
+}
+[data-theme="light"] .stepper-input-wrap:focus-within {
+  border-color: #F00613 !important;
+  box-shadow: 0 0 0 3px rgba(240, 6, 19, 0.15) !important;
+}
+[data-theme="light"] .stepper-input-wrap input[type="number"] {
+  color: #002955 !important;
+}
+[data-theme="light"] .stepper-unit {
+  color: #64748B !important;
+}
+[data-theme="light"] .quick-preset-chips {
+  border-top-color: #E2E8F0 !important;
+}
+[data-theme="light"] .slider-ticks {
   color: #64748B !important;
 }
 
