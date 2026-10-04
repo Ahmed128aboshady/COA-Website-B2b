@@ -1064,7 +1064,7 @@ h1, h2, h3, h4, h5, h6 {
    CLIENTS MARQUEE (Ultra Fast CSS Only)
    ========================================================================== */
 .clients-marquee-section {
-  padding: 30px 0;
+  padding: 40px 0;
   border-top: 1px solid var(--border-color);
   border-bottom: 1px solid var(--border-color);
   background: var(--bg-surface);
@@ -1073,14 +1073,14 @@ h1, h2, h3, h4, h5, h6 {
 
 .marquee-header-wrap {
   text-align: center;
-  margin-bottom: 16px;
+  margin-bottom: 22px;
 }
 
 .marquee-title {
-  font-size: 0.8rem;
-  font-weight: 700;
+  font-size: 0.92rem;
+  font-weight: 800;
   color: var(--text-muted);
-  letter-spacing: 0.08em;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
 }
 
@@ -1089,16 +1089,16 @@ h1, h2, h3, h4, h5, h6 {
   width: 100%;
   overflow: hidden;
   position: relative;
-  mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
-  -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+  mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+  -webkit-mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
 }
 
 .marquee-track {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 22px;
   white-space: nowrap;
-  animation: scrollMarquee 65s linear infinite;
+  animation: scrollMarquee 70s linear infinite;
   width: max-content;
 }
 
@@ -1112,7 +1112,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 [dir="ltr"] .marquee-track {
-  animation: scrollMarqueeLTR 65s linear infinite;
+  animation: scrollMarqueeLTR 70s linear infinite;
 }
 
 @keyframes scrollMarqueeLTR {
@@ -1123,39 +1123,51 @@ h1, h2, h3, h4, h5, h6 {
 .client-logo-pill {
   display: inline-flex;
   align-items: center;
-  gap: 10px;
-  padding: 6px 18px 6px 8px;
+  gap: 14px;
+  padding: 10px 24px 10px 12px;
   background: var(--bg-card-subtle);
-  border: 1px solid var(--border-color);
+  border: 1.5px solid var(--border-color);
   border-radius: var(--radius-pill);
-  font-size: 0.88rem;
+  font-size: 1.05rem;
   font-weight: 700;
   color: var(--text-main);
-  transition: var(--transition);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
   white-space: nowrap;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
 }
 
 [dir="rtl"] .client-logo-pill {
-  padding: 6px 8px 6px 18px;
+  padding: 10px 12px 10px 24px;
 }
 
 .client-logo-img {
-  width: 28px;
-  height: 28px;
+  width: 44px;
+  height: 44px;
   border-radius: 50%;
   object-fit: contain;
   background: #FFFFFF;
-  padding: 2px;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
+  padding: 4px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
   flex-shrink: 0;
-  border: 1px solid rgba(0, 41, 85, 0.1);
+  border: 1.5px solid rgba(0, 41, 85, 0.15);
+  transition: transform 0.25s ease;
+}
+
+.client-logo-pill .client-name {
+  font-size: 1.05rem;
+  font-weight: 750;
+  letter-spacing: -0.01em;
 }
 
 .client-logo-pill:hover {
   border-color: var(--coa-red);
   color: var(--coa-red);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 16px rgba(240, 6, 19, 0.2);
+  transform: translateY(-3px) scale(1.03);
+  box-shadow: 0 8px 24px rgba(240, 6, 19, 0.25);
+}
+
+.client-logo-pill:hover .client-logo-img {
+  transform: scale(1.08);
 }
 
 /* ==========================================================================
