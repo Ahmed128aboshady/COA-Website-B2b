@@ -785,10 +785,10 @@ h1, h2, h3, h4, h5, h6 {
 .partner-badge-pill {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: 12px;
   background: var(--bg-surface);
   border: 1px solid var(--border-color);
-  padding: 6px 16px;
+  padding: 8px 20px;
   border-radius: var(--radius-pill);
   box-shadow: var(--shadow-sm);
   font-size: 0.88rem;
@@ -803,11 +803,58 @@ h1, h2, h3, h4, h5, h6 {
   color: #93C5FD;
 }
 
+.badge-lines {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.28;
+  text-align: left;
+}
+
+[dir="rtl"] .badge-lines {
+  text-align: right;
+}
+
+.badge-line-1 {
+  font-size: 0.88rem;
+  font-weight: 800;
+  color: var(--text-main);
+  letter-spacing: -0.01em;
+}
+
+.badge-line-2 {
+  font-size: 0.76rem;
+  font-weight: 600;
+  color: var(--coa-red);
+  letter-spacing: 0.02em;
+}
+
+[data-theme="dark"] .badge-line-1 {
+  color: #FFFFFF;
+}
+
+[data-theme="dark"] .badge-line-2 {
+  color: #93C5FD;
+}
+
+@media (max-width: 640px) {
+  .partner-badge-pill {
+    padding: 8px 16px;
+    gap: 10px;
+  }
+  .badge-line-1 {
+    font-size: 0.80rem;
+  }
+  .badge-line-2 {
+    font-size: 0.72rem;
+  }
+}
+
 .badge-dot {
   width: 8px;
   height: 8px;
   border-radius: 50%;
   background: var(--coa-red);
+  flex-shrink: 0;
 }
 
 /* Shimmer on the tech-shimmer span */
